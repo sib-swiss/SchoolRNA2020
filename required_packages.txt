@@ -1,0 +1,73 @@
+## This file is read by install_packages.R to automatically prepare
+## the R environment for the course.
+## - please add your requirements below (R packages, additional code to run)
+## - please don't modify the lines containing START-PACKAGES, END-PACKAGES,
+##   START-EXPRESSIONS, END-EXPRESSIONS
+
+## R packages: List here required packages for exercises for R 3.6.1, Bioc 3.9
+## (one package per line in format:
+##     [github_repo/]pkgname[-min_version]
+## where
+##      'github_repo' is a github repository (optional)
+##      'pkgname' is the name of the package
+##      'min_version' is a minimal required version (optional))
+## START-PACKAGES:
+AUCell
+batchelor
+BiocNeighbors
+BiocSingular
+BiocStyle
+BUStools/BUSpaRse
+CATALYST
+cluster
+clustree
+coop
+cowplot
+dendextend
+DropletUtils
+destiny
+dynamicTreeCut
+dyndimred
+e1071
+edgeR
+flowCore
+ggplot2
+HDCytoData
+htmltools
+igraph
+iSEE
+knitr
+limma
+MAST
+mbkmeans
+mclust
+pheatmap
+RColorBrewer
+rmarkdown
+rsvd
+Rtsne
+SC3
+scater
+scone
+scran
+Seurat-3.1
+satijalab/seurat-wrappers
+SingleCellExperiment
+slingshot
+SummarizedExperiment
+sva
+TENxPBMCData
+dynverse/tradeSeq
+tidyverse
+umap
+uwot
+velocyto-team/velocyto.R
+zinbwave
+## END-PACKAGES
+
+## Additional code: Add here additional expressions to be run, e.g. to download
+## data sets from ExperimentHub (or other sources) in advance
+## START-EXPRESSIONS:
+TENxPBMCData::TENxPBMCData(dataset = "pbmc3k")
+TENxPBMCData::TENxPBMCData(dataset = "pbmc4k")
+## END-EXPRESSIONS
