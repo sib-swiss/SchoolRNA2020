@@ -55,7 +55,7 @@ At the end of this school, the participants should be able to:
 - Basic usage of R / Ability to use packages and modules and write analysis scripts in R ??
 
 **Pre-requisites - material & software**
-The participants must bring a laptop with install permissions (admin). The following software have to be installed in advance: (would you please complete the list?)
+- The participants must bring a laptop with install permissions (admin). The following software have to be installed in advance: (would you please complete the list?)
 
 
 <br/>
@@ -64,22 +64,17 @@ The participants must bring a laptop with install permissions (admin). The follo
 
 ***
 
-- Paulo Czarnewski, NBIS, Stockholm University, SciLifeLab, Stockholm, Sweden
-
-**Additional information**
-
-Coordination:
-
+**Coordination:**
 - Norbert Polacek, UniBE, NCCR RNA & Disease Training & Education Delegate
 - Dominik Theler, NCCR RNA & Disease Scientific Officer.
 - Grégoire Rossier, SIB Training & PhD Training Network coordinator
 
-Scientific Committe:
+**Scientific Committee:**
 - Ana Marques, UNIL, NCCR RNA & Disease program delegate.
 - Rory Johnson, UniBE, Head GoldLab (Genomics of Long noncoding RNA and Disease), NCCR RNA & Disease program delegate.
 - Mihaela Zavolan, UNIBas/SIB, head or member of several WPs in the program.
 
-
+**Lecturers:**
 - Sarah Djebali, INSERM, France
 - Kathi Zarnack, Computational RNA Biology group, BLMS, Germany
 - Melina Klostermann (assistant Kathi)
@@ -88,5 +83,6 @@ Scientific Committe:
 - Sebastian Leidel, RNA Biochemistry group, University of Bern, Switzerland
 
 
+**Additional information**
 
 For more information, please contact Grégoire Rossier.
