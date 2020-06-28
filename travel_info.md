@@ -5,7 +5,7 @@
 
 <br/>
 
-Location: Hotel Central Residence & Spa, Leysin, Switzerland
+Location: Hotel & Bildungszentrum Matt, Schwarzenberg, Lucerne, Switzerland
 
 Arrival: Sunday before 18h
 
@@ -14,26 +14,20 @@ Departure: Friday around 14h30
 
 ### Travel:
 
-**By plane**: arrival at Geneva-Airport. Trains 1x / hour every xx:20 direction Brig, change at Aigle. Travel time 2h10. Detailed timetable below.
+How to reach the hotel
 
-**By train only**: wherever your starting point, the last (small) train will be from Aigle to Leysin-Feydey, then a few minutes walk
-Detailed timetable on https://www.sbb.ch/en/home.html
+**By plane**: travel to Zurich Airport, then train to Luzern, then train to Malters, then bus to Schwarzenberg Ennenmatt. This is 1h57 in total. 1 connection per hour, arrival at xxh43.
 
-**By car**: Hotel address: route du Belvédère 20, CH-1854 Leysin
+**By train**: from anywhere, reach Luzern, then train to Malters, then bus to Schwarzenberg Ennenmatt, then walk around 300 meters. The hotel is about 30 minutes from Luzern station. 1 connection per hour, arrival at xxh43.
 
-**Social activity & free time**: if weather is not too bad we will go for hiking on Wednesday afternoon, so please bring good walking shoes and warm clothes. The hotel is equipped with a small spa, don't forget your swimsuit.
+Train timetables: https://www.sbb.ch/en
 
-<br/>
-<br/>
+**Social Activity: Wednesday afternoon**
+Given the location, we will probably go for a hike. A B-plan will be necessary in the event of very bad weather.
 
-![](https://edu.sib.swiss/pluginfile.php/7429/course/section/2389/train-Geneva-Leysin.jpg)
-
-<br/>
-<br/>
-
-![](https://edu.sib.swiss/pluginfile.php/7429/course/section/2389/train-Leysin-Geneva.jpg)
+**Travel expenses**
+Usually, trainers purchase their tickets and we reimburse them after the events when they send us the receipts. Let me know if you prefer us to purchase your tickets.
 
 <br/>
 
 ### [Back to main](README.md)
-

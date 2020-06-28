@@ -1,7 +1,7 @@
-# Joint SIB and NBIS/SciLifeLab Autumn School
-# Single Cell Analysis Course
+# Joint NCCR & SIB Summer School 2020
+# Computational RNA Biology
 
-13 - 18 October 2019 - Leysin, Switzerland
+23 - 28 August 2020 - Lucerne, Switzerland
 
 
 <br/>
@@ -10,7 +10,7 @@
 
 ***
 
-13.10.2019 - 18.10.2019
+23.08.2020 - 28.08.2020
 
 <br/>
 
@@ -18,7 +18,7 @@
 
 ***
 
-Hotel Central Residence & Spa, Leysin, Switzerland.
+Hotel & Bildungszentrum Matt, Schwarzenberg
 
 Arrival: Sunday before 18h
 
@@ -30,41 +30,13 @@ Departure: Friday around 14h30
 
 ***
 
+After a first day about RNA-seq overview, the remainder of the School will focus on group mini-projects.
+
+We will work with 4 topics and there will be 2 groups of 4 participants for each topic. The groups will be composed in advance, based on a survey the applicants will complete. There will be about 2 tutors per project.
+
+The last day, the groups will present their project.
+
 For the full schedule, please go to: **[Schedule](schedule.md)**
-
-#### Sunday
-
-* ≈17-18h: arrival of the participants, check-in
-* Welcome and dinner
-
-#### Monday: Transcriptomics
-
-* Introductory lecture (Vincent Gardeux)
-* Quantification, QC & Normalization (Davide Risso)
-* Dimensionality reduction (Paulo Czarnewski)
-
-#### Tuesday: Transcriptomics
-
-* Batch correction (Panagiotis Papasaikas)
-* Clustering - methods overview (Charlotte Soneson)
-* Cell fate mapping and trajectories (Wouter Saelens)
-
-#### Wednesday: Transcriptomics
-
-* Differential expression (Charlotte Soneson)
-* Afternoon: Team activity
-* Evening: Keynote lecture: Alejandro Sifrim, Laboratory of Reproductive Genomics, KU Leuwen, Belgium.
-
-#### Thursday: Proteomics
-
-* Transcriptome + proteome (Johan Reimegård)
-* Differential abundance and differential state analysis of single cell cytometry data (Mark Robinson & Helena Crowell)
-
-#### Friday: Other omics and integration
-
-* Data integration methods (Sebastien Smallwood)
-* Spatial mapping of scRNAseq (Lars Borm)
-* Lineage tracing and scRNA (Maria Florescu)
 
 <br/>
 
@@ -72,10 +44,19 @@ For the full schedule, please go to: **[Schedule](schedule.md)**
 
 ***
 
-After this course you will be able to:
-- use a range of bioinformatics tools to analyze single cell RNA-seq data
-- discuss a variety of aspects of single cell RNA-seq data analysis
-- understand the advantages and limitations of single cell RNA-seq data analysis
+At the end of this school, the participants should be able to:
+- have a good understanding of the most common methods of RNA-seq analysis,
+- repeat the same type of analysis achieved during the mini-project,
+- present the mini-project and more globally disseminate their experience to the members of their group.
+
+**Pre-requisites - background knowledge**
+- Previous experience with RNA-seq analysis
+- Familiar with command line and UNIX language (link to a UNIX tutorial)
+- Basic usage of R / Ability to use packages and modules and write analysis scripts in R ??
+
+**Pre-requisites - material & software**
+The participants must bring a laptop with install permissions (admin). The following software have to be installed in advance: (would you please complete the list?)
+
 
 <br/>
 
@@ -83,26 +64,29 @@ After this course you will be able to:
 
 ***
 
-- Alejandro Sifrim, Laboratory of Reproductive Genomics, KU Leuwen, Belgium
-- Åsa Björklund, NBIS, Uppsala University, SciLifeLab, Uppsala, Sweden
-- Charlotte Soneson, Computational Biology Group, Friedrich Miescher Institute for Biomedical Research / SIB, Basel, Switzerland
-- Davide Risso, Department of Statistical Sciences, University of Padova, Italy
-- Helena Crowell, Statistical Genomics, University of Zurich / SIB, Zurich, Switzerland
-- Johan Reimegård, NBIS, Uppsala University, SciLifeLab, Uppsala, Sweden
-- Lars Borm, Department of Medical Biochemistry and Biophysics, Karolinska Institutet, Stockholm, Sweden
-- Maria Florescu, Hubrecht Institute, Developmental Biology and Stem Cell Research, Utrecht, Netherlands
-- Mark Robinson, Statistical Genomics, University of Zurich / SIB, Zurich, Switzerland
-- Nadine Zangger, Bioinformatics Core Facility, SIB, Lausanne, Switzerland
-- Panagiotis Papasaikas, Computational Biology Group, Friedrich Miescher Institute for Biomedical Research / SIB, Basel, Switzerland
 - Paulo Czarnewski, NBIS, Stockholm University, SciLifeLab, Stockholm, Sweden
-- Sebastien Smallwood, Friedrich Miescher Institute for Biomedical Research, Basel, Switzerland
-- Vincent Gardeux, Laboratory of Systems and Genetics, EPFL / SIB, Lausanne, Switzerland
-- Wouter Saelens, VIB-UGent Center for Inflammation Research, Gent, Belgium
 
 **Additional information**
 
-Coordination: Björn Nystedt (NBIS/SciLifeLab), Grégoire Rossier (SIB).
+Coordination:
 
-Scientific Committe: Åsa Björklund (NBIS/SciLifeLab), Michael Stadler & Charlotte Soneson (SIB and FMI Basel), Vincent Gardeux (EPFL).
+- Norbert Polacek, UniBE, NCCR RNA & Disease Training & Education Delegate
+- Dominik Theler, NCCR RNA & Disease Scientific Officer.
+- Grégoire Rossier, SIB Training & PhD Training Network coordinator
+
+Scientific Committe:
+- Ana Marques, UNIL, NCCR RNA & Disease program delegate.
+- Rory Johnson, UniBE, Head GoldLab (Genomics of Long noncoding RNA and Disease), NCCR RNA & Disease program delegate.
+- Mihaela Zavolan, UNIBas/SIB, head or member of several WPs in the program.
+
+
+- Sarah Djebali, INSERM, France
+- Kathi Zarnack, Computational RNA Biology group, BLMS, Germany
+- Melina Klostermann (assistant Kathi)
+- Paulo Czarnewski, senior bioinformatician at NBIS, Sweden
+- Erik Fasterius,  bioinformatician at NBIS, Sweden
+- Sebastian Leidel, RNA Biochemistry group, University of Bern, Switzerland
+
+
 
 For more information, please contact Grégoire Rossier.
