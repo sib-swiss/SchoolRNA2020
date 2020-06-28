@@ -3,6 +3,11 @@
 
 23 - 28 August 2020 - Lucerne, Switzerland
 
+Bioinformatics has always been a foundation for understanding RNA. This importance has only grown with the advent of next generation sequencing (NGS), as rapidly diversifying methods have been developed to study virtually all aspects of RNA, including expression, processing, structure and translation. While these techniques are based on a common foundation of NGS, each has unique aspects that remain within the realm of specialists. This presents a challenge for young researchers wishing to add these techniques to their skills toolkit.
+The aim of this School is to broaden early-stage researchers’ expertise in RNA bioinformatics, with a particular focus on NGS-based analyses. Participants will gain an overview of the state-of-the-art in RNA bioinformatics, before embarking on a challenging, hands-on training project in a chosen area. Learning will be guided by experts from fields including single cell RNA analysis, long-read RNA sequencing, ribosome-profiling and UV cross-linking immunoprecipitation (CLIP-seq). There will be a focus on team-work and many opportunities for networking with trainers and other participants.
+
+**Audience**
+This course is aimed at early-stage researchers (PhD students, postdocs) in the RNA field. Given the course subject matter, only participants with working knowledge of scientific computing can be considered (see Requirements for further details).
 
 <br/>
 
@@ -60,7 +65,7 @@ At the end of this school, the participants should be able to:
 
 <br/>
 
-## <img border="0" src="https://www.svgrepo.com/show/38706/group-of-people.svg" width="40" height="40"> Lecturers
+## <img border="0" src="https://www.svgrepo.com/show/38706/group-of-people.svg" width="40" height="40"> Staff
 
 ***
 
