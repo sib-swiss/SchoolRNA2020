@@ -4,8 +4,30 @@
 
 <br/>
 
+Here is a list of instructions for installing packages and other required software for the course.
 
-### <img border="0" src="https://www.svgrepo.com/show/4795/installation-symbol.svg" width="40" height="40"> Package Installation
+- [Install Docker](docker_instructions.md)
 
+Since each of the 4 group themes have completely different softwares, please follow in instructions specific to each one:
+
+## Projects
+
+
+### single cell RNA analysis
+
+- [Install conda](conda_instructions.md)
+
+
+### long-read RNA sequencing
+
+
+### ribosome-profiling
+
+
+### UV cross-linking immunoprecipitation (CLIP-seq)
+
+
+
+<br/>
 
 ### [Back to main](README.md)
