@@ -12,7 +12,7 @@ Since each of the 4 group themes have completely different softwares, please fol
 
 ## RNA-seq course
 
-We will use the following tools and version :
+We will use the following tools and versions :
 - python=3.7.4
 - R=3.5.1
 - nextflow=20.01.0
