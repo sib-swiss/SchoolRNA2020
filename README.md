@@ -1,7 +1,7 @@
 # Joint NCCR & SIB Summer School 2020 in
 # Computational RNA Biology
 
-23 - 28 August 2020 - Lucerne, Switzerland
+23 - 28 August 2020 - Schwarzenberg (near Lucerne), Switzerland
 
 <br/>
 
@@ -59,10 +59,10 @@ At the end of this school, the participants should be able to:
 **Pre-requisites - background knowledge**
 - Previous experience with RNA-seq analysis
 - Familiar with command line and UNIX language (link to a UNIX tutorial)
-- Basic usage of R / Ability to use packages and modules and write analysis scripts in R ??
+- Basic usage of R / Ability to use packages and modules and write analysis scripts in R
 
 **Pre-requisites - material & software**
-- The participants must bring a laptop with install permissions (admin). The following software have to be installed in advance: (would you please complete the list?)
+- The participants must bring a laptop with install permissions (admin). A list of software to be installed in advance will be communicated on due time.
 
 
 <br/>
@@ -84,10 +84,12 @@ At the end of this school, the participants should be able to:
 **Lecturers:**
 - Sarah Djebali, INSERM, France
 - Kathi Zarnack, Computational RNA Biology group, BLMS, Germany
-- Melina Klostermann (assistant Kathi)
+- Melina Klostermann, Computational RNA Biology group, BLMS, Germany
 - Paulo Czarnewski, senior bioinformatician at NBIS, Sweden
 - Erik Fasterius,  bioinformatician at NBIS, Sweden
 - Sebastian Leidel, RNA Biochemistry group, University of Bern, Switzerland
+- Geert van Geest, SIB / Interfacutly Bioinformatics Unit, University of Bern
+- Giancarlo Russo, FGCZ, ETHZ/UniZH
 
 
 **Additional information**
