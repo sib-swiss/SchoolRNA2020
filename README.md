@@ -94,4 +94,4 @@ At the end of this school, the participants should be able to:
 
 **Additional information**
 
-For more information, please contact Grégoire Rossier.
+For more information, please contact <a href="mailto:gregoire.rossier@sib.swiss">Grégoire Rossier</a>.
