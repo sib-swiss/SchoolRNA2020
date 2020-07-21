@@ -10,7 +10,7 @@ Here is a list of instructions for installing packages and other required softwa
 
 Since each of the 4 group themes have completely different softwares, please follow in instructions specific to each one:
 
-## RNA-seq hands-on
+## RNA-seq hands-on (Day 1)
 
 For the RNA-seq hands-on there are two possibilities :
 - either you install singularity=3.5.3 (see instructions here: https://sylabs.io/guides/3.5/user-guide/quick_start.html, be careful you need to be root to do it) 
@@ -30,7 +30,7 @@ For the RNA-seq hands-on there are two possibilities :
   - stringtie=2.1.1
 
 
-## Projects
+# Projects
 
 
 ### single cell RNA analysis
