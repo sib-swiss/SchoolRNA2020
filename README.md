@@ -93,5 +93,5 @@ At the end of this school, the participants should be able to:
 
 
 **Additional information**
-
+Slack channel: https://join.slack.com/t/nccr-sib-rna/shared_invite/zt-fxti8aom-7oxC2~r6CPWHgv1Eb2_g3A
 For more information, please contact <a href="mailto:gregoire.rossier@sib.swiss">Grégoire Rossier</a>.
