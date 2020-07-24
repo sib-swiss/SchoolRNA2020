@@ -12,7 +12,9 @@ Since each of the 4 group themes have completely different softwares, please fol
 
 ## RNA-seq hands-on (Day 1)
 
-
+- instructions to set up everything for computation at http://genoweb.toulouse.inra.fr/~sdjebali/courses/SIB_august2020/instructions/0.setup/
+- instructions for running the GENE-SWitCH RNA-seq pipeline http://genoweb.toulouse.inra.fr/~sdjebali/courses/SIB_august2020/instructions/1.pipeline/
+- instructions for running the RNA-seq downstream analyses http://genoweb.toulouse.inra.fr/~sdjebali/courses/SIB_august2020/instructions/2.analyses/
 
 # Projects
 
