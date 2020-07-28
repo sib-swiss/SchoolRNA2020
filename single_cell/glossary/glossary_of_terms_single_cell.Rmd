@@ -150,7 +150,12 @@ VlnPlot(SeuratObject,
 
 ## Normalization
 
+The most common normalization for RNA-seq and also single-cell RNA-seq is log-normalization. This is done by dividing the gene counts of each gene by the sum of all gene counts (a.k.a., library size) to compensate for library size differences. Then the result is multiplied by a constant number, so all cell have the same sequencing depth. For bulk RNA-seq, the constant is usually $1e6$, resulting in CPM (counts per million), but since single-cells library sizes are way lower than that, the number ranges from $1e3$ to $1e4$ (counts per 10000).
 
+$$NormCounts = \frac{GeneCounts * 10000}{LibrarySize}$$
+The library size-corrected values are then log-transformed to achieve a log-normal data distribution.
+
+$$logNormCounts = ln(NormCounts+1)$$
 
 How to run it:
 
@@ -200,7 +205,8 @@ How to run it:
 
 ```{r, eval=F}
 SeuratObject <- SCTransform( object = SeuratObject,
-                             assay=opt$assay,
+                             assay="RNA",
+                             vars.to.regress =  c("nUMI","mito.percent","nFeatures"),
                              new.assay.name = "sctransform",
                              do.center=T )
 ```

@@ -26,6 +26,7 @@ Since each of the 4 group themes have completely different softwares, please fol
 
 ### long-read RNA sequencing
 
+- [Pre-course instructions](https://github.com/GeertvanGeest/NCCR_SIB_lrRNAseq/blob/master/README.md)
 
 ### ribosome-profiling
 
