@@ -41,6 +41,30 @@ code {
 
 
 
+
+```bash
+mkdir data
+
+curl -o data/pbmc_1k_v2_filtered_feature_bc_matrix.h5 -O http://cf.10xgenomics.com/samples/cell-exp/3.0.0/pbmc_1k_v2/pbmc_1k_v2_filtered_feature_bc_matrix.h5
+
+curl -o data/pbmc_1k_v3_filtered_feature_bc_matrix.h5 -O http://cf.10xgenomics.com/samples/cell-exp/3.0.0/pbmc_1k_v3/pbmc_1k_v3_filtered_feature_bc_matrix.h5
+
+curl -o data/pbmc_1k_protein_v3_filtered_feature_bc_matrix.h5 -O http://cf.10xgenomics.com/samples/cell-exp/3.0.0/pbmc_1k_protein_v3/pbmc_1k_protein_v3_filtered_feature_bc_matrix.h5
+```
+
+```
+##   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+##                                  Dload  Upload   Total   Spent    Left  Speed
+##   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+##   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+##                                  Dload  Upload   Total   Spent    Left  Speed
+##   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+##   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+##                                  Dload  Upload   Total   Spent    Left  Speed
+##   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+```
+
+
 # Quality control
 ***
 
@@ -154,7 +178,12 @@ VlnPlot(SeuratObject,
 
 ## Normalization
 
+The most common normalization for RNA-seq and also single-cell RNA-seq is log-normalization. This is done by dividing the gene counts of each gene by the sum of all gene counts (a.k.a., library size) to compensate for library size differences. Then the result is multiplied by a constant number, so all cell have the same sequencing depth. For bulk RNA-seq, the constant is usually $1e6$, resulting in CPM (counts per million), but since single-cells library sizes are way lower than that, the number ranges from $1e3$ to $1e4$ (counts per 10000).
 
+$$NormCounts = \frac{GeneCounts * 10000}{LibrarySize}$$
+The library size-corrected values are then log-transformed to achieve a log-normal data distribution.
+
+$$logNormCounts = ln(NormCounts+1)$$
 
 How to run it:
 
@@ -201,14 +230,15 @@ SeuratObject <- ScaleData(object = SeuratObject,
 
 ## SCtransform
 
-Scaling and centering assuming a poisson distribution might in some cases overfit the data, see above. One can overcome this by pooling information across genes with similar abundances in order to obtain more stable parameter estimates to be used as gene weights in the regression model. This is called "scTransform" and, in simple terms, is performing a gene-wise GLM regression using a contrained negative binomial model.
+Scaling and centering assuming a poisson distribution might in some cases overfit the data, see above. One can overcome this by pooling information across genes with similar abundances in order to obtain more stable parameter estimates to be used as gene weights in the regression model. This is called "scTransform" and, in simple terms, is performing a gene-wise GLM regression using a constrained negative binomial model.
 
 How to run it:
 
 
 ```r
 SeuratObject <- SCTransform( object = SeuratObject,
-                             assay=opt$assay,
+                             assay="RNA",
+                             vars.to.regress =  c("nUMI","mito.percent","nFeatures"),
                              new.assay.name = "sctransform",
                              do.center=T )
 ```
@@ -253,14 +283,15 @@ LabelPoints(plot = VariableFeaturePlot(alldata), points = top20, repel = TRUE)
 
 ## KNN
 
-## SNN
+KNN refers to “K Nearest Neighbors”, which is a basic and popular topic in data mining and machine learning areas. The KNN graph is a graph in which two vertices p and q are connected by an edge, if the distance between p and q is among the K-th smallest distances.[2] Given different similarity measure of these vectors, the pairwise distance can be Hamming distance, Cosine distance, Euclidean distance and so on. We take Euclidean distance as the way to measure similarity between vectors in this paper. The KNN Graph data structure has many advantages in data mining. For example, for a billion-level dataset, prebuilding a KNN graph offline as an index is much better than doing KNN search online many times.
 
+<div style="text-align: right"> Adapted from [Github](https://github.com/lengyyy/KNN-Graph) </div>
 
-How to run it:
 
 ```r
 SeuratObject <- FindNeighbors(SeuratObject,
                               assay = "RNA",
+                              compute.SNN = F,
                               reduction = "pca" 
                               dims = 1:50,
                               graph.name="SNN",
@@ -268,6 +299,32 @@ SeuratObject <- FindNeighbors(SeuratObject,
                               k.param = 20,
                               force.recalc = T)
 ```
+
+Setting `compute.SNN` to `FALSE` will only compute the k-NN graph.
+
+## SNN
+
+In addition to the k-NN graph, if we then determine the number of nearest neighbors shared by any two points. In graph terminology, we form what we call the "shared nearest neighbor" graph. We do this by replacing the weight of each link between two points (in the nearest neighbor graph) by the number of neighbors that the points share. In other words, this is the number of length 2 paths
+between any two points in the nearest neighbor graph [7].
+
+After, this shared nearest neighbor graph is created, all pairs of points are compared and if any two points share more than T neighbors, i.e., have a link in the shared nearest neighbor graph with a weight more than our threshold value, T( TS:. n), then the two points and any cluster they are part of are merged. In other words, clusters are connected components in our shared nearest neighbor graph after we sparsify using a threshold.
+
+How to run it:
+
+
+```r
+SeuratObject <- FindNeighbors(SeuratObject,
+                              assay = "RNA",
+                              compute.SNN = T,
+                              reduction = "pca" 
+                              dims = 1:50,
+                              graph.name="SNN",
+                              prune.SNN = 1/15,
+                              k.param = 20,
+                              force.recalc = T)
+```
+
+Setting `compute.SNN` to `TRUE` will compute both the k-NN and SNN graphs.
 
 <br/>
 
@@ -420,9 +477,17 @@ SeuratObject <- RunICA(object = SeuratObject,
 # Dataset integration
 ***
 
+Existing batch correction methods were specifically designed for bulk RNA-seq. Thus, their applications to scRNA-seq data assume that the composition of the cell population within each batch is identical. Any systematic differences in the mean gene expression between batches are attributed to technical differences that can be regressed out. However, in practice, population composition is usually not identical across batches in scRNA-seq studies. Even assuming that the same cell types are present in each batch, the abundance of each cell type in the data set can change depending upon subtle differences in cell culture or tissue extraction, dissociation and sorting, etc. Consequently, the estimated coefficients for the batch blocking factors are not purely technical, but contain a non-zero biological component due to differences in composition. Batch correction based on these coefficients will thus yield inaccurate representations of the cellular expression proles, potentially yielding worse results than if no correction was performed.
+
+<div style="text-align: right"> [Haghverdi et al (2018) *Nat Biotechnology*](https://www.nature.com/articles/nbt.4091) </div>
+
 <br/> 
 
 ## MNN
+
+An alternative approach for data merging and comparison in the presence of batch effects uses a set of landmarks from a reference data set to project new data onto the reference. The rationale here is that a given cell type in the reference batch is most similar to cells of its own type in the new batch. This strategy depends on the selection of landmark points in high dimensional space picked from the reference data set, which cover all cell types that might appear in the later batches. However, if the new batches include cell types that fall outside the transcriptional space explored in the reference batch, these cell types will not be projected to an appropriate position in the space defined by the landmarks. [...] The difference in expression values between cells in a MNN pair provides an estimate of the batch effect, which is made more precise by averaging across many such pairs. A correction vector is obtained from the estimated batch effect and applied to the expression values to perform batch correction. Our approach automatically identifies overlaps in population composition between batches and uses only the overlapping subsets for correction, thus avoiding the assumption of equal composition required by other methods.
+
+The use of MNN pairs involves three assumptions: (i) there is at least one cell population that is present in both batches, (ii) the batch effect is almost orthogonal to the biological subspace, and (iii) batch effect variation is much smaller than the biological effect variation between different cell types.
 
 <div style="text-align: right"> [Haghverdi et al (2018) *Nat Biotechnology*](https://www.nature.com/articles/nbt.4091) </div>
 
@@ -443,6 +508,10 @@ gc(verbose = FALSE)
 ```
 
 ## CCA
+
+Since MNNs have previously been identified using L2-normalized gene expression, significant differences across batches can obscure the accurate identification of MNNs, particularly when the batch effect is on a similar scale to the biological differences between cell states. To overcome this, we first jointly reduce the dimensionality of both datasets using diagonalized CCA, then apply L2-normalization to the canonical correlation vectors. We next search for MNNs in this shared low-dimensional represen- tation. We refer to the resulting cell pairs as anchors, as they encode the cellular relationships across datasets that will form the basis for all subsequent integration analyses.
+
+Obtaining an accurate set of anchors is paramount to suc- cessful integration. Aberrant anchors that form between different biological cell states across datasets are analogous to noisy edges that occur in k-nearest neighbor (KNN) graphs (Bendall et al., 2014) and can confound downstream analyses. This has motivated the use of shared nearest neighbor (SNN) graphs (Levine et al., 2015; Shekhar et al., 2016), where the similarity between two cells is assessed by the overlap in their local neigh- borhoods. As this measure effectively pools neighbor informa- tion across many cells, the result is robust to aberrant connec- tions in the neighbor graph. We introduced an analogous procedure for the scoring of anchors, where each anchor pair was assigned a score based on the shared overlap of mutual neighborhoods for the two cells in a pair. High-scoring correspondences therefore represent cases where many similar cells in one dataset are predicted to correspond to the same group of similar cells in a second data- set, reflecting increased robustness in the association between the anchor cells. While we initially identify anchors in low-dimen- sional space, we also filter out anchors whose correspondence is not supported based on the original untransformed data.
 
 <div style="text-align: right"> [Stuart et al (2019) *Cell*](https://www.cell.com/cell/fulltext/S0092-8674(19)30559-8) </div>
 
