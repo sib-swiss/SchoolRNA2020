@@ -13,15 +13,13 @@ In this workshop you will use conda environments to run the exercises. This is b
 
 
 [Conda environments](https://docs.conda.io/projects/conda/en/latest/user-guide/concepts/environments.html) are a self-contained directory that
-you can use in order to reproduce all your results. Two of the required software are not available as Conda packages, please see the separate [instructions for installing SingleR and CHETAH](https://raw.githubusercontent.com/NBISweden/excelerate-scRNAseq/master/notes_installation.txt).
+you can use in order to reproduce all your results.
 
 Briefly, you need to:  
 
 1. Install Conda and download the `.yml` file
 2. Create and activate the environment
 3. Deactivate the environment after running your analyses
-
-You can [read more](https://nbis-reproducible-research.readthedocs.io/en/latest/conda/) about Conda environments and other important concepts to help you make your research reproducible.
 
 <br/>
 
@@ -30,7 +28,7 @@ You can [read more](https://nbis-reproducible-research.readthedocs.io/en/latest/
 ##### <img border="0" src="https://www.svgrepo.com/show/4795/installation-symbol.svg" width="20" height="20"> Install Conda and download the environment file
 ***
 
-You should start by installing Conda. We suggest installing either Miniconda3 (NOT Anaconda). After [installing Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html), download the course [Conda file](labs/environment_r.yml) and put it in your working folder.
+You should start by installing Conda. We suggest installing either Miniconda3 (NOT Anaconda). After [installing Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html), download the course [Conda file]() and put it in your working folder.
 
 
 ###### **On MacOSX**
