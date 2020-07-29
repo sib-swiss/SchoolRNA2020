@@ -161,8 +161,8 @@ sudo apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 
 ```
 mkdir ~/Desktop/course
 cd ~/Desktop/course
-wget https://raw.githubusercontent.com/NBISweden/workshop-scRNAseq/master/labs/environment_r.yml
-conda env create -n scRNAseq2020 -f environment_r.yml
+wget https://raw.githubusercontent.com/sib-swiss/SchoolRNA2020/master/single_cell/code/environment_course.yml
+conda env create -n scRNAseq2020 -f environment_course.yml
 ```
 
 8. You can then follow the instructions above to activate/deactivate the environment.
@@ -220,8 +220,8 @@ sh Miniconda3-latest-Linux-x86_64.sh
 ```
 mkdir ~/Desktop/course
 cd ~/Desktop/course
-wget https://raw.githubusercontent.com/NBISweden/workshop-scRNAseq/master/labs/environment_r.yml
-conda env create -n scRNAseq2020 -f environment_r.yml
+wget https://raw.githubusercontent.com/sib-swiss/SchoolRNA2020/master/single_cell/code/environment_course.yml
+conda env create -n scRNAseq2020 -f environment_course.yml
 ```
 
 11. You can then follow the instructions above to activate/deactivate the environment.

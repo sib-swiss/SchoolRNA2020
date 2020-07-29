@@ -43,7 +43,7 @@ code {
 
 ## Milestone 1
 
-####	Find and download suitable datasets to work
+### Find and download suitable datasets to work
 - Consult the Glossary or additional sources for help
 - Go to PanglaoDB and look for an appropriate dataset:
 - Which species should it be?
@@ -52,21 +52,20 @@ code {
 - Describe in form of text the rational for this step in your markdown report.
 
 
-####	Load and merge datasets
+### Load and merge datasets
 - Consult the Glossary or additional sources for help
 - which file format do we have the data in?
 - Why do we need to create a seurat object?
 - Describe in form of text the rational for this step in your markdown report.
 
 
-####	Compute QC
+### Compute QC
 - Consult the Glossary or additional sources for help
 - Which QC metrics should I calculate?
 - What does each QC metric mean?
 - Describe in form of text the rational for this step in your markdown report.
 
-
-####	Define appropriate filtering thresholds
+### Define appropriate filtering thresholds
 - Consult the Glossary or additional sources for help
 - Which QC metric needs filtering in your data?
 - Which filtering parameters and respective thresholds suit your data?
@@ -78,7 +77,7 @@ code {
 
 ## Milestone 2
 
-####  Normalization and scaling
+### Normalization and scaling
 - Consult the Glossary or additional sources for help
 - Why do we need to normalize the data? What exactly are we normalizing?
 - Which data covariates could potentially influence the interpreteation of the results?
@@ -87,7 +86,7 @@ code {
 - Describe in form of text the rational for this step in your markdown report.
 
 
-####  Data Visualization
+### Data Visualization
 - Consult the Glossary or additional sources for help
 - Which method would you use to capture most significant information out of the data?
 - Following the question above, which parameters would you choose? Why?
@@ -101,7 +100,7 @@ code {
 
 ## Milestone 3
 
-####  Dataset integration
+### Dataset integration
 - Consult the Glossary or additional sources for help
 - Are there batch effects in the data? Is batch correction / dataset integration necessary?
 - Following the question above, which parameters allow you to say that batch effects are present?
@@ -115,7 +114,7 @@ code {
 
 ## Milestone 4
 
-####  Cell Clustering
+### Cell Clustering
 - Consult the Glossary or additional sources for help
 - What is graph?
 - Which kind of graphs is more robust to represent your data?
@@ -130,7 +129,7 @@ code {
 
 ## Milestone 5
 
-####  Differential expression
+### Differential expression
 - Consult the Glossary or additional sources for help
 - Which clustering resolution would you run your differential expression?
 - Which test did you choose for differential expression?
@@ -140,12 +139,12 @@ code {
 - How would you visualize the lis of differentially expressed genes?
 - Describe in form of text the rational for this step in your markdown report.
 
-
-
+<br/>
 
 
 ## Milestone 6 (optional)
 
+### Trajectory inference analysis
 ⁃	Build trajectory embedding (change embedding variables, so you have a continuous path)
 ⁃	Define lineages
 ⁃	Visualize lineages
