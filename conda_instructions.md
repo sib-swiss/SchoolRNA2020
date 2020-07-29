@@ -3,7 +3,7 @@ layout: default
 title:  'Schedule - scRNAseq course'
 ---
 
-#### <img border="0" src="https://hackernoon.com/hn-images/1*rW03Wtue71AKfxnx6XN_iQ.png" width="50" height="50"> Conda Instructions
+# <img border="0" src="https://hackernoon.com/hn-images/1*rW03Wtue71AKfxnx6XN_iQ.png" width="50" height="50"> Conda Instructions
 ***
 
 In this workshop you will use conda environments to run the exercises. This is because conda environments allow all students to have the save computing environment, i.e. package versions. This enforces reproducibility for you to run this material without the need to re-install or change your local versions. See and graphical example below:
@@ -25,13 +25,13 @@ Briefly, you need to:
 
 <br/>
 
-##### <img border="0" src="https://www.svgrepo.com/show/4795/installation-symbol.svg" width="20" height="20"> Install Conda and download the environment file
+## <img border="0" src="https://www.svgrepo.com/show/4795/installation-symbol.svg" width="20" height="20"> Install Conda and download the environment file
 ***
 
 You should start by installing Conda. We suggest installing either Miniconda3 (NOT Anaconda). After [installing Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html), download the course [Conda file]() and put it in your working folder.
 
 
-###### **On MacOSX**
+### **On MacOSX**
 
 ```
 curl -o Miniconda3-latest-MacOSX-x86_64.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
@@ -41,7 +41,7 @@ sh Miniconda3-latest-MacOSX-x86_64.sh
 Follow the instructions on screen replying `yes` when necessary. Restart your terminal window to apply modifications.
 
 
-###### **On Ubuntu**
+### **On Ubuntu**
 
 ```
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
@@ -51,31 +51,29 @@ sh Miniconda3-latest-Linux-x86_64.sh
 Follow the instructions on screen replying `yes` when necessary. Restart your terminal window to apply modifications.
 
 
-###### **On Windows10**
+### **On Windows10**
 
 Several packages are not available for Windows. However, on windows10 we can run a Ubuntu subsystem to overcome this issue. Please follow the instructions `Alternative option on Windows (WLS)` below to install it.
 
 <br/>
 
-<br/>
-
-##### <img border="0" src="https://www.svgrepo.com/show/4795/installation-symbol.svg" width="20" height="20"> Create a Conda environment from file
+## <img border="0" src="https://www.svgrepo.com/show/4795/installation-symbol.svg" width="20" height="20"> Create a Conda environment from file
 ***
 
-To download the `environment_r.yml` file using the command on Terminal:
+To download the `environment_course.yml` file using the command on Terminal:
 
 ```
 #Ubuntu
-wget https://nbisweden.github.io/workshop-scRNAseq/labs/environment_r.yml
+wget https://raw.githubusercontent.com/sib-swiss/SchoolRNA2020/master/single_cell/code/environment_course.yml
 
 #MacOSX
-curl -o environment_r.yml https://nbisweden.github.io/workshop-scRNAseq/labs/environment_r.yml
+curl -o environment_course.yml https://raw.githubusercontent.com/sib-swiss/SchoolRNA2020/master/single_cell/code/environment_course.yml
 ```
 
-After this, you should have a file named `environment_r.yml` in your directory (it does not matter where, you can save on Downloads folder for example). Next, type:
+After this, you should have a file named `environment_course.yml` in your directory (it does not matter where, you can save on Downloads folder for example). Next, type:
 
 ```
-conda env create -p scRNAseq2020 -f environment_r.yml
+conda env create -p scRNAseq2020 -f environment_course.yml
 ```
 
 Several messages will show up on your screen and will tell you about the installation process. This may take a few minutes depending on how many packages are to be installed.
@@ -95,9 +93,7 @@ Several messages will show up on your screen and will tell you about the install
 
 <br/>
 
-<br/>
-
-##### <img border="0" src="https://www.svgrepo.com/show/4795/installation-symbol.svg" width="20" height="20"> Activate the environment
+## <img border="0" src="https://www.svgrepo.com/show/4795/installation-symbol.svg" width="20" height="20"> Activate the environment
 ***
 
 Once the environment is created, we need to activate it in order to use the softwares and packages inside it. To activate an environment type:
@@ -113,17 +109,9 @@ typing `rstudio`. Here it is important to add the `&` symbol in the end to be ab
 rstudio ./labs/compiled/my_script.Rmd &
 ```
 
-Similarly, you can open python notebooks by typing:
-
-```
-jupyter notebook ./labs/scapy/01_qc.ipynb &
-```
-
 <br/>
 
-<br/>
-
-##### <img border="0" src="https://www.svgrepo.com/show/4795/installation-symbol.svg" width="20" height="20"> Deactivate the environment
+## <img border="0" src="https://www.svgrepo.com/show/4795/installation-symbol.svg" width="20" height="20"> Deactivate the environment
 ***
 
 After you've ran all your analyses, you can deactivate the environment by typing:
@@ -138,7 +126,7 @@ conda deactivate
 
 
 
-##### <img border="0" src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Windows_logo_-_2012.svg" width="20" height="20"> Alternative option on Windows (WLS)
+## <img border="0" src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Windows_logo_-_2012.svg" width="20" height="20"> Alternative option on Windows (WLS)
 ***
 
 Unfortunately, not all packages available on conda are compatible with windows machines. The good news is that is changed on windows10, in which they offer native linux support via the Windows Subsystem for Linux (WSL2). This allows you to run linux/bash commands from within windows without the need of a virtual machine nor a dual-boot setup (i.e. having 2 operational systems). However, WSL does not offer a complete support for graphical interfaces (such as RStudio in our case), so we need an additional steps to make that happen.
@@ -187,8 +175,7 @@ rstudio &
 
 <br/>
 
-
-##### <img border="0" src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Virtualbox_logo.png" width="20" height="20"> Alternative option (VIRTUALBOX)
+## <img border="0" src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Virtualbox_logo.png" width="20" height="20"> Alternative option (VIRTUALBOX)
 ***
 
 If by any means you see that the installations are not working as it should on your computer, you can try to create a virtual machine to run UBUNTU and install everything there.
