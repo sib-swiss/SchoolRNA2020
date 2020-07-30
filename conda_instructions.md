@@ -220,6 +220,7 @@ sh Miniconda3-latest-Linux-x86_64.sh
 ```
 mkdir ~/Desktop/course
 cd ~/Desktop/course
+
 wget https://raw.githubusercontent.com/sib-swiss/SchoolRNA2020/master/single_cell/code/environment_course.yml
 conda env create -n scRNAseq2020 -f environment_course.yml
 ```
