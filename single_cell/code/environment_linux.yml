@@ -30,9 +30,9 @@ dependencies:
  - wget
  - umap-learn
  - leidenalg
- - clang_osx-64     #MacOS only
- - clangxx_osx-64   #MacOS only
- - gfortran_osx-64  #MacOS only
- # - gcc_linux-64       #Linux only
- # - gxx_linux-64       #Linux only
- # - gfortran_linux-64  #Linux only
+# - clang_osx-64     #MacOS only
+# - clangxx_osx-64   #MacOS only
+# - gfortran_osx-64  #MacOS only
+ - gcc_linux-64       #Linux only
+ - gxx_linux-64       #Linux only
+ - gfortran_linux-64  #Linux only
