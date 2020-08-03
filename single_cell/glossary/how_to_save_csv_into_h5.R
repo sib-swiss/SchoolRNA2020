@@ -48,34 +48,39 @@ rownames(metadata_all) <- genes
 library(rhdf5)
 # data <- read.csv("~/Downloads/Marrow.h5",row.names = 1)
 # data <- Matrix::Matrix(as.matrix(data), sparse = T)
-data <- metadata_all
+list.files("~/Downloads/",pattern = "SRA70*")
 
-h5createFile("~/Downloads/Marrow.h5")
-h5createGroup("~/Downloads/Marrow.h5","matrix")
+data <- read.delim( "/Users/paulo.czarnewski/Downloads/SRA703206_SRS3296614.mat" , row.names = 1)
+data <- Matrix::Matrix(as.matrix(data), sparse = T)
+rownames(data) <- sub("_.*","",rownames(data))
+# data <- metadata_all
 
-h5write(data@Dimnames[[2]],"~/Downloads/Marrow.h5","matrix/barcodes")
-h5write(data@x,"~/Downloads/Marrow.h5","matrix/data")
-h5write(data@i,"~/Downloads/Marrow.h5","matrix/indices")
-h5write(data@p,"~/Downloads/Marrow.h5","matrix/indptr")
-h5write(data@Dim,"~/Downloads/Marrow.h5","matrix/shape")
+h5createFile("~/Downloads/SRA703206_SRS3296614.h5")
+h5createGroup("~/Downloads/SRA703206_SRS3296614.h5","matrix")
 
-h5createGroup("~/Downloads/Marrow.h5","matrix/features")
+h5write(data@Dimnames[[2]],"~/Downloads/SRA703206_SRS3296614.h5","matrix/barcodes")
+h5write(data@x,"~/Downloads/SRA703206_SRS3296614.h5","matrix/data")
+h5write(data@i,"~/Downloads/SRA703206_SRS3296614.h5","matrix/indices")
+h5write(data@p,"~/Downloads/SRA703206_SRS3296614.h5","matrix/indptr")
+h5write(data@Dim,"~/Downloads/SRA703206_SRS3296614.h5","matrix/shape")
+
+h5createGroup("~/Downloads/SRA703206_SRS3296614.h5","matrix/features")
 h5write(data@Dimnames[[1]]
-,"~/Downloads/Marrow.h5","matrix/features/name")
+,"~/Downloads/SRA703206_SRS3296614.h5","matrix/features/name")
 h5write(data@Dimnames[[1]]
-        ,"~/Downloads/Marrow.h5","matrix/features/_all_tag_keys")
+        ,"~/Downloads/SRA703206_SRS3296614.h5","matrix/features/_all_tag_keys")
 h5write(rep("expression",nrow(data))
-        ,"~/Downloads/Marrow.h5","matrix/features/feature_type")
+        ,"~/Downloads/SRA703206_SRS3296614.h5","matrix/features/feature_type")
 h5write(rep("mm10",nrow(data))
-        ,"~/Downloads/Marrow.h5","matrix/features/genome")
+        ,"~/Downloads/SRA703206_SRS3296614.h5","matrix/features/genome")
 
 
-h5ls("~/Downloads/Marrow.h5")
+h5ls("~/Downloads/SRA703206_SRS3296614.h5")
 
-nd <- Seurat::Read10X_h5("~/Downloads/Marrow.h5")
+nd <- Seurat::Read10X_h5("~/Downloads/SRA703206_SRS3296614.h5")
 sum(!nd == data)
 
 
 
-
+sort(data["S100A9",],decreasing = T)
 

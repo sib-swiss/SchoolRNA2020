@@ -13,10 +13,14 @@ Since each of the 4 group themes have completely different softwares, please fol
 - [Instructions for running the GENE-SWitCH RNA-seq pipeline](http://genoweb.toulouse.inra.fr/~sdjebali/courses/SIB_august2020/instructions/1.pipeline/)
 - [Instructions for running the RNA-seq downstream analyses](http://genoweb.toulouse.inra.fr/~sdjebali/courses/SIB_august2020/instructions/2.analyses/)
 
+<br/>
+
+<br/>
+
 # Projects
 
 
-### single cell RNA analysis
+### Single cell RNA analysis
 ***
 
 1. For the single cell section, we will be using Conda for managing and installing the necessary software. please follow the instructions depicted here on how to install and use conda environments: [**conda instructions**](conda_instructions.md). PS.: As mentioned in the instructions, Windows users are required to proceed with the Linus subsystem or via VirtualBox.
@@ -31,14 +35,14 @@ The only difference between the environments is the list of compiler packages th
 
 <br/>
 
-### long-read RNA sequencing
+### Long-read RNA sequencing
 ***
 
 - [Pre-course instructions](https://github.com/GeertvanGeest/NCCR_SIB_lrRNAseq/blob/master/README.md)
 
 <br/>
 
-### ribosome-profiling
+### Ribosome-profiling
 ***
 
 <br/>
