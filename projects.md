@@ -4,7 +4,7 @@
 
 <br/>
 
-Since each of the 4 group themes have completely different softwares, please follow in instructions specific to each one:
+Since each of the 4 group themes have completely different software, please follow in instructions specific to each one:
 
 ## RNA-seq hands-on (Day 1)
 ***
@@ -24,22 +24,22 @@ Since each of the 4 group themes have completely different softwares, please fol
 
 Please follow the [pre-course instructions](precourse.md) in order to install all necessary software and packages.
 
-The proposed educational plan for single cell RNA-seq data analysis project will be done using the Project-based learning (a.k.a. PBL) approach. This way, rather than having lectures on a topic and defined set of instructions and pre-given steps to follow (which focus on passive individual learning), you are required to learn the topic in a more **active** and **dynamic** way in order to solve the data analysis tasks as group. Therefore, each group is provided with:
+The proposed educational plan for single cell RNA-seq data analysis project will be done using the Project-based learning (a.k.a. *PBL*) approach. This way, rather than having lectures on a topic and defined set of instructions and pre-given steps to follow (which focus on passive individual learning), you are required to learn the topic in a more **active** and **dynamic** way in order to solve the data analysis tasks as group. Therefore, each group is provided with:
 
-1. The [report file](single_cell/code/project_report.md) containing a list of instructions and questions giving the overall direction and order of the steps needed to be done and;
-2. A [glossary of terms](single_cell/glossary/glossary_of_terms_single_cell.md) which contains detailed information about many of the steps and provides further references on the topics.
+1. The [report file](single_cell/code/project_report.md) containing a list of instructions and questions giving the overall direction and order of the steps needed to be done and
+2. A [glossary of terms](single_cell/glossary/glossary_of_terms_single_cell.md) which contains detailed information about many of the steps and provides further references on the topics
 
 In this manner, each group is required to gather information from the glossary to perform single cell data analysis by filling the report file (using this [project_report.Rmd](single_cell/code/project_report.Rmd) file), by:
 
-1. Reading the instructions for a certain task;
-2. Searching the glossary for an answer;
-3. Discussing with your colleges which step needs to be done or included;
-4. Replacing the instructions with a text explaining the rational for this step and;
-5. Adding and running code from that step.
+1. Reading the instructions for a certain task
+2. Searching the glossary for an answer
+3. Discussing with your colleges which step needs to be done or included
+4. Replacing the instructions with a text explaining the rational for this step and
+5. Adding and running code from that step
 
-You are encouraged to use any other additional website / article in your report. That also includes addition of other previous experiences and/or additional code steps from other sources, as long as the rational for the inclusion is also discussed in the report text. You can also add any other plots and visualisations in your report to illustrate your results.
+You are encouraged to use any other additional websites / articles in your report that might be relevant to your project. That also includes addition of other previous experiences and/or additional code steps from other sources, as long as the rationale for the inclusion is also discussed in the report text. You can also add any other plots and visualisations in your report to illustrate your results.
 
-In the end, each group is expected to have 1 report file with all analysis steps and the rational for the following projects:
+In the end, each group is expected to have 1 report file with all analysis steps and the rationale for the following projects:
 
 <br/>
 
@@ -49,7 +49,7 @@ In the end, each group is expected to have 1 report file with all analysis steps
 
 **(Main research question)** Which genes specifically drive the differentiation of 1) common myeloid progenitors, 2) Monocytes and 3) Neutrophils.
 
-**(Importance)** Identifying such genes will allow us to: 1) perform experiment in Tamoxifen-transgenic mice where those cells can be depleted during the course of colitis. 2) find potential drugs that can inhibit those genes/pathways in order to block myeloid cell differentiation during colitis in mice (with priority to already approved drugs).
+**(Importance)** Identifying such genes will allow us to: 1) perform experiments in Tamoxifen-transgenic mice where those cells can be depleted during the course of colitis; 2) find potential drugs that can inhibit those genes/pathways in order to block myeloid cell differentiation during colitis in mice (with priority to already approved drugs).
 
 <br/>
 
