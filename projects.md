@@ -4,11 +4,8 @@
 
 <br/>
 
-Since each of the 4 group themes have completely different softwares, please follow in instructions specific to each one:
+Since each of the 4 group themes have completely different softwares, please follow in instructions specific to each one.
 
-
-
-{: #Single-cell-RNA-analysis }
 
 # Single cell RNA analysis
 ***

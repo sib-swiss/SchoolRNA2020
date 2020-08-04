@@ -23,13 +23,13 @@ Since each of the 4 group themes have completely different softwares, please fol
 ### Single cell RNA analysis
 ***
 
-1. For the single cell section, we will be using Conda for managing and installing the necessary software. please follow the instructions depicted here on how to install and use conda environments: [**conda instructions**](conda_instructions.md). PS.: As mentioned in the instructions, Windows users are required to proceed with the Linus subsystem or via VirtualBox.
+1. For the single cell section, we will be using Conda for managing and installing the necessary software. please follow the instructions depicted here on how to install and use conda environments: [conda instructions](conda_instructions.md). PS.: As mentioned in the instructions, Windows users are required to proceed with the Linus subsystem or via VirtualBox.
 
 2. After installation of conda you can use one of the following files to create your environemnt for the course:
 - For MacOS: [environment_macos.yml](single_cell/code/environment_macos.yml)
 - For Linux/Windows: [environment_linux.yml](single_cell/code/environment_linux.yml)
 
-The only difference between the environments is the list of compiler packages that are specific for each operationsl system. After sucessful creation of the environment following the [**conda instructions**](conda_instructions.md), you will be able to use 'Rstudio' with 'R 3.6.1' and 'Seurat 3.2.0' and several other associated packages.
+The only difference between the environments is the list of compiler packages that are specific for each operationsl system. After sucessful creation of the environment following the [conda instructions](conda_instructions.md), you will be able to use 'Rstudio' with 'R 3.6.1' and 'Seurat 3.2.0' and several other associated packages.
 
 3. Additional, but **optional** installation of other packages can be done within the environemnt via standard R packages already included in the environment ('devtools', 'install.packages' and 'biocmanager'). Some of those additional methods are: 'seurat-wrappers', 'harmony', etc.
 
