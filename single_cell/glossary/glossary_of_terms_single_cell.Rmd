@@ -262,17 +262,19 @@ In single cell, the most detected genes usually belong to housekeeping gene fami
 
 ```{r, eval=F,  }
 #Compute the relative expression of each gene per cell
-rel_expression <- t( t(SeuratObject@assays$RNA@counts) / Matrix::colSums(SeuratObject@assays$RNA@counts)) * 100
+rel_expression <- Matrix::t( Matrix::t(SeuratObject@assays$RNA@counts) / Matrix::colSums(SeuratObject@assays$RNA@counts)) * 100
 most_expressed <- sort(Matrix::rowSums( rel_expression ),T) / ncol(SeuratObject)
 
 #Plot the relative expression of each gene per cell
 par(mfrow=c(1,3),mar=c(4,6,1,1))
-boxplot( as.matrix(t(rel_expression[names(most_expressed[30:1]),])),cex=.1, las=1, xlab="% total count per cell",col=scales::hue_pal()(20)[30:1],horizontal=TRUE)
-boxplot( as.matrix(t(rel_expression[names(most_expressed[60:31]),])),cex=.1, las=1, xlab="% total count per cell",col=scales::hue_pal()(20)[60:31],horizontal=TRUE)
-boxplot( as.matrix(t(rel_expression[names(most_expressed[90:61]),])),cex=.1, las=1, xlab="% total count per cell",col=scales::hue_pal()(20)[90:61],horizontal=TRUE)
+boxplot( as.matrix(Matrix::t(rel_expression[names(most_expressed[30:1]),])),cex=.1, las=1, xlab="% total count per cell",col=scales::hue_pal()(90)[30:1],horizontal=TRUE,ylim=c(0,8))
+boxplot( as.matrix(Matrix::t(rel_expression[names(most_expressed[60:31]),])),cex=.1, las=1, xlab="% total count per cell",col=scales::hue_pal()(90)[60:31],horizontal=TRUE,ylim=c(0,8))
+boxplot( as.matrix(Matrix::t(rel_expression[names(most_expressed[90:61]),])),cex=.1, las=1, xlab="% total count per cell",col=scales::hue_pal()(90)[90:61],horizontal=TRUE,ylim=c(0,8))
 ```
 
 You might see that some genes constitute up to 10-30% of the counts from a single cell and the other top genes are mitochondrial and ribosomal genes. It is quite common that nuclear lincRNAs have correlation with quality and mitochondrial reads. Let us assemble some information about such genes, which are important for quality control and downstream filtering.
+
+These genes can serve several purposes in single-cell data analysis, such as computing cell quality metrics (see below), normalize data (see below) and even help account for batch effects (<div style="text-align: right"> [Lin et al (2019) *PNAS*](https://www.pnas.org/content/116/20/9775) </div>).
 
 ## % Mitochondrial genes
 
