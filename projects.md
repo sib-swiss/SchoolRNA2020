@@ -19,7 +19,7 @@ Since each of the 4 group themes have completely different softwares, please fol
 # Projects
 
 
-### Single cell RNA analysis
+## Single cell RNA analysis
 ***
 
 Please follow the [pre-course instructions](precourse.md) in order to install all necessary software and packages.
@@ -59,21 +59,21 @@ In the end, each group is expected to have 1 report file with all analysis steps
 
 <br/>
 
-### Long-read RNA sequencing
+## Long-read RNA sequencing
 ***
 
 <br/>
 
 <br/>
 
-### Ribosome-profiling
+## Ribosome-profiling
 ***
 
 <br/>
 
 <br/>
 
-### UV cross-linking immunoprecipitation (CLIP-seq)
+## UV cross-linking immunoprecipitation (CLIP-seq)
 ***
 
 <br/>
