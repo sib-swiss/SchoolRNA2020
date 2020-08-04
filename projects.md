@@ -45,15 +45,27 @@ In the end, each group is expected to have 1 report file with all analysis steps
 
 #### PROJECT 1: Blocking myeloid development during colitis.
 
-**(Background)** Ulcerative colitis (UC) is an inflammatory bowel disease (IBD) driven mainly by colonic innate inflammatory cells such as macrophages, monocytes and neutrophils (Czarnewski 2019, Skatteborg 2020). A recent study showed that patients that present higher neutrophilic/monocytic inflammatory signature (known as UC1) become refractory to both anti-TNF and anti-a4b7 integrin therapy (Czarnewski 2019, Skatteborg 2020), which leads to surgical intervention for removal of the colon. Both of these inflammatory cells are short lived and originate from the common myeloid progenitor (CMP) in the bone marrow and requires constant replenishment in order to sustain elevated cell number in the colon. Herein, our main goal is to identify potential gene candidates that can block either one or both pathways of neutrophil and monocyte differentiation in the bone marrow.
+<details>
+<summary>Click to expand!</summary>
 
-**(Main research question)** Which genes specifically drive the differentiation of 1) common myeloid progenitors, 2) Monocytes and 3) Neutrophils.
+  **(Background)** Ulcerative colitis (UC) is an inflammatory bowel disease (IBD) driven mainly by colonic innate inflammatory cells such as macrophages, monocytes and neutrophils (Czarnewski 2019, Skatteborg 2020). A recent study showed that patients that present higher neutrophilic/monocytic inflammatory signature (known as UC1) become refractory to both anti-TNF and anti-a4b7 integrin therapy (Czarnewski 2019, Skatteborg 2020), which leads to surgical intervention for removal of the colon. Both of these inflammatory cells are short lived and originate from the common myeloid progenitor (CMP) in the bone marrow and requires constant replenishment in order to sustain elevated cell number in the colon. Herein, our main goal is to identify potential gene candidates that can block either one or both pathways of neutrophil and monocyte differentiation in the bone marrow.
 
-**(Importance)** Identifying such genes will allow us to: 1) perform experiment in Tamoxifen-transgenic mice where those cells can be depleted during the course of colitis. 2) find potential drugs that can inhibit those genes/pathways in order to block myeloid cell differentiation during colitis in mice (with priority to already approved drugs).
+  **(Main research question)** Which genes specifically drive the differentiation of 1) common myeloid progenitors, 2) Monocytes and 3) Neutrophils.
+
+  **(Importance)** Identifying such genes will allow us to: 1) perform experiment in Tamoxifen-transgenic mice where those cells can be depleted during the course of colitis. 2) find potential drugs that can inhibit those genes/pathways in order to block myeloid cell differentiation during colitis in mice (with priority to already approved drugs).
+
+</details>
 
 <br/>
 
 #### PROJECT 2: Understanding Fibroblast function during colonic inflammation.
+
+<details>
+<summary>Click to expand!</summary>
+
+  TO DO
+
+</details>
 
 <br/>
 
