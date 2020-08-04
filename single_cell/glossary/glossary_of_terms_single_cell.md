@@ -3,7 +3,7 @@ title: "Glossary of terms"
 output:
   html_document:
     keep_md: true
-    toc: true
+    toc: false
     toc_depth: 3
     code_folding: show
   pdf_document: default
@@ -17,8 +17,8 @@ body,p,h1,h2,h3,h4,h5,h6 {
   text-align: justify;
   color: #424949;
   font-weight: 400;
-  font-size: 14px;
-  line-height: 1.55;}
+  font-size: 12px;
+  line-height: 1.1;}
 
 h1 {  font-size: 1.4em;font-weight: bold; }
 h2 {  font-size: 1.2em;font-weight: bold; }
@@ -29,11 +29,11 @@ pre {
   font-family: "Courier";
   background-color: #F7F7F7;
   border: 1px solid #CCCCCC;
-  font-size: 14px;}
+  font-size: 12px;}
 
 code {
   font-family: "Courier New";
-  font-size: 14px;
+  font-size: 12px;
   word-break: break-all;
   font-weight: bold;}
 
@@ -41,44 +41,233 @@ code {
 
 
 
+# Downloading data
+***
+
+<details>
+<summary>Click to expand!</summary>
+
+It is possible to download data from within Rstudio by using the bash code chunck. It is usually a standard to have a folder with all your raw data stored in a separate place from your code or analysis results.
+
+How to run it:
 
 ```bash
+# use this instead of the default ```{r}
+# ```{bash}
+
+# make a data directory
 mkdir data
 
-curl -o data/pbmc_1k_v2_filtered_feature_bc_matrix.h5 -O http://cf.10xgenomics.com/samples/cell-exp/3.0.0/pbmc_1k_v2/pbmc_1k_v2_filtered_feature_bc_matrix.h5
-
-curl -o data/pbmc_1k_v3_filtered_feature_bc_matrix.h5 -O http://cf.10xgenomics.com/samples/cell-exp/3.0.0/pbmc_1k_v3/pbmc_1k_v3_filtered_feature_bc_matrix.h5
-
-curl -o data/pbmc_1k_protein_v3_filtered_feature_bc_matrix.h5 -O http://cf.10xgenomics.com/samples/cell-exp/3.0.0/pbmc_1k_protein_v3/pbmc_1k_protein_v3_filtered_feature_bc_matrix.h5
+# use curl to download the data
+curl -o data/FILENAME.h5 -O http://FILE_PATH.h5
 ```
 
-```
-##   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-##                                  Dload  Upload   Total   Spent    Left  Speed
-##   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-##   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-##                                  Dload  Upload   Total   Spent    Left  Speed
-##   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-##   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-##                                  Dload  Upload   Total   Spent    Left  Speed
-##   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+</details>
+
+<br/>
+
+<br/>
+
+# Load data
+***
+
+<details>
+<summary>Click to expand!</summary>
+
+## Reading files
+
+There are many formats available in which one can store single cell information, many of which cannot all be listed here. The most common formats are:
+
+1. using tab-delimited matricies saved as `.csv`, `.tsv` or `.txt` and with and additional matrix containing the sample metadata, which is common for SMARTseq2 and related methods;
+2. using a compressed **sparce matrix** file `.mtx` with annotations for genes and cells saved as `.tsv`, which was one of the defaults for 10X Chromium data; 
+3. using HDF5 compressed file for in-file read-write access, which is now becoming the default method for storing single cell dataset (is the current default for 10X Chromium data). HDF5 in particular is fast, scalable and can load parts of the data that will be used at a time, and also can store the metadata in the same file, making it portable. It stores the data as binary compressed **sparce matrix** format.
+
+How to run it:
+
+```r
+#From .csv .tsv .txt format (and then convert to sparse matrix)
+raw_matrix <- read.delim(
+  file = "data/folder_sample1.csv",
+  row.names = 1 )
+
+sparse_matrix <- Matrix::Matrix(
+  data = raw_matrix, 
+  sparse = T)
+rm(raw_matrix)
+
+
+#From .mtx format (it loads the files in the folder)
+sparse_matrix <- Read10X(
+  data.dir = "data/folder_sample1")
+
+
+#From .h5 format
+sparse_matrix <- Read10X_h5(
+  filename = "data/matrix_file.h5",
+  use.names = T)
 ```
 
+Additionaly, one should also import any associated metadata file as a `data.frame`, which oposed to a `matrix` can store both numbers, characters, booleans and factors. 
+
+
+```r
+#From .csv .tsv format (and then convert to sparse matrix)
+metadata <- read.delim(
+  file = "data/metadata.csv",
+  row.names = 1 )
+```
+
+<br/>
+
+## Creating Seurat objects
+
+In order to make the data analysis process a bit simpler, several single cell developers have implemented their own way of storing the data in a consize format in R and python (called **objects**).
+
+We can now load the expression matricies into objects and then later merge them into a single merged object. Each analysis workflow (Seurat, Scater, Scranpy, etc) has its own way of storing data and here is how you can create a Seurat Object:
+
+
+```r
+SeuratObject <- CreateSeuratObject(  
+  counts = sparse_matrix,
+  assay = "RNA",
+  project = "SAMPLE1",
+  meta.data = metadata)
+```
+
+
+<br/>
+
+## Understanding Seurat objects
+
+One can check the dimentions and subset Seurat Objects as a data.frame:
+
+
+
+Seurat objects have a easy way to access their contents using the `@` or the `$` characters after the object name:
+* The `@` attribute allows you to access to all analysis slots including: `assays`, `meta.data`, `graphs` and `reduction` slots. 
+* The `$` sign allows you to access the columns of the metadata (just like you normally would do in a data.frame) in your Seurat object directly so that `SeuratObject$column1` is equal to `SeuratObject@meta.data$column1`.
+
+By default, the data is loaded into an `assay` slot named `RNA`, but you can change the names of the slots when creating them (e.g., when creating the seurat object, or computing the reductions). Therefore, check the options in each of the Seurat functions to know where you are storing the data. Each `assay` contains information about the raw counts (`counts`), the normalized counts (`data`), the scaled/regressed data (`scale.data`) as well as information about the dispersion of genes (`var`). Additional assays will be created when doing data analysis, for example when performing data integration, you might store the data as new `assay` or as a new `reduction` slot (depending on the integration method used).
+
+
+
+
+## Plotting functions
+
+The most common functions to use for plotting are the violin plot and the scatter plots for the dimensionality reduction calculated (you need to calculate it before using the function!).
+
+To plot **continous** variables as **violin** (press TAB inside the functions for more options):
+
+
+```r
+VlnPlot(object = SeuratObject,
+        group.by= "orig.ident",
+        features = c("percent_mito"),
+        pt.size = 0.1,
+        ncol = 4,
+        y.max = 100) + NoLegend()
+```
+
+To plot **CONTINOUS** variables as **scatter plot** using the `umap` reduction slot (press TAB inside the functions for more options):
+
+
+```r
+FeaturePlot(object = SeuratObject,
+            features = c("FEATURE_1","FEATURE_2","FEATURE_3"),
+            reduction = "umap",
+            dims = c(1,2),
+            order = T,
+            pt.size = .1,
+            ncol = 3)
+```
+
+To plot **CATEGORICAL** variables as **scatter plot** using the `umap` reduction slot (press TAB inside the functions for more options):
+
+
+```r
+DimPlot(object = SeuratObject,
+        group.by = c("DATASET"),
+        reduction = "umap",
+        dims = c(1,2),
+        pt.size = .1,
+        label = T,
+        ncol = 3)
+```
+
+Many other plotting functions are available, check `Seurat::` (then press tab and look for the functions with "Plot" in the name).
+
+<br/>
+
+## Merge datasets into one single Seurat object
+
+
+```r
+CombinedSeuratObject <- merge(
+  x = SeuratObject1,
+  y = c( SeuratObject2 ,
+         SeuratObject3,
+         SeuratObject4),
+  add.cell.ids=c("Dataset1",
+                 "Dataset2",
+                 "Dataset3",
+                 "Dataset4"))
+```
+
+<br/>
+
+## Add in a metadata column
+
+
+```r
+SeuratObject$NEW_COLUMN_NAME <- c("VECTOR_CONTAINING_DATA_FOR_EACH_CELL")
+```
+
+</details>
+
+
+<br/>
+
+<br/>
 
 # Quality control
 ***
 
-<br/>
+<details>
+<summary>Click to expand!</summary>
 
 ## Total no. of features
 
-A standard approach is to filter cells with low amount of reads as well as genes that are present in at least a certain amount of cells. Here we will only consider cells with at least 200 detected genes and genes need to be expressed in at least 3 cells. Please note that those values are highly dependent on the library preparation method used.
+A standard approach is to filter cells with low amount of reads as well as genes that are present in at least a certain amount of cells. Here we will only consider cells with at least 200 detected genes and genes need to be expressed in at least 3 cells. Please note that those values are highly dependent on the library preparation method used. Extremely high number of detected genes could indicate doublets. However, depending on the cell type composition in your sample, you may have cells with higher number of genes (and also higher counts) from one cell type.
+
+
+```r
+VlnPlot(SeuratObject,
+        group.by= "orig.ident",
+        features = c("nFeature_RNA","nCount_RNA"),
+        pt.size = 0.1,
+        ncol = 4) + NoLegend()
+```
 
 <br/>
 
-## Number of features per cell
+## Gene QC
 
-<br/>
+In single cell, the most detected genes usually belong to housekeeping gene families, such as mitochondrial (MT-), ribossomal (RPL and RPS) and other structural proteins (i.e., ACTB, TMSB4X, B2M, EEF1A1).
+
+
+```r
+#Compute the relative expression of each gene per cell
+rel_expression <- t( t(SeuratObject@assays$RNA@counts) / Matrix::colSums(SeuratObject@assays$RNA@counts)) * 100
+most_expressed <- sort(Matrix::rowSums( rel_expression ),T) / ncol(SeuratObject)
+
+#Plot the relative expression of each gene per cell
+par(mfrow=c(1,3),mar=c(4,6,1,1))
+boxplot( as.matrix(t(rel_expression[names(most_expressed[30:1]),])),cex=.1, las=1, xlab="% total count per cell",col=scales::hue_pal()(20)[30:1],horizontal=TRUE)
+boxplot( as.matrix(t(rel_expression[names(most_expressed[60:31]),])),cex=.1, las=1, xlab="% total count per cell",col=scales::hue_pal()(20)[60:31],horizontal=TRUE)
+boxplot( as.matrix(t(rel_expression[names(most_expressed[90:61]),])),cex=.1, las=1, xlab="% total count per cell",col=scales::hue_pal()(20)[90:61],horizontal=TRUE)
+```
+
+You might see that some genes constitute up to 10-30% of the counts from a single cell and the other top genes are mitochondrial and ribosomal genes. It is quite common that nuclear lincRNAs have correlation with quality and mitochondrial reads. Let us assemble some information about such genes, which are important for quality control and downstream filtering.
 
 ## % Mitochondrial genes
 
@@ -86,41 +275,37 @@ Having the data in a suitable format, we can start calculating some quality metr
 
 Citing from “Simple Single Cell” workflows (Lun, McCarthy & Marioni, 2017): “High proportions are indicative of poor-quality cells (Islam et al. 2014; Ilicic et al. 2016), possibly because of loss of cytoplasmic RNA from perforated cells. The reasoning is that mitochondria are larger than individual transcript molecules and less likely to escape through tears in the cell membrane.”
 
+(PS: non-linear relationship)
+
 
 ```r
 # Calculating % mitochondrial genes
-SeuratObject <- PercentageFeatureSet(SeuratObject, 
-                                     pattern = "^MT-",
-                                     col.name = "percent_mito")
-
-# Filter
-selected_mito <- WhichCells(SeuratObject,
-                            expression = percent_mito < 0.25)
-SeuratObject <- subset(SeuratObject,
-                       cells = selected_mito)
+SeuratObject <- PercentageFeatureSet(
+  object = SeuratObject,
+  features = rownames(SeuratObject),
+  pattern = "^MT-",
+  assay = "RNA",
+  col.name = "percent_mito")
 ```
 
 <br/>
 
 ## % Ribossomal genes
 
+In the same manner we will calculate the proportion gene expression that comes from ribosomal proteins. Ribossomal genes are the also among the top expressed genes in any cell and, on the contrary to mitochondrial genes, are inversely proportional to the mitochondrial content: the higher the mitochondrial content, the lower is the detection of ribossomal genes (PS: non-linear relationship).
+
 
 ```r
 # Calculating % ribossomal genes
-SeuratObject <- PercentageFeatureSet(SeuratObject, 
-                                     pattern = "^RP[SL]", 
-                                     col.name = "percent_ribo")
-
-# Filter
-selected_ribo <- WhichCells(SeuratObject, 
-                            expression = percent_ribo > 0.05)
-SeuratObject <- subset(SeuratObject, 
-                       cells = selected_ribo)
+SeuratObject <- PercentageFeatureSet(
+  SeuratObject, 
+  pattern = "^RP[SL]", 
+  col.name = "percent_ribo")
 ```
 
 <br/>
 
-## Removal of genes
+## % Gene biotype and chromossome location
 
 In RNA-sequencing, genes can be categorized into different groups depending on their RNA biotype. For example, "coding", "non-coding", "VDJ region genes" are "small interefering RNA" common gene biotypes. Besides, having information about chromossomal location might be usefull to identify bacth effects driven by sex chromossomes.
 
@@ -130,21 +315,75 @@ How to run it:
 
 
 ```r
-mart = useMart("ensembl", 
-               dataset = paste0("mmusculus_gene_ensembl"),
-               host="jul2019.archive.ensembl.org")
-annot <- getBM(c("external_gene_name",
-                 "gene_biotype",
-                 "chromosome_name"),
-               mart = mart)
+library(biomaRt)
 
-sel <- annot[match(rownames(DATA@assays[["RNA"]]@counts) , annot[,1]),2] == "protein_coding"
-genes_use <- rownames(DATA@assays[["RNA"]]@counts)[sel]
-genes_use <- as.character(na.omit(genes_use))
-DATA@assays[["RNA"]]@counts <- DATA@assays[["RNA"]]@counts[genes_use,]
+# Retrive mouse gene annotation from ENSEMBL
+mart = biomaRt::useMart(
+  biomart = "ensembl", 
+  dataset = "mmusculus_gene_ensembl",
+  host = "apr2020.archive.ensembl.org")
+
+# Retrive the selected attributes mouse gene annotation
+annot <- biomaRt::getBM(
+  attributes = c(
+    "external_gene_name",
+    "gene_biotype",
+    "chromosome_name"),
+  mart = mart)
 ```
 
-## Cell cycle
+Make sure you are using the right species for your dataset. A list of all species available on can be found using `biomaRt::listDatasets(mart)[,"dataset"]`. All species names are formated in the same way, such as `mmusculus_gene_ensembl` and `hsapiens_gene_ensembl`. For reproducibility reasons, it is also advised to specifically choose a biomart release version, since some genes will be renamed, inserted or deleted from the database. You can do so by running `biomaRt::listEnsemblArchives()`.
+
+
+```r
+# Match the gene names with theit respective gene biotype
+item <- annot[match(rownames(SeuratObject@assays$RNA@counts) , annot[,1]),"gene_biotype"]
+item[is.na(item)] <- "unknown"
+
+# Calculate the percentage of each gene biotype
+perc <- rowsum(as.matrix(SeuratObject@assays$RNA@counts) , group=item)
+perc <- (t(temp)/Matrix::colSums(SeuratObject@assays$RNA@counts))
+o <- order(apply(perc,2,median),decreasing = F)
+perc <- perc[,o]
+
+# PLOT percentage of each gene biotype
+boxplot( perc*100,outline=F,las=2,main="% reads per cell",col=scales::hue_pal()(100),horizontal=T)
+
+
+# Add table to the object
+gene_biotype_table <- setNames(as.data.frame((perc*100)[,names(sort(table(item),decreasing = T))]),paste0("percent_",names(sort(table(item),decreasing = T))))
+SeuratObject@meta.data <- SeuratObject@meta.data[,!(colnames(SeuratObject@meta.data) %in% colnames(gene_biotype_table))]
+
+SeuratObject@meta.data <- cbind(
+  SeuratObject@meta.data,
+  gene_biotype_table)
+```
+
+The code above can also be done again by replacing the string `"gene_biotype"` by `"chromosome_name"`:
+
+
+```r
+# Match the gene names with theit respective chromossome location
+item <- annot[match(rownames(SeuratObject@assays$RNA@counts) , annot[,1]),"chromosome_name"]
+item[is.na(item)] <- "unknown"
+item[! item %in% as.character(c(1:23,"X","Y","MT")) ] <- "other"
+```
+
+If you want to focus the analysis on only protein-coding genes, for example, you can do it so:
+
+
+```r
+dim(SeuratObject)
+sel <- annot[match(rownames(SeuratObject) ,
+                   annot[,1]),2] == "protein_coding"
+genes_use <- rownames(SeuratObject)[sel]
+genes_use <- as.character(na.omit(genes_use))
+SeuratObject <- SeuratObject[genes_use,]
+dim(SeuratObject)
+```
+
+
+## Cell cycle scoring
 
 We here perform cell cycle scoring. To score a gene list, the algorithm calculates the difference of mean expression of the given list and the mean expression of reference genes. To build the reference, the function randomly chooses a bunch of genes matching the distribution of the expression of the given list. Cell cycle scoring adds three slots in data, a score for S phase, a score for G2M phase and the predicted cell cycle phase.
 
@@ -152,22 +391,41 @@ How to run it:
 
 
 ```r
-SeuratObject <- CellCycleScoring(object = SeuratObject,
-                                 g2m.features = cc.genes$g2m.genes,
-                                 s.features = cc.genes$s.genes)
+SeuratObject <- CellCycleScoring(
+  object = SeuratObject,
+  g2m.features = cc.genes$g2m.genes,
+  s.features = cc.genes$s.genes)
+
+SeuratObject$G1.Score <- 1 - SeuratObject$S.Score - SeuratObject$G2M.Score
 ```
 
-Plot:
+</br>
+
+## Visualizing all metadata in a PCA plot
+
+Having many metadata parameters to analyse individually makes it a bit hard to visualize the real differences between datasets, batches and experimental conditions. One way to try to combine all this information into one plot is by running dimensionality reduction via principal component analysis (PCA) on the continous variables in the metadata. Thus visualizing on the top principal components (1st and 2nd) reflects how different the datasets are.
 
 
 ```r
-VlnPlot(SeuratObject,
-        features = c("S.Score","G2M.Score"),
-        group.by= "orig.ident",
-        ncol = 4,
-        pt.size = .1)
+# Calculate PCA using selected metadata parameters
+metadata_use <- grep("perc",colnames(SeuratObject@meta.data),value = T)
+metadata_use <- c("nCount_RNA","nFeature_RNA","S.Score","G2M.Score",metadata_use)
+PC <- prcomp( SeuratObject@meta.data[,metadata_use] ,center = T, scale. = T)
+
+# Add the PCA (ran on the METADATA) in the object
+SeuratObject@reductions[["pca_metadata"]] <- CreateDimReducObject(
+  embeddings = PC$x,
+  key = "metadataPC_",
+  assay = "RNA")
+
+# Plot the PCA ran on the METADATA
+DimPlot(SeuratObject,
+        reduction = "pca_metadata",
+        dims = c(1,2),
+        group.by = "orig.ident" )
 ```
 
+</details>
 
 <br/>
 
@@ -175,6 +433,9 @@ VlnPlot(SeuratObject,
 
 # Normalization and Regression
 ***
+
+<details>
+<summary>Click to expand!</summary>
 
 ## Normalization
 
@@ -189,9 +450,10 @@ How to run it:
 
 
 ```r
-SeuratObject <- NormalizeData(object = SeuratObject,
-                              scale.factor = 10000,
-                              normalization.method = "LogNormalize")
+SeuratObject <- NormalizeData(
+  object = SeuratObject,
+  scale.factor = 10000,
+  normalization.method = "LogNormalize")
 ```
 
 
@@ -205,11 +467,12 @@ How to run it:
 
 
 ```r
-SeuratObject <- ScaleData(object = SeuratObject,
-                          vars.to.regress = c("nUMI","mito.percent","nFeatures"),
-                          model.use = "linear",
-                          do.scale = T,
-                          do.center = T)
+SeuratObject <- ScaleData(
+  object = SeuratObject,
+  vars.to.regress = c("nCount_RNA","mito.percent","nFeatures"),
+  model.use = "linear",
+  do.scale = T,
+  do.center = T)
 ```
 
 
@@ -221,11 +484,12 @@ How to run it:
 
 
 ```r
-SeuratObject <- ScaleData(object = SeuratObject,
-                          vars.to.regress = c("nUMI","mito.percent","nFeatures"),
-                          model.use = "poisson",
-                          do.scale = T,
-                          do.center = T)
+SeuratObject <- ScaleData(
+  object = SeuratObject,
+  vars.to.regress = c("nCount_RNA","mito.percent","nFeatures"),
+  model.use = "poisson",
+  do.scale = T,
+  do.center = T)
 ```
 
 ## SCtransform
@@ -236,15 +500,25 @@ How to run it:
 
 
 ```r
-SeuratObject <- SCTransform( object = SeuratObject,
-                             assay="RNA",
-                             vars.to.regress =  c("nUMI","mito.percent","nFeatures"),
-                             new.assay.name = "sctransform",
-                             do.center=T )
+SeuratObject <- SCTransform( 
+  object = SeuratObject,
+  assay="RNA",
+  vars.to.regress =  c("nCount_RNA","mito.percent","nFeatures"),
+  new.assay.name = "sctransform",
+  do.center=T )
 ```
+
+</details>
+
+<br/>
+
+<br/>
 
 # Feature selection
 ***
+
+<details>
+<summary>Click to expand!</summary>
 
 An important step in many big-data analysis tasks is to identify features (genes, transcripts, proteins, metabolites, etc) that are actually very variable between the samples being looked at.
 
@@ -262,7 +536,7 @@ How to run it:
 ```r
 SeuratObject <- FindVariableFeatures(
   object = SeuratObject,
-  nfeatures = 2000,
+  nfeatures = 3000,
   selection.method = "vst",
   verbose = FALSE,
   assay = "RNA",
@@ -278,8 +552,17 @@ top20 <- head(VariableFeatures(alldata), 20)
 LabelPoints(plot = VariableFeaturePlot(alldata), points = top20, repel = TRUE)
 ```
 
+</details>
+
+<br/>
+
+<br/>
+
 # Intro to Graphs
 ***
+
+<details>
+<summary>Click to expand!</summary>
 
 ## KNN
 
@@ -292,7 +575,7 @@ KNN refers to “K Nearest Neighbors”, which is a basic and popular topic in d
 SeuratObject <- FindNeighbors(SeuratObject,
                               assay = "RNA",
                               compute.SNN = F,
-                              reduction = "pca" 
+                              reduction = "pca",
                               dims = 1:50,
                               graph.name="SNN",
                               prune.SNN = 1/15,
@@ -302,10 +585,20 @@ SeuratObject <- FindNeighbors(SeuratObject,
 
 Setting `compute.SNN` to `FALSE` will only compute the k-NN graph.
 
+We can take a look at the kNN graph. It is a matrix where every connection between cells is represented as 1s. This is called a unweighted graph (default in Seurat). Some cell connections can however have more importance than others, in that case the scale of the graph from 0
+ to a maximum distance. Usually, the smaller the distance, the closer two points are, and stronger is their connection. This is called a weighted graph. Both weighted and unweighted graphs are suitable for clustering, but clustering on unweighted graphs is faster for large datasets (> 100k cells).
+ 
+
+```r
+library(pheatmap)
+pheatmap(alldata@graphs$CCA_nn[1:200,1:200],
+         col=c("white","black"),border_color = "grey90",
+         legend = F,cluster_rows = F,cluster_cols = F,fontsize = 2) 
+```
+
 ## SNN
 
-In addition to the k-NN graph, if we then determine the number of nearest neighbors shared by any two points. In graph terminology, we form what we call the "shared nearest neighbor" graph. We do this by replacing the weight of each link between two points (in the nearest neighbor graph) by the number of neighbors that the points share. In other words, this is the number of length 2 paths
-between any two points in the nearest neighbor graph [7].
+In addition to the k-NN graph, if we then determine the number of nearest neighbors shared by any two points. In graph terminology, we form what we call the "shared nearest neighbor" graph. We do this by replacing the weight of each link between two points (in the nearest neighbor graph) by the number of neighbors that the points share. In other words, this is the number of length 2 paths between any two points in the nearest neighbor graph.
 
 After, this shared nearest neighbor graph is created, all pairs of points are compared and if any two points share more than T neighbors, i.e., have a link in the shared nearest neighbor graph with a weight more than our threshold value, T( TS:. n), then the two points and any cluster they are part of are merged. In other words, clusters are connected components in our shared nearest neighbor graph after we sparsify using a threshold.
 
@@ -316,7 +609,7 @@ How to run it:
 SeuratObject <- FindNeighbors(SeuratObject,
                               assay = "RNA",
                               compute.SNN = T,
-                              reduction = "pca" 
+                              reduction = "pca" ,
                               dims = 1:50,
                               graph.name="SNN",
                               prune.SNN = 1/15,
@@ -326,6 +619,8 @@ SeuratObject <- FindNeighbors(SeuratObject,
 
 Setting `compute.SNN` to `TRUE` will compute both the k-NN and SNN graphs.
 
+</details>
+
 <br/>
 
 <br/>
@@ -333,7 +628,8 @@ Setting `compute.SNN` to `TRUE` will compute both the k-NN and SNN graphs.
 # Dimensionality reduction
 ***
 
-<br/>
+<details>
+<summary>Click to expand!</summary>
 
 ## PCA
 
@@ -469,13 +765,17 @@ SeuratObject <- RunICA(object = SeuratObject,
                        reduction.name = "ica")
 ```
 
-<br/> 
+</details>
 
 <br/> 
 
+<br/> 
 
 # Dataset integration
 ***
+
+<details>
+<summary>Click to expand!</summary>
 
 Existing batch correction methods were specifically designed for bulk RNA-seq. Thus, their applications to scRNA-seq data assume that the composition of the cell population within each batch is identical. Any systematic differences in the mean gene expression between batches are attributed to technical differences that can be regressed out. However, in practice, population composition is usually not identical across batches in scRNA-seq studies. Even assuming that the same cell types are present in each batch, the abundance of each cell type in the data set can change depending upon subtle differences in cell culture or tissue extraction, dissociation and sorting, etc. Consequently, the estimated coefficients for the batch blocking factors are not purely technical, but contain a non-zero biological component due to differences in composition. Batch correction based on these coefficients will thus yield inaccurate representations of the cellular expression proles, potentially yielding worse results than if no correction was performed.
 
@@ -517,25 +817,18 @@ Obtaining an accurate set of anchors is paramount to suc- cessful integration. A
 
 
 ```r
-SeuratObject.list <- SplitObject(SeuratObject, split.by = "BATCH")
+SeuratObject.list <- SplitObject(
+  object = SeuratObject,
+  split.by = "BATCH")
 
-for (i in 1:length(SeuratObject.list)) {
-    SeuratObject.list[[i]] <- NormalizeData(SeuratObject.list[[i]], verbose = FALSE)
-    SeuratObject.list[[i]] <- FindVariableFeatures(SeuratObject.list[[i]],
-                                                   selection.method = "vst",
-                                                   nfeatures = 2000,
-                                                   verbose = FALSE)
-}
+SeuratObject.anchors <- FindIntegrationAnchors(
+  object.list = SeuratObject.list,
+  dims = 1:30)
 
-hvgs_per_dataset <- lapply(SeuratObject.list, function(x) { x@assays$RNA@var.features })
-
-venn::venn(hvgs_per_dataset,opacity = .4,zcolor = scales::hue_pal()(3),cexsn = 1,cexil = 1,lwd=1,col="white",frame=F,borders = NA)
-
-SeuratObject.anchors <- FindIntegrationAnchors(object.list = SeuratObject.list, dims = 1:30)
-
-SeuratObject.int <- IntegrateData(anchorset = SeuratObject.anchors,
-                                  dims = 1:30,
-                                  new.assay.name = "cca")
+SeuratObject <- IntegrateData(
+  anchorset = SeuratObject.anchors,
+  dims = 1:30,
+  new.assay.name = "cca")
 ```
 
 <br/> 
@@ -547,44 +840,6 @@ SeuratObject.int <- IntegrateData(anchorset = SeuratObject.anchors,
 <div style="text-align: right"> [Welch et al (2019) *Cell*](https://www.cell.com/cell/pdf/S0092-8674(19)30504-5.pdf) </div>
 
 
-```r
-# Load additional libraries
-library(conos)
-library(SeuratWrappers)
-
-# Split the data per batch to be corrected
-SeuratObject.list <- SplitObject(SeuratObject, split.by = "Method")
-for (i in 1:length(SeuratObject.list)) {
-    SeuratObject.list[[i]] <- 
-      NormalizeData(SeuratObject.list[[i]]) %>%
-      FindVariableFeatures() %>% 
-      ScaleData() %>% 
-      RunPCA(verbose = FALSE)
-}
-
-# Create a Conos object
-SeuratObject.con <- Conos$new(SeuratObject.list)
-
-# Build a joint graph across datasets and find shared communities
-SeuratObject.con$buildGraph(k = 15, 
-                            k.self = 5,
-                            space = "PCA",
-                            ncomps = 30,
-                            n.odgenes = 2000,
-                            matching.method = "mNN",
-                            metric = "angular",
-                            score.component.variance = TRUE,
-                            verbose = TRUE)
-SeuratObject.con$findCommunities()
-
-# Create a Joint embedding and conver it back to Seurat Object
-SeuratObject.con$embedGraph()
-SeuratObject <- as.Seurat(SeuratObject.con)
-
-# Free memory from working environment
-rm( c( SeuratObject.con, SeuratObject.list ) )
-gc(verbose = FALSE)
-```
 
 <br/> 
 
@@ -614,15 +869,17 @@ for (i in 1:length(SeuratObject.list)) {
 SeuratObject.con <- Conos$new(SeuratObject.list)
 
 # Build a joint graph across datasets and find shared communities
-SeuratObject.con$buildGraph(k = 15, 
-                            k.self = 5,
-                            space = "PCA",
-                            ncomps = 30,
-                            n.odgenes = 2000,
-                            matching.method = "mNN",
-                            metric = "angular",
-                            score.component.variance = TRUE,
-                            verbose = TRUE)
+SeuratObject.con$buildGraph(
+  k = 15, 
+  k.self = 5,
+  space = "PCA",
+  ncomps = 30,
+  n.odgenes = 2000,
+  matching.method = "mNN",
+  metric = "angular",
+  score.component.variance = TRUE,
+  verbose = TRUE)
+
 SeuratObject.con$findCommunities()
 
 # Create a Joint embedding and conver it back to Seurat Object
@@ -650,18 +907,21 @@ gc(verbose = FALSE)
 library(harmony)
 library(SeuratWrappers)
 
-SeuratObject <- RunHarmony(SeuratObject, group.by.vars = "Method")
+SeuratObject <- RunHarmony(
+  SeuratObject,
+  group.by.vars = "Method")
 ```
 
-<br/> 
+</details>
 
 <br/> 
 
+<br/> 
 
 # Clustering
 ***
-
-<br/> 
+<details>
+<summary>Click to expand!</summary>
 
 ## Louvain
 
@@ -675,10 +935,11 @@ The Louvain method for community detection is a method to extract communities fr
 How to run it:
 
 ```r
-SeuratObject <- RunICA(object = SeuratObject,
-                       assay = "pca",
-                       nics = 20,
-                       reduction.name = "ica")
+SeuratObject <- RunICA(
+  object = SeuratObject,
+  assay = "pca",
+  nics = 20,
+  reduction.name = "ica")
 ```
 
 <br/> 
@@ -690,6 +951,8 @@ SeuratObject <- RunICA(object = SeuratObject,
 Leiden algorithm is applied iteratively, it converges to a partition in which all subsets of all communities are locally optimally assigned. Furthermore, by relying on a fast local move approach, the Leiden algorithm runs faster than the Louvain algorithm. The Leiden algorithm consists of three phases: (1) local moving of nodes, (2) refinement of the partition and (3) aggregation of the network based on the refined partition, using the non-refined partition to create an initial partition for the aggregate network.
 
 <div style="text-align: right"> [Leiden Paper](https://www.nature.com/articles/s41598-019-41695-z.pdf) </div>
+
+
 
 <br/> 
 
@@ -704,6 +967,8 @@ Hierachical clustering (HC) is a method of cluster analysis which **seeks to bui
 
 [HC for networks](https://en.wikipedia.org/wiki/Hierarchical_clustering_of_networks)
 
+
+
 <br/> 
 
 <br/> 
@@ -712,6 +977,8 @@ Hierachical clustering (HC) is a method of cluster analysis which **seeks to bui
 
 k-means clustering is a method of vector quantization, originally from signal processing, that aims to partition $n$ observations into $k$ clusters in which **each observation belongs to the cluster with the nearest mean** (cluster centers or cluster centroid), serving as a prototype of the cluster. [...] The algorithm does not guarantee convergence to the global optimum. The result may depend on the initial clusters. As the algorithm is usually fast, **it is common to run it multiple times** with different starting conditions. [...] k-means clustering tends to find clusters of **comparable spatial extent (all with same size)**, while the expectation-maximization mechanism allows clusters to have different shapes.
 <div style="text-align: right"> [Wikipedia](https://en.wikipedia.org/wiki/K-means_clustering) </div>
+
+
 
 <br/> 
 
@@ -723,18 +990,22 @@ In statistics and data mining, affinity propagation (AP) is a clustering algorit
 
 <div style="text-align: right"> [Wikipedia](https://en.wikipedia.org/wiki/Affinity_propagation) </div>
 
-<br/> 
+</details>
 
 <br/> 
 
+<br/> 
 
 # Trajectory inference
 
+<details>
+<summary>Click to expand!</summary>
+
 ## Affinity propagation
 
 
 ## Affinity propagation
 
 
-
+</details>
 
