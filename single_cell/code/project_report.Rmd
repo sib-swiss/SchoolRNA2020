@@ -56,6 +56,7 @@ code {
 - Consult the Glossary or additional sources for help
 - which file format do we have the data in?
 - Why do we need to create a seurat object?
+- Where in the Seurat object is your counts stored?
 - Describe in form of text the rational for this step in your markdown report.
 
 
@@ -80,9 +81,11 @@ code {
 ### Normalization and scaling
 - Consult the Glossary or additional sources for help
 - Why do we need to normalize the data? What exactly are we normalizing?
+- Where in the Seurat object is your normalized data stored?
 - Which data covariates could potentially influence the interpreteation of the results?
 - Following the question above, are there any covariates that need to be regressed out?
 - Are all genes equally important for your analysis? Justify.
+- Where in the Seurat object is your scaled data stored?
 - Describe in form of text the rational for this step in your markdown report.
 
 
@@ -93,6 +96,7 @@ code {
 - Which method would you choose for visualization of the differences between your cells?
 - Following the question above, how the parameters in this method influence your visual representation?
 - How some of your QC parameters and datasets influence the separation of your cells?
+- Where in the Seurat object is your reductions stored?
 - Describe in form of text the rational for this step in your markdown report.
 
 <br/>
@@ -107,6 +111,7 @@ code {
 - Would a simple linear regression be sufficient for removing batch effects on your dataset?
 - Which method for batch effect would you choose?
 - How could you tell the batch correction procedure worked?
+- Where in the Seurat object is your integrated data stored ()?
 - Describe in form of text the rational for this step in your markdown report.
 
 <br/>
