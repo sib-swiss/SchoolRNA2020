@@ -6,21 +6,20 @@
 
 Since each of the 4 group themes have completely different softwares, please follow in instructions specific to each one.
 
-
-# Single cell RNA analysis
+# <img border="0" src="/SchoolRNA2020/logos/single_cell.png" width="40" height="40"> Single cell RNA analysis
 ***
 
 Please follow the [pre-course instructions](precourse.md) in order to install all necessary software and packages.
 
 The proposed educational plan for single cell RNA-seq data analysis project will be done using the Project-based learning (a.k.a. PBL) approach. This way, rather than having lectures on a topic and defined set of instructions and pre-given steps to follow (which focus on passive individual learning), you are required to learn the topic in a more **active** and **dynamic** way in order to solve the data analysis tasks as a group. Therefore, each group is provided with:
 
-1. The [report file](single_cell/code/project_report.md) containing a list of instructions and questions giving the overall direction and order of the steps needed to be done and;
-2. A [glossary of terms](single_cell/glossary/glossary_of_terms_single_cell.md) which contains detailed information about many of the steps and provides further references on the topics.
+1. The <img border="0" src="https://static.thenounproject.com/png/67360-200.png" width="10" height="10">[report file](single_cell/code/project_report.md) containing a list of instructions and questions giving the overall direction and order of the steps needed to be done and;
+2. A <img border="0" src="https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/dictionary.png" width="10" height="10">[glossary of terms](single_cell/glossary/glossary_of_terms_single_cell.md) which contains detailed information about many of the steps and provides further references on the topics.
 
-In this manner, each group is required to gather information from the glossary to perform single cell data analysis by filling the report file (using this [project_report.Rmd](single_cell/code/project_report.Rmd) file), by:
+In this manner, each group is required to gather information from the **glossary** to perform single cell data analysis by filling the report file (using this <img border="0" src="https://static.thenounproject.com/png/67360-200.png" width="10" height="10">[project_report.Rmd](single_cell/code/project_report.Rmd) file), by:
 
 1. Reading the instructions for a certain task;
-2. Searching the glossary for an answer;
+2. Searching the **glossary** for guidance;
 3. Discussing with your colleges which step needs to be done or included;
 4. Replacing the instructions with a text explaining the rational for this step and;
 5. Adding and running code from that step.
@@ -59,21 +58,21 @@ In the end, each group is expected to have 1 report file with all analysis steps
 
 <br/>
 
-# Long-read RNA sequencing
+# <img border="0" src="/SchoolRNA2020/logos/long_read.png" width="40" height="40"> Long-read RNA sequencing
 ***
 
 <br/>
 
 <br/>
 
-# Ribosome-profiling
+# <img border="0" src="/SchoolRNA2020/logos/ribo_profiling.png" width="40" height="40"> Ribosome-profiling
 ***
 
 <br/>
 
 <br/>
 
-# UV cross-linking immunoprecipitation (CLIP-seq)
+# <img border="0" src="/SchoolRNA2020/logos/uv_crosslink_ip.png" width="40" height="40"> UV cross-linking immunoprecipitation (CLIP-seq)
 ***
 
 <br/>

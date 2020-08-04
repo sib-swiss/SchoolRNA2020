@@ -20,7 +20,7 @@ Since each of the 4 group themes have completely different softwares, please fol
 # Projects
 
 
-### Single cell RNA analysis
+### <img border="0" src="/SchoolRNA2020/logos/single_cell.png" width="40" height="40"> Single cell RNA analysis
 ***
 
 1. For the single cell section, we will be using Conda for managing and installing the necessary software. please follow the instructions depicted here on how to install and use conda environments: [conda instructions](conda_instructions.md). PS.: As mentioned in the instructions, Windows users are required to proceed with the Linus subsystem or via VirtualBox.
@@ -35,19 +35,19 @@ The only difference between the environments is the list of compiler packages th
 
 <br/>
 
-### Long-read RNA sequencing
+### <img border="0" src="/SchoolRNA2020/logos/long_read.png" width="40" height="40"> Long-read RNA sequencing
 ***
 
 - [Pre-course instructions](https://github.com/GeertvanGeest/NCCR_SIB_lrRNAseq/blob/master/README.md)
 
 <br/>
 
-### Ribosome-profiling
+### <img border="0" src="/SchoolRNA2020/logos/ribo_profiling.png" width="40" height="40"> Ribosome-profiling
 ***
 
 <br/>
 
-### UV cross-linking immunoprecipitation (CLIP-seq)
+### <img border="0" src="/SchoolRNA2020/logos/uv_crosslink_ip.png" width="40" height="40"> UV cross-linking immunoprecipitation (CLIP-seq)
 ***
 
 <br/>
