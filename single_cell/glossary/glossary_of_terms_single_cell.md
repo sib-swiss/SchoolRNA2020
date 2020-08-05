@@ -451,9 +451,6 @@ DimPlot(SeuratObject,
 # Normalization and Regression
 ***
 
-</p>
-</details>
-
 <details>
 <summary>**Normalization**</summary>
 <p>
@@ -970,10 +967,6 @@ SeuratObject <- RunHarmony(
 
 # Clustering
 ***
-
-
-</p>
-</details>
 
 <details>
 <summary>**Louvain**</summary>
