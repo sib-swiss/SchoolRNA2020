@@ -1179,11 +1179,11 @@ SeuratObject &lt;- RunHarmony(
 </div>
 <p><a href="https://iopscience.iop.org/article/10.1088/1742-5468/2008/10/P10008/pdf">Louvain Paper</a></p>
 <p>How to run it:</p>
-<pre class="r"><code>SeuratObject &lt;- RunICA(
+<pre class="r"><code>SeuratObject &lt;- FindClusters(
   object = SeuratObject,
-  assay = &quot;pca&quot;,
-  nics = 20,
-  reduction.name = &quot;ica&quot;)</code></pre>
+  resolution = &quot;0.8&quot;,
+  algorithm = 1) #algorithim 1 = Louvain</code></pre>
+<p>The number of clusters can be controled using the <code>resolution</code> parameter.</p>
 </p>
 </details>
 <details>
@@ -1195,6 +1195,11 @@ SeuratObject &lt;- RunHarmony(
 <div style="text-align: right">
 <a href="https://www.nature.com/articles/s41598-019-41695-z.pdf">Leiden Paper</a>
 </div>
+<pre class="r"><code>SeuratObject &lt;- FindClusters(
+  object = SeuratObject,
+  resolution = &quot;0.8&quot;,
+  algorithm = 4)  #algorithim 4 = Louvain</code></pre>
+<p>The number of clusters can be controled using the <code>resolution</code> parameter.</p>
 </p>
 </details>
 <details>
@@ -1207,6 +1212,34 @@ SeuratObject &lt;- RunHarmony(
 <a href="https://en.wikipedia.org/wiki/Hierarchical_clustering">Wikipedia</a>
 </div>
 <p><a href="https://en.wikipedia.org/wiki/Hierarchical_clustering_of_networks">HC for networks</a></p>
+<p>The base R stats package already contains a function <code>dist()</code> that calculates distances between all pairs of samples. The distance methods available in <code>dist()</code> are: <em>euclidean</em>, <em>maximum</em>, <em>manhattan</em>, <em>canberra</em>, <em>binary</em> or <em>minkowski</em>. Additionally, we can also perform hierarchical clustering directly on a graph (KNN or SNN) which already contains information about cell-to-cell distances. However, since the distances in the graph are inverted (<span class="math inline">\(0\)</span>s represent far and <span class="math inline">\(1\)</span>s represent close connections), we need to subtract from the maximum value on the graph (in the case of adjacency SNN, is <span class="math inline">\(1\)</span>), so that <span class="math inline">\(0\)</span>s represent <em>close</em> and <span class="math inline">\(1\)</span>s represent <em>far</em> distance.</p>
+<p>After having calculated the distances between samples calculated, we can now proceed with the hierarchical clustering per-se. We will use the function <code>hclust()</code> for this purpose, in which we can simply run it with the distance objects created above. The methods available are: <em>ward.D</em>, <em>ward.D2</em>, <em>single</em>, <em>complete</em>, <em>average</em>, <em>mcquitty</em>, <em>median</em> or <em>centroid</em>. When clustering on a graph, use <em>ward.D2</em>.</p>
+<pre class="r"><code># Running HC on a PCA
+h &lt;- hclust(
+  d = dist( SeuratObject@reductions[&quot;pca&quot;]@cell.embeddings [ , 1:30 ],
+            method = &quot;euclidean&quot;) ,
+  method = &quot;ward.D2&quot;)
+
+# Running HC on a graph
+h &lt;- hclust( 
+  d = 1 - as.dist(SeuratObject@graphs$SNN) ,
+  method = &quot;ward.D2&quot;,)</code></pre>
+<p>Once the cluster hierarchy is defined, the next step is to define which samples belong to a particular cluster. However, the sample groups are already known in this example, so clustering them does not add much information for us. What we can do instead is subdivide the genes into clusters. As for the PCA (above), the ideal scenario is to use the Z-score normalized gene expression table, because in this way we make sure that we are grouping together expression trends (going up vs. down), rather than expression level (genes with more counts vs less counts). This way, we can simply repeat the steps above using the transpose of the Z-score matrix, compute the correlation distances and cluster using ward.D2 linkage method.</p>
+<pre class="r"><code>plot(h, labels = F)</code></pre>
+<p>After identifying the dendrogram for the genes (above), we can now literally cut the tree at a fixed threshold (with the <code>cutree</code> function) at different levels (a.k.a. resolutions) to define the clusters.</p>
+<pre class="r"><code># Cutting the tree based on a height
+SeuratObject$HC_res &lt;- cutree(
+  tree = h,
+  k = 18)
+
+# Cutting the tree based on a number of clusters
+SeuratObject$HC_res &lt;- cutree(
+  tree = h,
+  h = 3)
+
+# To check how many cells are in each cluster
+table(SeuratObject$HC_res)</code></pre>
+<p>The number of clusters can be controled using the height (<code>h</code>) or directly via the <code>k</code> parameters.</p>
 </p>
 </details>
 <details>
@@ -1218,6 +1251,14 @@ k-means clustering is a method of vector quantization, originally from signal pr
 <div style="text-align: right">
 <a href="https://en.wikipedia.org/wiki/K-means_clustering">Wikipedia</a>
 </div>
+<p>K-means is a generic clustering algorithm that has been used in many application areas. In R, it can be applied via the kmeans function. Typically, it is applied to a reduced dimension representation of the expression data (most often PCA, because of the interpretability of the low-dimensional distances). We need to define the number of clusters in advance. Since the results depend on the initialization of the cluster centers, it is typically recommended to run K-means with multiple starting configurations (via the <code>nstart</code> argument).</p>
+<pre class="r"><code>set.seed(1)
+SeuratObject$kmeans_12 &lt;- kmeans(
+  x = SeuratObject@reductions[[&quot;pca&quot;]]@cell.embeddings [ , 1:50 ],
+  centers = 12,
+  iter.max = 50,
+  nstart = 10)$cluster</code></pre>
+<p>The number of clusters can be controled using the <code>centers</code> parameter.</p>
 </p>
 </details>
 <details>
@@ -1233,18 +1274,45 @@ k-means clustering is a method of vector quantization, originally from signal pr
 </details>
 <p><br /></p>
 </div>
-<div id="trajectory-inference" class="section level1">
-<h1>Trajectory inference</h1>
+<div id="differential-expression" class="section level1">
+<h1>Differential expression</h1>
+<hr />
 <details>
 <summary>
-<strong>Affinity propagation</strong>
+<strong>Finding Cluster Markers</strong>
 </summary>
 <p>
 </p>
 </details>
 <details>
 <summary>
-<strong>Affinity propagation</strong>
+<strong>Comparing a cluster across experimental conditions</strong>
+</summary>
+<p>
+</p>
+</details>
+<details>
+<summary>
+<strong>Plotting DEG results</strong>
+</summary>
+<p>
+</p>
+</details>
+<p><br /></p>
+</div>
+<div id="trajectory-inference" class="section level1">
+<h1>Trajectory inference</h1>
+<hr />
+<details>
+<summary>
+<strong>Slingshot</strong>
+</summary>
+<p>
+</p>
+</details>
+<details>
+<summary>
+<strong>Differential expression along trajectories</strong>
 </summary>
 <p>
 </p>

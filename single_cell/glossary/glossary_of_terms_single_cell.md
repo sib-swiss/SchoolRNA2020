@@ -982,12 +982,13 @@ The Louvain method for community detection is a method to extract communities fr
 How to run it:
 
 ```r
-SeuratObject <- RunICA(
+SeuratObject <- FindClusters(
   object = SeuratObject,
-  assay = "pca",
-  nics = 20,
-  reduction.name = "ica")
+  resolution = "0.8",
+  algorithm = 1) #algorithim 1 = Louvain
 ```
+
+The number of clusters can be controled using the `resolution` parameter.
 
 </p>
 </details>
@@ -1001,7 +1002,14 @@ Leiden algorithm is applied iteratively, it converges to a partition in which al
 <div style="text-align: right"> [Leiden Paper](https://www.nature.com/articles/s41598-019-41695-z.pdf) </div>
 
 
+```r
+SeuratObject <- FindClusters(
+  object = SeuratObject,
+  resolution = "0.8",
+  algorithm = 4)  #algorithim 4 = Louvain
+```
 
+The number of clusters can be controled using the `resolution` parameter.
 
 </p>
 </details>
@@ -1016,8 +1024,50 @@ Hierachical clustering (HC) is a method of cluster analysis which **seeks to bui
 
 [HC for networks](https://en.wikipedia.org/wiki/Hierarchical_clustering_of_networks)
 
+The base R stats package already contains a function `dist()` that calculates distances between all pairs of samples. The distance methods available in `dist()` are: *euclidean*, *maximum*, *manhattan*, *canberra*, *binary* or *minkowski*. Additionally, we can also perform hierarchical clustering directly on a graph (KNN or SNN) which already contains information about cell-to-cell distances. However, since the distances in the graph are inverted ($0$s represent far and $1$s represent close connections), we need to subtract from the maximum value on the graph (in the case of adjacency SNN, is $1$), so that $0$s represent *close* and $1$s represent *far* distance.
+
+After having calculated the distances between samples calculated, we can now proceed with the hierarchical clustering per-se. We will use the function `hclust()` for this purpose, in which we can simply run it with the distance objects created above. The methods available are: *ward.D*, *ward.D2*, *single*, *complete*, *average*, *mcquitty*, *median* or *centroid*. When clustering on a graph, use *ward.D2*.
 
 
+```r
+# Running HC on a PCA
+h <- hclust(
+  d = dist( SeuratObject@reductions["pca"]@cell.embeddings [ , 1:30 ],
+            method = "euclidean") ,
+  method = "ward.D2")
+
+# Running HC on a graph
+h <- hclust( 
+  d = 1 - as.dist(SeuratObject@graphs$SNN) ,
+  method = "ward.D2",)
+```
+
+Once the cluster hierarchy is defined, the next step is to define which samples belong to a particular cluster. However, the sample groups are already known in this example, so clustering them does not add much information for us. What we can do instead is subdivide the genes into clusters. As for the PCA (above), the ideal scenario is to use the Z-score normalized gene expression table, because in this way we make sure that we are grouping together expression trends (going up vs. down), rather than expression level (genes with more counts vs less counts). This way, we can simply repeat the steps above using the transpose of the Z-score matrix, compute the correlation distances and cluster using ward.D2 linkage method.
+
+
+```r
+plot(h, labels = F)
+```
+
+After identifying the dendrogram for the genes (above), we can now literally cut the tree at a fixed threshold (with the `cutree` function) at different levels (a.k.a. resolutions) to define the clusters.
+
+
+```r
+# Cutting the tree based on a height
+SeuratObject$HC_res <- cutree(
+  tree = h,
+  k = 18)
+
+# Cutting the tree based on a number of clusters
+SeuratObject$HC_res <- cutree(
+  tree = h,
+  h = 3)
+
+# To check how many cells are in each cluster
+table(SeuratObject$HC_res)
+```
+
+The number of clusters can be controled using the height (`h`) or directly via the `k` parameters.
 
 </p>
 </details>
@@ -1029,7 +1079,19 @@ Hierachical clustering (HC) is a method of cluster analysis which **seeks to bui
 k-means clustering is a method of vector quantization, originally from signal processing, that aims to partition $n$ observations into $k$ clusters in which **each observation belongs to the cluster with the nearest mean** (cluster centers or cluster centroid), serving as a prototype of the cluster. [...] The algorithm does not guarantee convergence to the global optimum. The result may depend on the initial clusters. As the algorithm is usually fast, **it is common to run it multiple times** with different starting conditions. [...] k-means clustering tends to find clusters of **comparable spatial extent (all with same size)**, while the expectation-maximization mechanism allows clusters to have different shapes.
 <div style="text-align: right"> [Wikipedia](https://en.wikipedia.org/wiki/K-means_clustering) </div>
 
+K-means is a generic clustering algorithm that has been used in many application areas. In R, it can be applied via the kmeans function. Typically, it is applied to a reduced dimension representation of the expression data (most often PCA, because of the interpretability of the low-dimensional distances). We need to define the number of clusters in advance. Since the results depend on the initialization of the cluster centers, it is typically recommended to run K-means with multiple starting configurations (via the `nstart` argument).
 
+
+```r
+set.seed(1)
+SeuratObject$kmeans_12 <- kmeans(
+  x = SeuratObject@reductions[["pca"]]@cell.embeddings [ , 1:50 ],
+  centers = 12,
+  iter.max = 50,
+  nstart = 10)$cluster
+```
+
+The number of clusters can be controled using the `centers` parameter.
 
 
 </p>
@@ -1050,18 +1112,44 @@ In statistics and data mining, affinity propagation (AP) is a clustering algorit
 
 <br/> 
 
-# Trajectory inference
-
+# Differential expression
+***
 
 <details>
-<summary>**Affinity propagation**</summary>
+<summary>**Finding Cluster Markers**</summary>
 <p>
 
 </p>
 </details>
 
 <details>
-<summary>**Affinity propagation**</summary>
+<summary>**Comparing a cluster across experimental conditions**</summary>
+<p>
+
+</p>
+</details>
+
+<details>
+<summary>**Plotting DEG results**</summary>
+<p>
+
+</p>
+</details>
+
+<br/>
+
+# Trajectory inference
+***
+
+<details>
+<summary>**Slingshot**</summary>
+<p>
+
+</p>
+</details>
+
+<details>
+<summary>**Differential expression along trajectories**</summary>
 <p>
 
 </p>

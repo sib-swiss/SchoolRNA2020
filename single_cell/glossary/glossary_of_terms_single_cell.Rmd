@@ -982,7 +982,7 @@ Leiden algorithm is applied iteratively, it converges to a partition in which al
 
 <div style="text-align: right"> [Leiden Paper](https://www.nature.com/articles/s41598-019-41695-z.pdf) </div>
 
-```{r }
+```{r,eval=F }
 SeuratObject <- FindClusters(
   object = SeuratObject,
   resolution = "0.8",
