@@ -1,5 +1,5 @@
 ---
-title: "Glossary of terms"
+title: '<img border="0" src="https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/dictionary.png" width="40" height="40"> Glossary of terms'
 output:
   html_document:
     keep_md: true
@@ -10,8 +10,6 @@ output:
 editor_options: 
   chunk_output_type: console
 ---
-
-# <img border="0" src="https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/dictionary.png" width="40" height="40"> Glossary of terms
 ***
 
 <br/>

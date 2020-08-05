@@ -13,8 +13,8 @@ Please follow the [pre-course instructions](precourse.md) in order to install al
 
 The proposed educational plan for single cell RNA-seq data analysis project will be done using the Project-based learning (a.k.a. PBL) approach. This way, rather than having lectures on a topic and defined set of instructions and pre-given steps to follow (which focus on passive individual learning), you are required to learn the topic in a more **active** and **dynamic** way in order to solve the data analysis tasks as a group. Therefore, each group is provided with:
 
-1. The <img border="0" src="https://static.thenounproject.com/png/67360-200.png" width="10" height="10">[report file](single_cell/code/project_report.md) containing a list of instructions and questions giving the overall direction and order of the steps needed to be done and;
-2. A <img border="0" src="https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/dictionary.png" width="10" height="10">[glossary of terms](single_cell/glossary/glossary_of_terms_single_cell.md) which contains detailed information about many of the steps and provides further references on the topics.
+1. The <img border="0" src="https://static.thenounproject.com/png/67360-200.png" width="10" height="10">[report file](single_cell/code/project_report.html) containing a list of instructions and questions giving the overall direction and order of the steps needed to be done and;
+2. A <img border="0" src="https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/dictionary.png" width="10" height="10">[glossary of terms](single_cell/glossary/glossary_of_terms_single_cell.html) which contains detailed information about many of the steps and provides further references on the topics.
 
 In this manner, each group is required to gather information from the **glossary** to perform single cell data analysis by filling the report file (using this <img border="0" src="https://static.thenounproject.com/png/67360-200.png" width="10" height="10">[project_report.Rmd](single_cell/code/project_report.Rmd) file), by:
 
