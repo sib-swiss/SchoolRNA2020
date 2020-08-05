@@ -8,37 +8,10 @@ output:
     code_folding: show
   pdf_document: default
 ---
-
-<style>
-
-body,p,h1,h2,h3,h4,h5,h6 {
-  text-align: justify;
-  color: #424949;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 1.55;}
-
-h1 {  font-size: 1.4em;font-weight: bold; }
-h2 {  font-size: 1.2em;font-weight: bold; }
-h3 {  font-size: 1.1em;font-weight: bold; }
-h4 {  font-size: 1.0em;font-weight: bold; }
-
-pre {
-  font-family: "Courier";
-  background-color: #F7F7F7;
-  border: 1px solid #CCCCCC;
-  font-size: 14px;}
-
-code {
-  font-family: "Courier New";
-  font-size: 14px;
-  word-break: break-all;
-  font-weight: bold;}
-
-</style>
+# <img border="0" src="https://static.thenounproject.com/png/67360-200.png" width="40" height="40"> Project report (single cell)
+***
 
 <br/>
-
 # Research Analysis Tasks:
 
 ## Milestone 1
