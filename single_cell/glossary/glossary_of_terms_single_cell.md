@@ -45,6 +45,8 @@ curl -o data/FILENAME.h5 -O http://FILE_PATH.h5
 # Seurat Objects
 ***
 
+[Seurat](https://satijalab.org/seurat/) is one of the most commonly used pipelines for scRNAseq analysis. For additional information on Seurat objects and commands, please look at this [page](https://satijalab.org/seurat/essential_commands.html). Many different tutorials are also available from their website.
+
 <details>
 <summary>**Reading files**</summary>
 <p>
@@ -111,6 +113,7 @@ SeuratObject <- CreateSeuratObject(
   meta.data = metadata)
 ```
 
+The `CreateSeuratObject` function can take as input a sparse matrix or a regular matrix with counts. 
 
 </p>
 </details>
@@ -119,11 +122,25 @@ SeuratObject <- CreateSeuratObject(
 <summary>**Understanding Seurat objects**</summary>
 <p>
 
-One can check the dimentions and subset Seurat Objects as a data.frame:
+For a very detailed explanation of all slots in the Seurat objects, please refer to the Seurat [wiki](https://github.com/satijalab/seurat/wiki).
 
 
+One can check the dimentions and subset Seurat Objects as you would with a  data.frame:
+
+```r
+dim(SeuratObject)
+
+```
+
+And also subset for genes or cells, by rows or columns respectively:
+
+```r
+SeuratObject[,cells]
+SeuratObject[genes,]
+```
 
 Seurat objects have a easy way to access their contents using the `@` or the `$` characters after the object name:
+
 * The `@` attribute allows you to access to all analysis slots including: `assays`, `meta.data`, `graphs` and `reduction` slots.
 * The `$` sign allows you to access the columns of the metadata (just like you normally would do in a data.frame) in your Seurat object directly so that `SeuratObject$column1` is equal to `SeuratObject@meta.data$column1`.
 
@@ -138,10 +155,18 @@ By default, the data is loaded into an `assay` slot named `RNA`, but you can cha
 <summary>**Add in a metadata column**</summary>
 <p>
 
+You can simply add a column by using the `$` sign to allocate a vector to a metadata column. 
 
 ```r
-SeuratObject$NEW_COLUMN_NAME <- SetNames( colnames(SeuratObject) , 
+SeuratObject$NEW_COLUMN_NAME <- setNames( colnames(SeuratObject) , 
                                           c("VECTOR_CONTAINING_DATA_FOR_EACH_CELL") )
+```
+
+Or use the function `AddMetaData` to add one or multiple columns:
+
+```r
+SeuratObject <- AddMetaData(SeuratObject, NEW_COLUMN, col.name=NEW_COLUMN_NAME)
+
 ```
 
 </p>
@@ -222,6 +247,8 @@ CombinedSeuratObject <- merge(
 # Quality control
 ***
 
+A very crucial step in scRNAseq analysis is Quality control (QC). There will always be some failed libraries, low quality cells and doublets in an scRNAseq dataset, hence the quelity of the cells need to be examined and possibly some cells need to be removed. 
+
 <details>
 <summary>**Total number of features**</summary>
 <p>
@@ -272,7 +299,7 @@ These genes can serve several purposes in single-cell data analysis, such as com
 <p>
 
 
-Having the data in a suitable format, we can start calculating some quality metrics. We can for example calculate the percentage of mitocondrial and ribosomal genes per cell and add to the metadata. This will be helpfull to visualize them across different metadata parameteres (i.e. datasetID and chemistry version). There are several ways of doing this, and here manually calculate the proportion of mitochondrial reads and add to the metadata table.
+Having the data in a suitable format, we can start calculating some quality metrics. We can for example calculate the percentage of mitocondrial and ribosomal genes per cell and add to the metadata. This will be helpfull to visualize them across different metadata parameteres (i.e. datasetID and chemistry version). There are several ways of doing this. Here is an example of how to manually calculate the proportion of mitochondrial reads and add to the metadata table.
 
 Citing from “Simple Single Cell” workflows (Lun, McCarthy & Marioni, 2017): “High proportions are indicative of poor-quality cells (Islam et al. 2014; Ilicic et al. 2016), possibly because of loss of cytoplasmic RNA from perforated cells. The reasoning is that mitochondria are larger than individual transcript molecules and less likely to escape through tears in the cell membrane.”
 
@@ -294,11 +321,11 @@ SeuratObject <- PercentageFeatureSet(
 </details>
 
 <details>
-<summary>**% Ribossomal genes**</summary>
+<summary>**% Ribosomal genes**</summary>
 <p>
 
 
-In the same manner we will calculate the proportion gene expression that comes from ribosomal proteins. Ribossomal genes are the also among the top expressed genes in any cell and, on the contrary to mitochondrial genes, are inversely proportional to the mitochondrial content: the higher the mitochondrial content, the lower is the detection of ribossomal genes (PS: non-linear relationship).
+In the same manner we will calculate the proportion gene expression that comes from ribosomal proteins. Ribosomal genes are the also among the top expressed genes in any cell and, on the contrary to mitochondrial genes, are inversely proportional to the mitochondrial content: the higher the mitochondrial content, the lower is the detection of ribosomal genes (PS: non-linear relationship).
 
 
 ```r
@@ -399,8 +426,8 @@ dim(SeuratObject)
 <p>
 
 
-We here perform cell cycle scoring. To score a gene list, the algorithm calculates the difference of mean expression of the given list and the mean expression of reference genes. To build the reference, the function randomly chooses a bunch of genes matching the distribution of the expression of the given list. Cell cycle scoring adds three slots in data, a score for S phase, a score for G2M phase and the predicted cell cycle phase.
-
+We here perform cell cycle scoring. To score a gene list, the algorithm calculates the difference of mean expression of the given list and the mean expression of reference genes. To build the reference, the function randomly chooses a bunch of genes matching the distribution of the expression of the given list. Cell cycle scoring with Seurat adds three slots in data, a score for S phase, a score for G2M phase and the predicted cell cycle phase. The Seurat package provides a list of human G2M and S phase genes in `cc.genes`.
+ 
 How to run it:
 
 
@@ -450,6 +477,8 @@ DimPlot(SeuratObject,
 
 # Normalization and Regression
 ***
+
+Before doing any other analyses, the data needs to be normalized to account for varying sequencing depths and logtransformed (in most cases). Furhter, it may be useful to regress out confounding factors, for example cell cycle or quality metrics, such as percent mitochondria or number of detected genes. 
 
 <details>
 <summary>**Normalization**</summary>
@@ -589,6 +618,10 @@ LabelPoints(plot = VariableFeaturePlot(alldata), points = top20, repel = TRUE)
 # Intro to Graphs
 ***
 
+Instead of doing clustering of scRNAseq data on the full expression matrix or in PCA space (which gives linear distances), it has proven quite powerful to use graphs to create a non-linear representation of cell-to-cell similiarites.
+
+Graphs is simply a representation of all cells (as nodes/vertices) with edges drawn between them based on some similarity criteria. For instance, a graph can be constructed with edges between all cells that are less than X distance from eachother in PCA space with 50 principal components. 
+
 <details>
 <summary>**KNN**</summary>
 <p>
@@ -660,6 +693,10 @@ Setting `compute.SNN` to `TRUE` will compute both the k-NN and SNN graphs.
 
 # Dimensionality reduction
 ***
+
+The full gene expression space, with thousands of genes, contains quite a lot of noise in scRNAseq data and is hard to visualize. Hence, most scRNAseq analyses starts with a step of PCA (or similar method, e.g. ICA) to remove some of the variation of the data.
+
+For a simple scRNAseq dataset with only a few celltypes, PCA may be sufficient to visualize the complexity of the data in 2 or 3 dimensions. However, with increasing complexity we need to run non-linear dimensionality reduction to be able to project the data down to 2 dimensions for visualization, such methods are tSNE, UMAP and diffusion maps. 
 
 <details>
 <summary>**PCA**</summary>
