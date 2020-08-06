@@ -1152,16 +1152,85 @@ In statistics and data mining, affinity propagation (AP) is a clustering algorit
 # Differential expression
 ***
 
+Once clusters have been defined, it is often informative to find the genes that define each cluster. The methods for DE prediction in scRNAseq differs somewhat from bulkRNAseq methods. On one hand, we often have more samples (individual cells) compared to bulkRNAseq, but on the other hand, the scRNAseq data is noisy and suffer from drop-outs which complicates things. 
+
 <details>
-<summary>**Finding Cluster Markers**</summary>
+<summary>**Finding DEGs**</summary>
 <p>
 
+ Differentially expressed genes (DEGs) are often referred to as "marker genes", however, you have to be aware that most DE tests are designed to detect genes that have higher expression in one group of cells compared to another. A DEG is not automatically a unique marker for a celltype.
+
+The Seurat package has implemented many different tests for DE, some are designed for scRNAseq and others are used also for bulkRNAseq:
+
+
+* "wilcox" : Identifies differentially expressed genes between two groups of cells using a Wilcoxon Rank Sum test 
+* "bimod" : Likelihood-ratio test for single cell gene expression, (McDavid et al., Bioinformatics, 2013)
+* "roc" : Identifies 'markers' of gene expression using ROC analysis. For each gene, evaluates (using AUC) a classifier built on that gene alone, to classify between two groups of cells. An AUC value of 1 means that expression values for this gene alone can perfectly classify the two groupings (i.e. Each of the cells in cells.1 exhibit a higher level than each of the cells in cells.2). An AUC value of 0 also means there is perfect classification, but in the other direction. A value of 0.5 implies that the gene has no predictive power to classify the two groups. Returns a 'predictive power' (abs(AUC-0.5) * 2) ranked matrix of putative differentially expressed genes.
+* "t" : Identify differentially expressed genes between two groups of cells using the Student's t-test.
+* "negbinom" : Identifies differentially expressed genes between two groups of cells using a negative binomial generalized linear model. Use only for UMI-based datasets
+* "poisson" : Identifies differentially expressed genes between two groups of cells using a poisson generalized linear model. Use only for UMI-based datasets
+* "LR" : Uses a logistic regression framework to determine differentially expressed genes. Constructs a logistic regression model predicting group membership based on each feature individually and compares this to a null model with a likelihood ratio test.
+* "MAST" : Identifies differentially expressed genes between two groups of cells using a hurdle model tailored to scRNA-seq data. Utilizes the MAST package to run the DE testing.
+* "DESeq2" : Identifies differentially expressed genes between two groups of cells based on a model using DESeq2 which uses a negative binomial distribution (Love et al, Genome Biology, 2014).This test does not support pre-filtering of genes based on average difference (or percent detection rate) between cell groups. However, genes may be pre-filtered based on their minimum detection rate (min.pct) across both cell groups. To use this method, please install DESeq2, using the instructions at https://bioconductor.org/packages/release/bioc/html/DESeq2.html
+
+To run DE prediction for all clusters in a Seurat object, each cluster vs. all other cells, use the `FindAllMarker` function:
+
+```r
+markers <- FindAllMarkers( SeuratObject,
+  assay = "RNA",
+  logfc.threshold = 0.25,
+  test.use = "wilcox",
+  slot = "data",
+  min.pct = 0.1,
+  min.diff.pct = -Inf,
+  only.pos = FALSE,
+  max.cells.per.ident = Inf,
+  latent.vars = NULL,
+  min.cells.feature = 3,
+  min.cells.group = 3,
+  pseudocount.use = 1,
+  return.thresh = 0.01,
+)
+
+```
+
+There are multiple cutoffs for including genes, filtering output etc that you can tweak. For instance only testing up-regulated genes may speed up the test.
+
+* Only test upregulated genes with `onl.pos = TRUE`
+* Minimum number of cells a gene is expressed in `min.cells.feature`
+* Minimum number of cells of a cluster a gene is expressed in `min.cells.group`
+* Only test genes with `min.pct` expression in a cluster
+* Only test genes with `min.pct.diff` difference in percent expression between two groups.
+* Return only genes with p.value < `return.thresh`
+* Return only genes with logFoldchange > `logfc.threshold`
+
+
+Some key features to think about:
+
+* If you have multiple assays in your object, make sure to run DE on the correct assay. For instance, if you have integrated data, you still want to do DE on the "RNA" assay.
+* If you have very uneven cluster sizes, it may bias the p-values of the genes so that clusters with many cells have more significant genes. It may be a good idea to set `max.cells.per.ident` to the size of your smallest cluster, and all clusters will be downsampled to the same size.
+* Some of the tests allow you to include confounding factors in `latent.vars`, those are 'LR', 'negbinom', 'poisson', or 'MAST'.
+
 </p>
+
 </details>
 
 <details>
 <summary>**Comparing a cluster across experimental conditions**</summary>
 <p>
+
+The second way of computing differential expression is to answer which genes are differentially expressed within a cluster. For example, we may have libraries comming from 2 different library preparation methods (batches) and we would like to know which genes are influenced the most in a particular cell type. The same concenpt applies if you have instead two or more biological groups (control vs treated, time#0 vs time#1 vs time#2, etc).
+
+For this end, we will first subset our data for the desired cell cluster, then change the cell identities to the variable of comparison (which now in our case is the "Batch").
+
+```r
+cell_selection <- subset(SeuratObject, cells = colnames(alldata)[alldata$seurat_clusters == 4])
+cell_selection <- SetIdent(cell_selection, value = "Batch")
+# Compute differentiall expression
+DGE_cell_selection <- FindAllMarkers(cell_selection, logfc.threshold = 0.2, test.use = "wilcox", min.pct = 0.1, mi
+```
+
+We can also test any two set of cells using the function `FindMarkers` and specify the cell names for two groups as `cells.1` and `cells.2`.
 
 </p>
 </details>
@@ -1169,6 +1238,39 @@ In statistics and data mining, affinity propagation (AP) is a clustering algorit
 <details>
 <summary>**Plotting DEG results**</summary>
 <p>
+
+Once we have ran a DE test, we may want to visualize the genes in different ways. But first, we need to get the top DEGs from each cluster. How to select top 10 genes per cluster:
+
+
+```r
+top5 <- markers_genes %>% group_by(cluster) %>% top_n(-5, p_val_adj)
+```
+
+These can be visualized in a heatmap:
+
+```r
+DoHeatmap(SeuratObject, features = as.character(unique(top5$gene)), group.by = "seurat_clusters", assay = "RNA")
+```
+
+
+Or with a dot-plot, where each cluster is represented with color by average expression, and size by proportion cells that have the gene expressed.
+
+```r
+DotPlot(SeuratObject, features = as.character(unique(top5$gene)), group.by = "seurat_clusters", assay = "RNA") + coord_flip()
+```
+
+We can also plot a violin plot for each gene.
+
+```r
+VlnPlot(SeuratObject, features = as.character(unique(top5$gene)), ncol = 5, group.by = "seurat_clusters", assay = "RNA")
+```
+
+The violin plot can also be split into batches, so if you have two batches with meta data column "Batch", these can be plotted separately within each cluster for each gene. This may be very useful to check that the DEGs you have detected are not just driven by a single batch.
+
+```r
+VlnPlot(SeuratObject, features = as.character(unique(top5$gene)), ncol = 5, group.by = "seurat_clusters", assay = "RNA", split.by = "Batch")
+```
+
 
 </p>
 </details>
