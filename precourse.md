@@ -31,7 +31,22 @@ Since each of the 4 group themes have completely different softwares, please fol
 
 The only difference between the environments is the list of compiler packages that are specific for each operationsl system. After sucessful creation of the environment following the [conda instructions](conda_instructions.md), you will be able to use 'Rstudio' with 'R 3.6.1' and 'Seurat 3.2.0' and several other associated packages.
 
-3. Additional, but **optional** installation of other packages can be done within the environemnt via standard R packages already included in the environment ('devtools', 'install.packages' and 'biocmanager'). Some of those additional methods are: 'seurat-wrappers', 'harmony', etc.
+3. Additionaly, but **optional**, installation of other packages not compatible via CONDA can be done within the environment via standard R packages already included in the environment ('devtools', 'install.packages' and 'BiocManager'). Some packages of notice are:
+
+```r
+devtools::install_github('satijalab/seurat-wrappers')
+devtools::install_github("immunogenomics/harmony")
+BiocManager::install("batchelor")
+BiocManager::install("glmpca")
+```
+
+On MacOS, you might need to do this before starting `rstudio`:
+
+```bash
+CONDA_BUILD_SYSROOT='/opt/MacOSX10.9.sdk'
+# or
+CONDA_BUILD_SYSROOT='/Library/Developer/CommandLineTools/SDKs/MacOSX10.9.sdk'
+```
 
 <br/>
 

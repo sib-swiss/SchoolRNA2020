@@ -3,6 +3,7 @@ description: SIB / NCCR
 theme: jekyll-theme-minimal
 plugins:
   - jekyll-relative-links
+markdown: CommonMarkGhPages
 relative_links:
   enabled: true
   collections: true

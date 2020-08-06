@@ -149,9 +149,20 @@ SeuratObject@assays$RNA@   # Type this an press TAB
 <summary>**Add in a metadata column**</summary>
 <p>
 
+To add metadata for CELLS:
+
 ```{r, eval=F,  results='hold'}
-SeuratObject$NEW_COLUMN_NAME <- SetNames( colnames(SeuratObject) , 
-                                          c("VECTOR_CONTAINING_DATA_FOR_EACH_CELL") )
+SeuratObject$NEW_COLUMN_NAME <- setNames( 
+  colnames(SeuratObject) , 
+  c("VECTOR_CONTAINING_DATA_FOR_EACH_CELL") )
+```
+
+To add metadata for FEATURES:
+
+```{r, eval=F,  results='hold'}
+SeuratObject@assays$RNA@meta.features <- setNames( 
+  rownames(SeuratObject) , 
+  c("VECTOR_CONTAINING_DATA_FOR_EACH_FEATURE") )
 ```
 
 </p>
@@ -167,7 +178,6 @@ The most common functions to use for plotting are the violin plot and the scatte
 To plot **continous** variables as **violin** (press TAB inside the functions for more options):
 
 ```{r, eval=F,  results='hold'}
-
 VlnPlot(object = SeuratObject,
         group.by= "orig.ident",
         features = c("percent_mito"),
@@ -1021,16 +1031,16 @@ h <- hclust(
   method = "ward.D2",)
 ```
 
-Once the cluster hierarchy is defined, the next step is to define which samples belong to a particular cluster. However, the sample groups are already known in this example, so clustering them does not add much information for us. What we can do instead is subdivide the genes into clusters. As for the PCA (above), the ideal scenario is to use the Z-score normalized gene expression table, because in this way we make sure that we are grouping together expression trends (going up vs. down), rather than expression level (genes with more counts vs less counts). This way, we can simply repeat the steps above using the transpose of the Z-score matrix, compute the correlation distances and cluster using ward.D2 linkage method.
+Once the cluster hierarchy is defined, the next step is to define which samples belong to a particular cluster. 
 
 ```{r, eval=F  }
 plot(h, labels = F)
 ```
 
-After identifying the dendrogram for the genes (above), we can now literally cut the tree at a fixed threshold (with the `cutree` function) at different levels (a.k.a. resolutions) to define the clusters.
+After identifying the dendrogram for the cells (above), we can now literally cut the tree at a fixed threshold (with the `cutree` function) at different levels (a.k.a. resolutions) to define the clusters. The number of clusters can be controled using the height (`h`) or directly via the `k` parameters.
 
 ```{r, eval=F  }
-# Cutting the tree based on a height
+# Cutting the tree based on a dendrogram height
 SeuratObject$HC_res <- cutree(
   tree = h,
   k = 18)
@@ -1044,7 +1054,6 @@ SeuratObject$HC_res <- cutree(
 table(SeuratObject$HC_res)
 ```
 
-The number of clusters can be controled using the height (`h`) or directly via the `k` parameters.
 
 </p>
 </details>
