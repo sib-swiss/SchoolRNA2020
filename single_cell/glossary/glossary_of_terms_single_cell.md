@@ -1,5 +1,5 @@
 ---
-title: '<img border="0" src="https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/dictionary.png" width="40" height="40"> Glossary of terms'
+title: '<img border="0" src="https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/dictionary.png" width="40" height="40"> scRNAseq analysis introduction'
 output:
   html_document:
     keep_md: true
@@ -1005,11 +1005,20 @@ SeuratObject <- RunHarmony(
 # Clustering
 ***
 
+One of the main goals of scRNAseq studies is often to group cells into clusters of similar cells. There are many differnent ways of defining clusters. There are traditional clustering approaches like *K-mean*, *hierarchical clustering* and *affinity propagation*, but recently most pipelines make use of graphs (see section above) to define clusters as groups of interconnected cells.
+
+To define clusters in a graph we make use of different community detection algorithms like *Louvain*, *Leiden* and *Infomap*. The main idea behind all of them is to find groups of cells that have more edges (connections of high similiarity) between them than they have to other cells in the dataset. 
+
+Still, all clustering methods begin with defining pairwise distances between cells. Commonly this is done by taking euklidean distances between cells in PCA space, after selecting a subset of variables and scaling the data. Hence, your clustering results will be strongly dependent on choises you made in preprocessing of the data, especially the variable gene selection and how many principal components you include from the PCA.
+
+In graph based methods, the distances from PCA space are used to create a graph with edges between neighboring cells. Also here, there are multiple parpameters, like number of neighbors in the KNN graph and pruning settings for the SNN construction that will impact the clustering results.
+
+
 <details>
 <summary>**Louvain**</summary>
 <p>
 
-The Louvain method for community detection is a method to extract communities from large networks created by Blondel et al. from the University of Louvain. The method is a greedy optimization method that appears to run in time $O(n.log^2n)$ in the number of nodes in the network.The value to be optimized is modularity, defined as a value in the range that measures the density of links inside communities compared to links between communities. Optimizing this value theoretically results in **the best possible grouping of the nodes of a given network**, however going through all possible iterations of the nodes into groups is impractical so heuristic algorithms are used.
+The Louvain method for community detection is a method to extract communities from large networks created by Blondel et al. from the University of Louvain. The method is a greedy optimization method that appears to run in time $O(n.log^2n)$ in the number of nodes in the network. The value to be optimized is modularity, defined as a value in the range that measures the density of links inside communities compared to links between communities. Optimizing this value theoretically results in **the best possible grouping of the nodes of a given network**, however going through all possible iterations of the nodes into groups is impractical so heuristic algorithms are used.
 
 <div style="text-align: right"> [Wikipedia](https://en.wikipedia.org/wiki/Independent_component_analysis) </div>
 
@@ -1021,11 +1030,11 @@ How to run it:
 ```r
 SeuratObject <- FindClusters(
   object = SeuratObject,
-  resolution = "0.8",
+  resolution = 0.8,
   algorithm = 1) #algorithim 1 = Louvain
 ```
 
-The number of clusters can be controled using the `resolution` parameter.
+The number of clusters can be controled using the `resolution` parameter with higher values giving more (smaller) clusters.
 
 </p>
 </details>
@@ -1046,7 +1055,7 @@ SeuratObject <- FindClusters(
   algorithm = 4)  #algorithim 4 = Louvain
 ```
 
-The number of clusters can be controled using the `resolution` parameter.
+The number of clusters can be controled using the `resolution` parameter with higher values giving more (smaller) clusters.
 
 </p>
 </details>
@@ -1142,6 +1151,21 @@ The number of clusters can be controled using the `centers` parameter.
 In statistics and data mining, affinity propagation (AP) is a clustering algorithm based on the concept of "message passing" between data points. Unlike clustering algorithms such as k-means or k-medoids, affinity propagation **does not require the number of clusters to be determined** or estimated before running the algorithm. Similar to k-medoids, affinity propagation finds "exemplars," members of the input set that are representative of clusters. [...] Iterations are performed until either the cluster boundaries remain unchanged over a number of iterations, or some predetermined number (of interations) is reached.
 
 <div style="text-align: right"> [Wikipedia](https://en.wikipedia.org/wiki/Affinity_propagation) </div>
+
+
+</p>
+</details>
+
+
+<details>
+<summary>**What clustering resolution should I use?**</summary>
+<p>
+
+With all of these methods we can abtain any number of clusters by tweaking the settings. One of the hard problems in scRNAseq analysis is to make resonable decisions on how many clusters is reasonable. Unfortunately, there is no simple solution to this problem, it takes biological knowledge of the sample and some investigation to maker reasonable decisions on the number of clusters.
+
+Differential gene expression may help in that analysis. If two clusters have the same DEGs and no clear genes that distinguish them, it may not be a good idea to split them into individual clusters.
+
+*Note!* Also examine the cluster you get with regards to the QC metrics (see above) to make sure that some clusters are not only formed due to low quality cells or doublets/multiples. 
 
 
 </p>
