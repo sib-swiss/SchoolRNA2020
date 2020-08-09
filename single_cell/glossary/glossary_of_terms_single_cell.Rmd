@@ -328,7 +328,7 @@ SeuratObject <- PercentageFeatureSet(
 </details>
 
 <details>
-<summary>**% Gene biotype and chromossome location**</summary>
+<summary>**% Gene biotype and chromosome location**</summary>
 <p>
 
 In RNA-sequencing, genes can be categorized into different groups depending on their RNA biotype. For example, "coding", "non-coding", "VDJ region genes" are "small interfering RNA" common gene biotypes. Besides, having information about chromosomal location might be useful to identify batch effects driven by sex chromosomes
@@ -340,13 +340,13 @@ How to run it:
 ```{r, eval=F}
 library(biomaRt)
 
-# Retrive mouse gene annotation from ENSEMBL
+# Retrieve mouse gene annotation from ENSEMBL
 mart = biomaRt::useMart(
   biomart = "ensembl",
   dataset = "mmusculus_gene_ensembl",
   host = "apr2020.archive.ensembl.org")
 
-# Retrive the selected attributes mouse gene annotation
+# Retrieve the selected attributes mouse gene annotation
 annot <- biomaRt::getBM(
   attributes = c(
     "external_gene_name",
@@ -368,7 +368,7 @@ perc <- (t(temp)/Matrix::colSums(SeuratObject@assays$RNA@counts))
 o <- order(apply(perc,2,median),decreasing = F)
 perc <- perc[,o]
 
-# PLOT percentage of each gene biotype
+# Plot percentage of each gene biotype
 boxplot( perc*100,outline=F,las=2,main="% reads per cell",col=scales::hue_pal()(100),horizontal=T)
 
 # Add table to the object
@@ -383,13 +383,13 @@ SeuratObject@meta.data <- cbind(
 The code above can also be done again by replacing the string `"gene_biotype"` by `"chromosome_name"`:
 
 ```{r, eval=F}
-# Match the gene names with theit respective chromossome location
+# Match the gene names with their respective chromosome location
 item <- annot[match(rownames(SeuratObject@assays$RNA@counts) , annot[,1]),"chromosome_name"]
 item[is.na(item)] <- "unknown"
 item[! item %in% as.character(c(1:23,"X","Y","MT")) ] <- "other"
 ```
 
-If you want to focus the analysis on only protein-coding genes, for example, you can do it so:
+If you want to focus the analysis on only protein-coding genes, for example, you can do it like so:
 
 ```{r, eval=F}
 dim(SeuratObject)
@@ -557,7 +557,7 @@ An important step in many big-data analysis tasks is to identify features (genes
 
 For example. Imagine that you have a dataset known to contain different types of epithelial cells, and you use either 1) only genes that are expressed and shared across all epithelial cells at about the same level, 2) only genes that are not detected in epithelial cells, 3) only genes which expression differ greatly across epithelial cells or 4) using all genes. Which of these 4 gene lists can best distinguish the epithelial subtypes in this dataset?
 
-As you could now imagine, using only genes which expression differ greatly across epithelial cells is the best case scenario, followed by using al genes. Therefore, using only genes that are expressed and shared across all epithelial cells at about the same level or only genes that are not detected in epithelial cells do not contain sufficient information to distinguish the epithelial subtypes.
+As you could now imagine, using only genes which expression differ greatly across epithelial cells is the best case scenario, followed by using all genes. Therefore, using only genes that are expressed and shared across all epithelial cells at about the same level or only genes that are not detected in epithelial cells do not contain sufficient information to distinguish the epithelial subtypes.
 
 However, since in single-cell we usually do not know the epithelial suptypes the cells before hand (since this is what we want to discover), we need another method to accomplish this task. In general terms, a common approach is to order genes by their overall variance across samples. This is because genes with higher variance will also likely be the ones that can separate the cells the best.
 
@@ -595,7 +595,7 @@ LabelPoints(plot = VariableFeaturePlot(alldata), points = top20, repel = TRUE)
 <summary>**KNN**</summary>
 <p>
 
-KNN refers to “K Nearest Neighbors”, which is a basic and popular topic in data mining and machine learning areas. The KNN graph is a graph in which two vertices p and q are connected by an edge, if the distance between p and q is among the K-th smallest distances.[2] Given different similarity measure of these vectors, the pairwise distance can be Hamming distance, Cosine distance, Euclidean distance and so on. We take Euclidean distance as the way to measure similarity between vectors in this paper. The KNN Graph data structure has many advantages in data mining. For example, for a billion-level dataset, prebuilding a KNN graph offline as an index is much better than doing KNN search online many times.
+KNN refers to “K Nearest Neighbors”, which is a basic and popular topic in data mining and machine learning areas. The KNN graph is a graph in which two vertices p and q are connected by an edge, if the distance between p and q is among the K-th smallest distances. Given different similarity measure of these vectors, the pairwise distance can be Hamming distance, Cosine distance, Euclidean distance and so on. We take Euclidean distance as the way to measure similarity between vectors in this paper. The KNN Graph data structure has many advantages in data mining. For example, for a billion-level dataset, prebuilding a KNN graph offline as an index is much better than doing KNN search online many times.
 
 <div style="text-align: right"> Adapted from [Github](https://github.com/lengyyy/KNN-Graph) </div>
 
@@ -633,7 +633,7 @@ pheatmap(alldata@graphs$CCA_nn[1:200,1:200],
 
 In addition to the k-NN graph, if we then determine the number of nearest neighbors shared by any two points. In graph terminology, we form what we call the "shared nearest neighbor" graph. We do this by replacing the weight of each link between two points (in the nearest neighbor graph) by the number of neighbors that the points share. In other words, this is the number of length 2 paths between any two points in the nearest neighbor graph.
 
-After, this shared nearest neighbor graph is created, all pairs of points are compared and if any two points share more than T neighbors, *i.e.*, have a link in the shared nearest neighbor graph with a weight more than our threshold value, T( TS:. n), then the two points and any cluster they are part of are merged. In other words, clusters are connected components in our shared nearest neighbor graph after we sparsify using a threshold.
+After this shared nearest neighbor graph is created, all pairs of points are compared and if any two points share more than T neighbors, *i.e.*, have a link in the shared nearest neighbor graph with a weight more than our threshold value, T( TS:. n), then the two points and any cluster they are part of are merged. In other words, clusters are connected components in our shared nearest neighbor graph after we sparsify using a threshold.
 
 How to run it:
 
