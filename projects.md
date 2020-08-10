@@ -13,20 +13,20 @@ Please follow the [pre-course instructions](precourse.md) in order to install al
 
 The proposed educational plan for single cell RNA-seq data analysis project will be done using the Project-based learning (a.k.a. PBL) approach. This way, rather than having lectures on a topic and defined set of instructions and pre-given steps to follow (which focus on passive individual learning), you are required to learn the topic in a more **active** and **dynamic** way in order to solve the data analysis tasks as a group. Therefore, each group is provided with:
 
-1. The <img border="0" src="https://static.thenounproject.com/png/67360-200.png" width="10" height="10">[report file](single_cell/code/project_report.html) containing a list of instructions and questions giving the overall direction and order of the steps needed to be done and;
-2. A <img border="0" src="https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/dictionary.png" width="10" height="10">[glossary of terms](single_cell/glossary/glossary_of_terms_single_cell.html) which contains detailed information about many of the steps and provides further references on the topics.
+1. The <img border="0" src="https://static.thenounproject.com/png/67360-200.png" width="10" height="10">[report file](single_cell/code/project_report.html) containing a list of instructions and questions giving the overall direction and order of the steps needed to be done
+2. A <img border="0" src="https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/dictionary.png" width="10" height="10">[glossary of terms](single_cell/glossary/glossary_of_terms_single_cell.html) which contains detailed information about many of the steps and provides further references on the topics
 
 In this manner, each group is required to gather information from the **glossary** to perform single cell data analysis by filling the report file (using this <img border="0" src="https://static.thenounproject.com/png/67360-200.png" width="10" height="10">[project_report.Rmd](single_cell/code/project_report.Rmd) file), by:
 
-1. Reading the instructions for a certain task;
-2. Searching the **glossary** for guidance;
-3. Discussing with your colleges which step needs to be done or included;
-4. Replacing the instructions with a text explaining the rational for this step and;
-5. Adding and running code from that step.
+1. Reading the instructions for a certain task
+2. Searching the **glossary** for guidance
+3. Discussing with your colleges which step needs to be done or included
+4. Replacing the instructions with a text explaining the rationale for this step and
+5. Adding and running code from that step
 
-You are encouraged to use any other additional website / article in your report. That also includes addition of other previous experiences and/or additional code steps from other sources, as long as the rational for the inclusion is also discussed in the report text. You can also add any other plots and visualisations in your report to illustrate your results.
+You are encouraged to use any other additional website / article in your report. That also includes addition of other previous experiences and/or additional code steps from other sources, as long as the rationale for the inclusion is also discussed in the report text. You can also add any other plots and visualisations in your report to illustrate your results.
 
-In the end, each group is expected to have 1 report file with all analysis steps and the rational for the following projects:
+In the end, each group is expected to have 1 report file with all analysis steps and the rationale for the following projects:
 
 <br/>
 
