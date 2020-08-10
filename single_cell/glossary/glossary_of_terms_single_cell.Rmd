@@ -1271,4 +1271,4 @@ VlnPlot(SeuratObject, features = as.character(unique(top5$gene)), ncol = 5, grou
 
 <br/>
 
-### [Back to main](README.md)
+### [Back to main](https://sib-swiss.github.io/SchoolRNA2020/)
