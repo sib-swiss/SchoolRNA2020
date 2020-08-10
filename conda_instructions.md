@@ -33,6 +33,23 @@ You should start by installing Conda. We suggest installing either Miniconda3 (N
 
 ### **On MacOSX**
 
+Download MacOX SDK compiler package: [MacOSX10.9.sdk.tar.xz](https://github.com/phracker/MacOSX-SDKs/releases/download/10.15/MacOSX10.9.sdk.tar.xz)
+
+Then extract it, copy it to the `/opt/` folder. Conda will use it in that location by default.
+
+```
+#extract
+sudo tar -xzf MacOSX10.9.sdk.tar.xz
+
+#copy
+sudo cp -r ~/Downloads/MacOSX10.9.sdk /opt/
+
+#give executable permissions
+sudo chmod -R a+rX /opt
+```
+
+Then you can install conda:
+
 ```
 curl -o Miniconda3-latest-MacOSX-x86_64.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
 sh Miniconda3-latest-MacOSX-x86_64.sh
@@ -42,6 +59,16 @@ Follow the instructions on screen replying `yes` when necessary. Restart your te
 
 
 ### **On Ubuntu**
+
+Inside Ubuntu, open TERMINAL and type the commands below to install the X-server graphical packages that will be used to launch RStudio.
+[https://docs.anaconda.com/anaconda/install/linux/](https://docs.anaconda.com/anaconda/install/linux/)
+
+```
+sudo apt-get update
+sudo apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 libxcursor1 libxcomposite1 libasound2 libxi6 libxtst6
+```
+
+Then download Miniconda3 and install it.
 
 ```
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
@@ -60,20 +87,24 @@ Several packages are not available for Windows. However, on windows10 we can run
 ## <img border="0" src="https://www.svgrepo.com/show/4795/installation-symbol.svg" width="20" height="20"> Create a Conda environment from file
 ***
 
-To download the `environment_course.yml` file using the command on Terminal:
+To download the `environment_macos.yml` or `environment_linux.yml` file using the command on Terminal:
 
 ```
 #Ubuntu
-wget https://raw.githubusercontent.com/sib-swiss/SchoolRNA2020/master/single_cell/code/environment_course.yml
+wget https://raw.githubusercontent.com/sib-swiss/SchoolRNA2020/master/single_cell/code/environment_linux.yml
 
 #MacOSX
-curl -o environment_course.yml https://raw.githubusercontent.com/sib-swiss/SchoolRNA2020/master/single_cell/code/environment_course.yml
+curl -o environment_macos.yml https://raw.githubusercontent.com/sib-swiss/SchoolRNA2020/master/single_cell/code/environment_macos.yml
 ```
 
-After this, you should have a file named `environment_course.yml` in your directory (it does not matter where, you can save on Downloads folder for example). Next, type:
+After this, you should have a file named `environment_macos.yml`/`environment_linux.yml` in your directory (it does not matter where, you can save on Downloads folder for example). Next, type:
 
 ```
-conda env create -p scRNAseq2020 -f environment_course.yml
+#MacOSX
+conda env create -p sibsinglecell -f environment_macos.yml
+
+#Ubuntu
+conda env create -p sibsinglecell -f environment_linux.yml
 ```
 
 Several messages will show up on your screen and will tell you about the installation process. This may take a few minutes depending on how many packages are to be installed.
@@ -99,7 +130,7 @@ Several messages will show up on your screen and will tell you about the install
 Once the environment is created, we need to activate it in order to use the softwares and packages inside it. To activate an environment type:
 
 ```
-source activate scRNAseq2020
+source activate sibsinglecell
 ```
 
 From this point on you can run any of the contents from the course. For instance, you can directly launch RStudio by
@@ -161,13 +192,13 @@ sudo apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 
 ```
 mkdir ~/Desktop/course
 cd ~/Desktop/course
-wget https://raw.githubusercontent.com/sib-swiss/SchoolRNA2020/master/single_cell/code/environment_course.yml
-conda env create -n scRNAseq2020 -f environment_course.yml
+wget https://raw.githubusercontent.com/sib-swiss/SchoolRNA2020/glossary_edits/single_cell/code/environment_linux.yml
+conda env create -n sibsinglecell -f environment_linux.yml
 ```
 
 8. You can then follow the instructions above to activate/deactivate the environment.
 ```
-conda activate scRNAseq2020
+conda activate sibsinglecell
 rstudio &
 ```
 
@@ -221,12 +252,12 @@ sh Miniconda3-latest-Linux-x86_64.sh
 mkdir ~/Desktop/course
 cd ~/Desktop/course
 
-wget https://raw.githubusercontent.com/sib-swiss/SchoolRNA2020/master/single_cell/code/environment_course.yml
-conda env create -n scRNAseq2020 -f environment_course.yml
+wget https://raw.githubusercontent.com/sib-swiss/SchoolRNA2020/glossary_edits/single_cell/code/environment_linux.yml
+conda env create -n sibsinglecell -f environment_linux.yml
 ```
 
 11. You can then follow the instructions above to activate/deactivate the environment.
 ```
-conda activate scRNAseq2020
+conda activate sibsinglecell
 rstudio &
 ```
