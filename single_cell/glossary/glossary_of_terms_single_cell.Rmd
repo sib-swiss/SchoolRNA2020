@@ -18,7 +18,7 @@ editor_options:
 ***
 
 <details>
-<summary>Click to expand!</summary>
+<summary>**Running bash code in Rstudio**</summary>
 
 It is possible to download data from within Rstudio by using the bash code chunk. It is usually a standard to have a folder with all your raw data stored in a separate place from your code or analysis results.
 
@@ -567,9 +567,9 @@ An important step in many big-data analysis tasks is to identify features (genes
 
 For example. Imagine that you have a dataset known to contain different types of epithelial cells, and you use either 1) only genes that are expressed and shared across all epithelial cells at about the same level, 2) only genes that are not detected in epithelial cells, 3) only genes which expression differ greatly across epithelial cells or 4) using all genes. Which of these 4 gene lists can best distinguish the epithelial subtypes in this dataset?
 
-As you could now imagine, using only genes which expression differ greatly across epithelial cells is the best case scenario, followed by using al genes. Therefore, using only genes that are expressed and shared across all epithelial cells at about the same level or only genes that are not detected in epithelial cells do not contain sufficient information to distinguish the epithelial subtypes.
+As you could now imagine, using only genes which expression differ greatly across epithelial cells is the best case scenario, followed by using all genes. Therefore, using only genes that are expressed and shared across all epithelial cells at about the same level or only genes that are not detected in epithelial cells do not contain sufficient information to distinguish the epithelial subtypes.
 
-However, since in single-cell we usually do not know the epithelial suptypes the cells before hand (since this is what we want to discover), we need another method to acomplish this task. In general terms, a common approach is to order genes by their overal variance across samples. This is because genes with higher variance will also likely be the ones that can separate the cells the best.
+However, since in single-cell we usually do not know the epithelial suptypes the cells before hand (since this is what we want to discover), we need another method to accomplish this task. In general terms, a common approach is to order genes by their overall variance across samples. This is because genes with higher variance will also likely be the ones that can separate the cells the best.
 
 Since genes with higher expression level usually also have naturally higher variation, the gene variation is then normalized by the log  mean expression of each gene (see plot).
 
@@ -677,7 +677,7 @@ Setting `compute.SNN` to `TRUE` will compute both the k-NN and SNN graphs.
 
 The full gene expression space, with thousands of genes, contains quite a lot of noise in scRNAseq data and is hard to visualize. Hence, most scRNAseq analyses starts with a step of PCA (or similar method, e.g. ICA) to remove some of the variation of the data.
 
-For a simple scRNAseq dataset with only a few celltypes, PCA may be sufficient to visualize the complexity of the data in 2 or 3 dimensions. However, with increasing complexity we need to run non-linear dimensionality reduction to be able to project the data down to 2 dimensions for visualization, such methods are tSNE, UMAP and diffusion maps.
+For a simple scRNAseq dataset with only a few cell types, PCA may be sufficient to visualize the complexity of the data in 2 or 3 dimensions. However, with increasing complexity we need to run non-linear dimensionality reduction to be able to project the data down to 2 dimensions for visualization, such methods are tSNE, UMAP and diffusion maps.
 
 <details>
 <summary>**PCA**</summary>
@@ -738,7 +738,7 @@ SeuratObject <- RunTSNE(object = SeuratObject,
 <summary>**UMAP**</summary>
 <p>
 
-Uniform Manifold Approximation and Projection (UMAP) is a dimension reduction technique that can be used for visualisation similarly to t-SNE, but also for general **non-linear** dimension reduction […].
+Uniform Manifold Approximation and Projection (UMAP) is a dimension reduction technique that can be used for visualization similarly to t-SNE, but also for general **non-linear** dimension reduction […].
 
 <div style="text-align: right"> [umap-learn documentation](https://umap-learn.readthedocs.io/en/latest/) </div>
 
@@ -985,12 +985,12 @@ SeuratObject <- RunHarmony(
 # Clustering
 ***
 
-One of the main goals of scRNAseq studies is often to group cells into clusters of similar cells. There are many differnent ways of defining clusters. There are traditional clustering approaches like *K-mean*, *hierarchical clustering* and *affinity propagation*, but recently most pipelines make use of graphs (see section above) to define clusters as groups of interconnected cells.
+One of the main goals of scRNAseq studies is often to group cells into clusters of similar cells. There are many different ways of defining clusters. There are traditional clustering approaches like *K-mean*, *hierarchical clustering* and *affinity propagation*, but recently most pipelines make use of graphs (see section above) to define clusters as groups of interconnected cells.
 
-To define clusters in a graph we make use of different community detection algorithms like *Louvain*, *Leiden* and *Infomap*. The main idea behind all of them is to find groups of cells that have more edges (connections of high similiarity) between them than they have to other cells in the dataset.
-Still, all clustering methods begin with defining pairwise distances between cells. Commonly this is done by taking euklidean distances between cells in PCA space, after selecting a subset of variables and scaling the data. Hence, your clustering results will be strongly dependent on choises you made in preprocessing of the data, especially the variable gene selection and how many principal components you include from the PCA.
+To define clusters in a graph we make use of different community detection algorithms like *Louvain*, *Leiden* and *Infomap*. The main idea behind all of them is to find groups of cells that have more edges (connections of high similarity) between them than they have to other cells in the dataset.
+Still, all clustering methods begin with defining pairwise distances between cells. Commonly this is done by taking euclidean distances between cells in PCA space, after selecting a subset of variables and scaling the data. Hence, your clustering results will be strongly dependent on choices you made in preprocessing of the data, especially the variable gene selection and how many principal components you include from the PCA.
 
-In graph based methods, the distances from PCA space are used to create a graph with edges between neighboring cells. Also here, there are multiple parpameters, like number of neighbors in the KNN graph and pruning settings for the SNN construction that will impact the clustering results.
+In graph based methods, the distances from PCA space are used to create a graph with edges between neighboring cells. Also here, there are multiple parameters, like number of neighbors in the KNN graph and pruning settings for the SNN construction that will impact the clustering results.
 
 
 <details>
@@ -1013,7 +1013,7 @@ SeuratObject <- FindClusters(
   algorithm = 1) #algorithim 1 = Louvain
 ```
 
-The number of clusters can be controled using the `resolution` parameter with higher values giving more (smaller) clusters.
+The number of clusters can be controlled using the `resolution` parameter with higher values giving more (smaller) clusters.
 
 </p>
 </details>
@@ -1033,7 +1033,7 @@ SeuratObject <- FindClusters(
   algorithm = 4)  #algorithim 4 = Louvain
 ```
 
-The number of clusters can be controled using the `resolution` parameter with higher values giving more (smaller) clusters.
+The number of clusters can be controlled using the `resolution` parameter with higher values giving more (smaller) clusters.
 
 </p>
 </details>
@@ -1042,7 +1042,7 @@ The number of clusters can be controled using the `resolution` parameter with hi
 <summary>**Hierarchical clustering**</summary>
 <p>
 
-Hierachical clustering (HC) is a method of cluster analysis which **seeks to build a hierarchy of clusters**. Strategies for hierarchical clustering generally fall into two types: Agglomerative or Divisive. [...] In general, the merges and splits are determined in a greedy manner. The results of hierarchical clustering are **usually presented in a dendrogram**. [...] The standard algorithm for hierarchical agglomerative clustering (HAC) has a time complexity of $O(n^3)$ and requires $O(n^2)$ memory, which makes it **too slow for even medium data sets**. In order to decide which clusters should be combined (for agglomerative), or where a cluster should be split (for divisive), **a measure of dissimilarity between sets of observations** is required. In most methods of hierarchical clustering, this is achieved by use of an appropriate metric (a measure of distance between pairs of observations), and **a linkage criterion** which specifies the dissimilarity of sets as a function of the pairwise distances of observations in the sets.
+Hierarchical clustering (HC) is a method of cluster analysis which **seeks to build a hierarchy of clusters**. Strategies for hierarchical clustering generally fall into two types: Agglomerative or Divisive. [...] In general, the merges and splits are determined in a greedy manner. The results of hierarchical clustering are **usually presented in a dendrogram**. [...] The standard algorithm for hierarchical agglomerative clustering (HAC) has a time complexity of $O(n^3)$ and requires $O(n^2)$ memory, which makes it **too slow for even medium data sets**. In order to decide which clusters should be combined (for agglomerative), or where a cluster should be split (for divisive), **a measure of dissimilarity between sets of observations** is required. In most methods of hierarchical clustering, this is achieved by use of an appropriate metric (a measure of distance between pairs of observations), and **a linkage criterion** which specifies the dissimilarity of sets as a function of the pairwise distances of observations in the sets.
 
 <div style="text-align: right"> [Wikipedia](https://en.wikipedia.org/wiki/Hierarchical_clustering) </div>
 
@@ -1088,7 +1088,7 @@ SeuratObject$HC_res <- cutree(
 table(SeuratObject$HC_res)
 ```
 
-The number of clusters can be controled using the height (`h`) or directly via the `k` parameters.
+The number of clusters can be controlled using the height (`h`) or directly via the `k` parameters.
 
 </p>
 </details>
@@ -1110,7 +1110,7 @@ SeuratObject$kmeans_12 <- kmeans(
   nstart = 10)$cluster
 ```
 
-The number of clusters can be controled using the `centers` parameter.
+The number of clusters can be controlled using the `centers` parameter.
 
 
 </p>
@@ -1120,7 +1120,7 @@ The number of clusters can be controled using the `centers` parameter.
 <summary>**What clustering resolution should I use?**</summary>
 <p>
 
-With all of these methods we can abtain any number of clusters by tweaking the settings. One of the hard problems in scRNAseq analysis is to make resonable decisions on how many clusters is reasonable. Unfortunately, there is no simple solution to this problem, it takes biological knowledge of the sample and some investigation to maker reasonable decisions on the number of clusters.
+With all of these methods we can obtain any number of clusters by tweaking the settings. One of the hard problems in scRNAseq analysis is to make reasonable decisions on how many clusters is reasonable. Unfortunately, there is no simple solution to this problem, it takes biological knowledge of the sample and some investigation to maker reasonable decisions on the number of clusters.
 
 Differential gene expression may help in that analysis. If two clusters have the same DEGs and no clear genes that distinguish them, it may not be a good idea to split them into individual clusters.
 *Note!* Also examine the cluster you get with regards to the QC metrics (see above) to make sure that some clusters are not only formed due to low quality cells or doublets/multiples.
@@ -1132,7 +1132,7 @@ Differential gene expression may help in that analysis. If two clusters have the
 # Differential expression
 ***
 
-Once clusters have been defined, it is often informative to find the genes that define each cluster. The methods for DE prediction in scRNAseq differs somewhat from bulkRNAseq methods. On one hand, we often have more samples (individual cells) compared to bulkRNAseq, but on the other hand, the scRNAseq data is noisy and suffer from drop-outs which complicates things.
+Once clusters have been defined, it is often informative to find the genes that define each cluster. The methods for DE prediction in scRNAseq differs somewhat from bulk RNAseq methods. On one hand, we often have more samples (individual cells) compared to bulk RNA-seq, but on the other hand, the scRNAseq data is noisy and suffer from drop-outs which complicates things.
 
 <details>
 <summary>**Finding DEGs**</summary>
@@ -1140,7 +1140,8 @@ Once clusters have been defined, it is often informative to find the genes that 
 
 Differentially expressed genes (DEGs) are often referred to as "marker genes", however, you have to be aware that most DE tests are designed to detect genes that have higher expression in one group of cells compared to another. A DEG is not automatically a unique marker for a celltype.
 
-The Seurat package has implemented many different tests for DE, some are designed for scRNAseq and others are used also for bulkRNAseq:
+The Seurat package has implemented many different tests for DE, some are designed for scRNAseq and others are used also for bulk RNA-seq:
+
 * "wilcox" : Identifies differentially expressed genes between two groups of cells using a Wilcoxon Rank Sum test
 * "bimod" : Likelihood-ratio test for single cell gene expression, (McDavid et al., Bioinformatics, 2013)
 * "roc" : Identifies 'markers' of gene expression using ROC analysis. For each gene, evaluates (using AUC) a classifier built on that gene alone, to classify between two groups of cells. An AUC value of 1 means that expression values for this gene alone can perfectly classify the two groupings (i.e. Each of the cells in cells.1 exhibit a higher level than each of the cells in cells.2). An AUC value of 0 also means there is perfect classification, but in the other direction. A value of 0.5 implies that the gene has no predictive power to classify the two groups. Returns a 'predictive power' (abs(AUC-0.5) * 2) ranked matrix of putative differentially expressed genes.
@@ -1172,7 +1173,8 @@ markers <- FindAllMarkers( object = SeuratObject,
 ```
 
 There are multiple cutoffs for including genes, filtering output etc that you can tweak. For instance only testing up-regulated genes may speed up the test:
-* Only test upregulated genes with `onl.pos = TRUE`
+
+* Only test up-regulated genes with `onl.pos = TRUE`
 * Minimum number of cells a gene is expressed in `min.cells.feature`
 * Minimum number of cells of a cluster a gene is expressed in `min.cells.group`
 * Only test genes with `min.pct` expression in a cluster
@@ -1181,8 +1183,9 @@ There are multiple cutoffs for including genes, filtering output etc that you ca
 * Return only genes with logFoldchange > `logfc.threshold`
 
 Some other key features to think about:
+
 * If you have multiple assays in your object, make sure to run DE on the correct assay. For instance, if you have integrated data, you still want to do DE on the "RNA" assay.
-* If you have very uneven cluster sizes, it may bias the p-values of the genes so that clusters with many cells have more significant genes. It may be a good idea to set `max.cells.per.ident` to the size of your smallest cluster, and all clusters will be downsampled to the same size.
+* If you have very uneven cluster sizes, it may bias the p-values of the genes so that clusters with many cells have more significant genes. It may be a good idea to set `max.cells.per.ident` to the size of your smallest cluster, and all clusters will be down sampled to the same size.
 * Some of the tests allow you to include confounding factors in `latent.vars`, those are 'LR', 'negbinom', 'poisson', or 'MAST'.
 
 </p>
@@ -1192,7 +1195,7 @@ Some other key features to think about:
 <summary>**Comparing a cluster across experimental conditions**</summary>
 <p>
 
-The second way of computing differential expression is to answer which genes are differentially expressed within a cluster. For example, we may have libraries comming from 2 different library preparation methods (batches) and we would like to know which genes are influenced the most in a particular cell type. The same concenpt applies if you have instead two or more biological groups (control vs treated, time#0 vs time#1 vs time#2, etc).
+The second way of computing differential expression is to answer which genes are differentially expressed within a cluster. For example, we may have libraries coming from 2 different library preparation methods (batches) and we would like to know which genes are influenced the most in a particular cell type. The same concept applies if you have instead two or more biological groups (control vs treated, time#0 vs time#1 vs time#2, etc).
 For this end, we will first subset our data for the desired cell cluster, then change the cell identities to the variable of comparison (which now in our case is the "Batch").
 
 ```{r, eval=F}
