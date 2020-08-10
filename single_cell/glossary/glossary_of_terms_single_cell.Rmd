@@ -45,6 +45,8 @@ curl -o data/FILENAME.h5 -O http://FILE_PATH.h5
 # Seurat Objects
 ***
 
+[Seurat](https://satijalab.org/seurat/) is one of the most commonly used pipelines for scRNAseq analysis. For additional information on Seurat objects and commands, please look at this [page](https://satijalab.org/seurat/essential_commands.html). Many different tutorials are also available from their website.
+
 <details>
 <summary>**Reading files**</summary>
 <p>
@@ -109,6 +111,7 @@ SeuratObject <- CreateSeuratObject(
   meta.data = metadata)
 ```
 
+The `CreateSeuratObject` function can take as input a sparse matrix or a regular matrix with counts.
 
 </p>
 </details>
@@ -116,6 +119,8 @@ SeuratObject <- CreateSeuratObject(
 <details>
 <summary>**Understanding Seurat objects**</summary>
 <p>
+
+For a very detailed explanation of all slots in the Seurat objects, please refer to the Seurat [wiki](https://github.com/satijalab/seurat/wiki).
 
 One can check the dimensions and subset Seurat Objects as a data.frame:
 
@@ -131,10 +136,10 @@ SeuratObject <- SeuratObject[ , vector_CELLS_TO_USE ]
 ```
 
 Seurat objects have a easy way to access their contents using the `@` or the `$` characters after the object name:
-* The `@` attribute allows you to access to all analysis slots including: `assays`, `meta.data`, `graphs` and `reduction` slots
-* The `$` sign allows you to access the columns of the metadata (just like you normally would do in a data.frame) in your Seurat object directly so that `SeuratObject$column1` is equal to `SeuratObject@meta.data$column1`
+* The `@` attribute allows you to access to all analysis slots including: `assays`, `meta.data`, `graphs` and `reduction` slots.
+* The `$` sign allows you to access the columns of the metadata (just like you normally would do in a data.frame) in your Seurat object directly so that `SeuratObject$column1` is equal to `SeuratObject@meta.data$column1`.
 
-By default, the data is loaded into an `assay` slot named `RNA`, but you can change the names of the slots when creating them (*e.g.*, when creating the seurat object, or computing the reductions). Therefore, check the options in each of the Seurat functions to know where you are storing the data. Each `assay` contains information about the raw counts (`counts`), the normalized counts (`data`), the scaled/regressed data (`scale.data`) as well as information about the dispersion of genes (`var`). Additional assays will be created when doing data analysis, for example when performing data integration, you might store the data as new `assay` or as a new `reduction` slot (depending on the integration method used).
+By default, the data is loaded into an `assay` slot named `RNA`, but you can change the names of the slots when creating them (e.g., when creating the seurat object, or computing the reductions). Therefore, check the options in each of the Seurat functions to know where you are storing the data. Each `assay` contains information about the raw counts (`counts`), the normalized counts (`data`), the scaled/regressed data (`scale.data`) as well as information about the dispersion of genes (`var`). Additional assays will be created when doing data analysis, for example when performing data integration, you might store the data as new `assay` or as a new `reduction` slot (depending on the integration method used).
 
 ```{r, eval=F, include=F, result='hide'}
 SeuratObject@   # Type this and press TAB
@@ -151,7 +156,7 @@ SeuratObject@assays$RNA@   # Type this and press TAB
 <summary>**Add in a metadata column**</summary>
 <p>
 
-To add metadata for CELLS:
+You can simply add a column by using the `$` sign to allocate a vector to a metadata column.
 
 ```{r, eval=F, results='hold'}
 SeuratObject$NEW_COLUMN_NAME <- setNames(
@@ -159,12 +164,13 @@ SeuratObject$NEW_COLUMN_NAME <- setNames(
   c("VECTOR_CONTAINING_DATA_FOR_EACH_CELL") )
 ```
 
-To add metadata for FEATURES:
+Or use the function `AddMetaData` to add one or multiple columns:
 
 ```{r, eval=F, results='hold'}
-SeuratObject@assays$RNA@meta.features <- setNames(
-  rownames(SeuratObject) ,
-  c("VECTOR_CONTAINING_DATA_FOR_EACH_FEATURE") )
+SeuratObject <- AddMetaData(
+  object=SeuratObject,
+  NEW_COLUMN,
+  col.name=NEW_COLUMN_NAME)
 ```
 
 </p>
@@ -177,7 +183,7 @@ SeuratObject@assays$RNA@meta.features <- setNames(
 
 The most common functions to use for plotting are the violin plot and the scatter plots for the dimensionality reduction calculated (you need to calculate it before using the function!).
 
-To plot **continuous** variables as **violin** (press TAB inside the functions for more options):
+To plot **continous** variables as **violin** (press TAB inside the functions for more options):
 
 ```{r, eval=F,  results='hold'}
 VlnPlot(object = SeuratObject,
@@ -188,7 +194,7 @@ VlnPlot(object = SeuratObject,
         y.max = 100) + NoLegend()
 ```
 
-To plot **CONTINUOUS** variables as **scatter plot** using the `umap` reduction slot (press TAB inside the functions for more options):
+To plot **CONTINOUS** variables as **scatter plot** using the `umap` reduction slot (press TAB inside the functions for more options):
 
 ```{r, eval=F,  results='hold'}
 FeaturePlot(object = SeuratObject,
@@ -241,6 +247,8 @@ CombinedSeuratObject <- merge(
 # Quality control
 ***
 
+A very crucial step in scRNAseq analysis is Quality control (QC). There will always be some failed libraries, low quality cells and doublets in an scRNAseq dataset, hence the quelity of the cells need to be examined and possibly some cells need to be removed.
+
 <details>
 <summary>**Total number of features**</summary>
 <p>
@@ -262,14 +270,14 @@ VlnPlot(SeuratObject,
 <summary>**Gene QC**</summary>
 <p>
 
-In single cell, the most detected genes usually belong to housekeeping gene families, such as mitochondrial (MT-), ribosomal (RPL and RPS) and other structural proteins (*i.e.*, ACTB, TMSB4X, B2M, EEF1A1).
+In single cell, the most detected genes usually belong to housekeeping gene families, such as mitochondrial (MT-), ribossomal (RPL and RPS) and other structural proteins (i.e., ACTB, TMSB4X, B2M, EEF1A1).
 
 ```{r, eval=F}
-# Compute the relative expression of each gene per cell
+#Compute the relative expression of each gene per cell
 rel_expression <- Matrix::t( Matrix::t(SeuratObject@assays$RNA@counts) / Matrix::colSums(SeuratObject@assays$RNA@counts)) * 100
 most_expressed <- sort(Matrix::rowSums( rel_expression ),T) / ncol(SeuratObject)
 
-# Plot the relative expression of each gene per cell
+#Plot the relative expression of each gene per cell
 par(mfrow=c(1,3),mar=c(4,6,1,1))
 boxplot( as.matrix(Matrix::t(rel_expression[names(most_expressed[30:1]),])),cex=.1, las=1, xlab="% total count per cell",col=scales::hue_pal()(90)[30:1],horizontal=TRUE,ylim=c(0,8))
 boxplot( as.matrix(Matrix::t(rel_expression[names(most_expressed[60:31]),])),cex=.1, las=1, xlab="% total count per cell",col=scales::hue_pal()(90)[60:31],horizontal=TRUE,ylim=c(0,8))
@@ -289,7 +297,7 @@ These genes can serve several purposes in single-cell data analysis, such as com
 <p>
 
 
-Having the data in a suitable format, we can start calculating some quality metrics. We can for example calculate the percentage of mitochondrial and ribosomal genes per cell and add to the metadata. This will be helpful to visualize them across different metadata parameters (*i.e.* datasetID and chemistry version). There are several ways of doing this, and here manually calculate the proportion of mitochondrial reads and add to the metadata table.
+Having the data in a suitable format, we can start calculating some quality metrics. We can for example calculate the percentage of mitocondrial and ribosomal genes per cell and add to the metadata. This will be helpfull to visualize them across different metadata parameteres (i.e. datasetID and chemistry version). There are several ways of doing this. Here is an example of how to manually calculate the proportion of mitochondrial reads and add to the metadata table.
 
 Citing from “Simple Single Cell” workflows (Lun, McCarthy & Marioni, 2017): “High proportions are indicative of poor-quality cells (Islam et al. 2014; Ilicic et al. 2016), possibly because of loss of cytoplasmic RNA from perforated cells. The reasoning is that mitochondria are larger than individual transcript molecules and less likely to escape through tears in the cell membrane.”
 
@@ -310,7 +318,7 @@ SeuratObject <- PercentageFeatureSet(
 </details>
 
 <details>
-<summary>**% ribosomal genes**</summary>
+<summary>**% Ribosomal genes**</summary>
 <p>
 
 
@@ -328,12 +336,12 @@ SeuratObject <- PercentageFeatureSet(
 </details>
 
 <details>
-<summary>**% Gene biotype and chromosome location**</summary>
+<summary>**% Gene biotype and chromossome location**</summary>
 <p>
 
-In RNA-sequencing, genes can be categorized into different groups depending on their RNA biotype. For example, "coding", "non-coding", "VDJ region genes" are "small interfering RNA" common gene biotypes. Besides, having information about chromosomal location might be useful to identify batch effects driven by sex chromosomes
+In RNA-sequencing, genes can be categorized into different groups depending on their RNA biotype. For example, "coding", "non-coding", "VDJ region genes" are "small interefering RNA" common gene biotypes. Besides, having information about chromossomal location might be usefull to identify bacth effects driven by sex chromossomes.
 
-Depending on the desired type of analysis, some gene categories can be filtered out if not of interest. For single cell specifically, cell libraries are usually constructed using poly-A enrichment and therefore enriching for "protein-coding proteins", which usually constitutes around 80-90% of all available genes.
+Depending on the desired type of analysis, some gene categories can be filtered out if not of interest. For single cell specifically, cell libraries are usually constructed using poly-A enrichment and therefore enriching for "protein-coding proteins", which usually contitutes around 80-90% of all available genes.
 
 How to run it:
 
@@ -355,7 +363,7 @@ annot <- biomaRt::getBM(
   mart = mart)
 ```
 
-Make sure you are using the right species for your dataset. A list of all species available on can be found using `biomaRt::listDatasets(mart)[,"dataset"]`. All species names are formatted in the same way, such as `mmusculus_gene_ensembl` and `hsapiens_gene_ensembl`. For reproducibility reasons, it is also advised to specifically choose a biomart release version, since some genes will be renamed, inserted or deleted from the database. You can do so by running `biomaRt::listEnsemblArchives()`.
+Make sure you are using the right species for your dataset. A list of all species available on can be found using `biomaRt::listDatasets(mart)[,"dataset"]`. All species names are formated in the same way, such as `mmusculus_gene_ensembl` and `hsapiens_gene_ensembl`. For reproducibility reasons, it is also advised to specifically choose a biomart release version, since some genes will be renamed, inserted or deleted from the database. You can do so by running `biomaRt::listEnsemblArchives()`.
 
 ```{r, eval=F}
 # Match the gene names with theit respective gene biotype
@@ -409,7 +417,7 @@ dim(SeuratObject)
 <p>
 
 
-We here perform cell cycle scoring. To score a gene list, the algorithm calculates the difference of mean expression of the given list and the mean expression of reference genes. To build the reference, the function randomly chooses a bunch of genes matching the distribution of the expression of the given list. Cell cycle scoring adds three slots in data, a score for S phase, a score for G2M phase and the predicted cell cycle phase.
+We here perform cell cycle scoring. To score a gene list, the algorithm calculates the difference of mean expression of the given list and the mean expression of reference genes. To build the reference, the function randomly chooses a bunch of genes matching the distribution of the expression of the given list. Cell cycle scoring with Seurat adds three slots in data, a score for S phase, a score for G2M phase and the predicted cell cycle phase. The Seurat package provides a list of human G2M and S phase genes in `cc.genes`.
 
 How to run it:
 
@@ -430,7 +438,7 @@ SeuratObject$G1.Score <- 1 - SeuratObject$S.Score - SeuratObject$G2M.Score
 <p>
 
 
-Having many metadata parameters to analyse individually makes it a bit hard to visualize the real differences between datasets, batches and experimental conditions. One way to try to combine all this information into one plot is by running dimensionality reduction via principal component analysis (PCA) on the continuous variables in the metadata. Thus visualizing on the top principal components (1st and 2nd) reflects how different the datasets are.
+Having many metadata parameters to analyse individually makes it a bit hard to visualize the real differences between datasets, batches and experimental conditions. One way to try to combine all this information into one plot is by running dimensionality reduction via principal component analysis (PCA) on the continous variables in the metadata. Thus visualizing on the top principal components (1st and 2nd) reflects how different the datasets are.
 
 ```{r, eval=F,  results='hold'}
 # Calculate PCA using selected metadata parameters
@@ -459,11 +467,13 @@ DimPlot(SeuratObject,
 # Normalization and Regression
 ***
 
+Before doing any other analyses, the data needs to be normalized to account for varying sequencing depths and logtransformed (in most cases). Furhter, it may be useful to regress out confounding factors, for example cell cycle or quality metrics, such as percent mitochondria or number of detected genes.
+
 <details>
 <summary>**Normalization**</summary>
 <p>
 
-The most common normalization for RNA-seq and also single-cell RNA-seq is log-normalization. This is done by dividing the gene counts of each gene by the sum of all gene counts (*a.k.a.*, library size) to compensate for library size differences. Then the result is multiplied by a constant number, so all cell have the same sequencing depth. For bulk RNA-seq, the constant is usually $1e6$, resulting in CPM (counts per million), but since single-cells library sizes are way lower than that, the number ranges from $1e3$ to $1e4$ (counts per 10000).
+The most common normalization for RNA-seq and also single-cell RNA-seq is log-normalization. This is done by dividing the gene counts of each gene by the sum of all gene counts (a.k.a., library size) to compensate for library size differences. Then the result is multiplied by a constant number, so all cell have the same sequencing depth. For bulk RNA-seq, the constant is usually $1e6$, resulting in CPM (counts per million), but since single-cells library sizes are way lower than that, the number ranges from $1e3$ to $1e4$ (counts per 10000).
 
 $$NormCounts = \frac{GeneCounts * 10000}{LibrarySize}$$
 The library size-corrected values are then log-transformed to achieve a log-normal data distribution.
@@ -488,7 +498,7 @@ SeuratObject <- NormalizeData(
 
 Since each gene has a different expression level, it means that genes with higher expression values will naturally have higher variation that will be captured by downstream methods. This means that we need to somehow give each gene a similar weight beforehand (see below). A common practice is to center and scale each gene before performing PCA. This exact scaling is called Z-score normalization it is very useful for PCA, clustering and plotting heatmaps.
 
-Additionally, we can use regression to remove any unwanted sources of variation from the dataset, such as cell cycle, sequencing depth, percent mitochondria. This is achieved by doing a generalized linear regression (GLM) using these parameters as covariates in the model. Then the residuals of the model are taken as the “regressed data”. Although perhaps not in the best way, batch effect regression can also be done here.
+Additionally, we can use regression to remove any unwanted sources of variation from the dataset, such as cell cycle, sequencing depth, percent mitocondria. This is achieved by doing a generalized linear regression (GLM) using these parameters as covariates in the model. Then the residuals of the model are taken as the “regressed data”. Although perhaps not in the best way, batch effect regression can also be done here.
 
 How to run it:
 
@@ -557,9 +567,9 @@ An important step in many big-data analysis tasks is to identify features (genes
 
 For example. Imagine that you have a dataset known to contain different types of epithelial cells, and you use either 1) only genes that are expressed and shared across all epithelial cells at about the same level, 2) only genes that are not detected in epithelial cells, 3) only genes which expression differ greatly across epithelial cells or 4) using all genes. Which of these 4 gene lists can best distinguish the epithelial subtypes in this dataset?
 
-As you could now imagine, using only genes which expression differ greatly across epithelial cells is the best case scenario, followed by using all genes. Therefore, using only genes that are expressed and shared across all epithelial cells at about the same level or only genes that are not detected in epithelial cells do not contain sufficient information to distinguish the epithelial subtypes.
+As you could now imagine, using only genes which expression differ greatly across epithelial cells is the best case scenario, followed by using al genes. Therefore, using only genes that are expressed and shared across all epithelial cells at about the same level or only genes that are not detected in epithelial cells do not contain sufficient information to distinguish the epithelial subtypes.
 
-However, since in single-cell we usually do not know the epithelial suptypes the cells before hand (since this is what we want to discover), we need another method to accomplish this task. In general terms, a common approach is to order genes by their overall variance across samples. This is because genes with higher variance will also likely be the ones that can separate the cells the best.
+However, since in single-cell we usually do not know the epithelial suptypes the cells before hand (since this is what we want to discover), we need another method to acomplish this task. In general terms, a common approach is to order genes by their overal variance across samples. This is because genes with higher variance will also likely be the ones that can separate the cells the best.
 
 Since genes with higher expression level usually also have naturally higher variation, the gene variation is then normalized by the log  mean expression of each gene (see plot).
 
@@ -591,11 +601,16 @@ LabelPoints(plot = VariableFeaturePlot(alldata), points = top20, repel = TRUE)
 # Intro to Graphs
 ***
 
+Instead of doing clustering of scRNAseq data on the full expression matrix or in PCA space (which gives linear distances), it has proven quite powerful to use graphs to create a non-linear representation of cell-to-cell similarities.
+
+Graphs is simply a representation of all cells (as nodes/vertices) with edges drawn between them based on some similarity criteria. For instance, a graph can be constructed with edges between all cells that are less than X distance from each other in PCA space with 50 principal components.
+
+
 <details>
 <summary>**KNN**</summary>
 <p>
 
-KNN refers to “K Nearest Neighbors”, which is a basic and popular topic in data mining and machine learning areas. The KNN graph is a graph in which two vertices p and q are connected by an edge, if the distance between p and q is among the K-th smallest distances. Given different similarity measure of these vectors, the pairwise distance can be Hamming distance, Cosine distance, Euclidean distance and so on. We take Euclidean distance as the way to measure similarity between vectors in this paper. The KNN Graph data structure has many advantages in data mining. For example, for a billion-level dataset, prebuilding a KNN graph offline as an index is much better than doing KNN search online many times.
+KNN refers to “K Nearest Neighbors”, which is a basic and popular topic in data mining and machine learning areas. The KNN graph is a graph in which two vertices p and q are connected by an edge, if the distance between p and q is among the K-th smallest distances.[2] Given different similarity measure of these vectors, the pairwise distance can be Hamming distance, Cosine distance, Euclidean distance and so on. We take Euclidean distance as the way to measure similarity between vectors in this paper. The KNN Graph data structure has many advantages in data mining. For example, for a billion-level dataset, prebuilding a KNN graph offline as an index is much better than doing KNN search online many times.
 
 <div style="text-align: right"> Adapted from [Github](https://github.com/lengyyy/KNN-Graph) </div>
 
@@ -633,7 +648,7 @@ pheatmap(alldata@graphs$CCA_nn[1:200,1:200],
 
 In addition to the k-NN graph, if we then determine the number of nearest neighbors shared by any two points. In graph terminology, we form what we call the "shared nearest neighbor" graph. We do this by replacing the weight of each link between two points (in the nearest neighbor graph) by the number of neighbors that the points share. In other words, this is the number of length 2 paths between any two points in the nearest neighbor graph.
 
-After this shared nearest neighbor graph is created, all pairs of points are compared and if any two points share more than T neighbors, *i.e.*, have a link in the shared nearest neighbor graph with a weight more than our threshold value, T( TS:. n), then the two points and any cluster they are part of are merged. In other words, clusters are connected components in our shared nearest neighbor graph after we sparsify using a threshold.
+After, this shared nearest neighbor graph is created, all pairs of points are compared and if any two points share more than T neighbors, i.e., have a link in the shared nearest neighbor graph with a weight more than our threshold value, T( TS:. n), then the two points and any cluster they are part of are merged. In other words, clusters are connected components in our shared nearest neighbor graph after we sparsify using a threshold.
 
 How to run it:
 
@@ -659,6 +674,10 @@ Setting `compute.SNN` to `TRUE` will compute both the k-NN and SNN graphs.
 
 # Dimensionality reduction
 ***
+
+The full gene expression space, with thousands of genes, contains quite a lot of noise in scRNAseq data and is hard to visualize. Hence, most scRNAseq analyses starts with a step of PCA (or similar method, e.g. ICA) to remove some of the variation of the data.
+
+For a simple scRNAseq dataset with only a few celltypes, PCA may be sufficient to visualize the complexity of the data in 2 or 3 dimensions. However, with increasing complexity we need to run non-linear dimensionality reduction to be able to project the data down to 2 dimensions for visualization, such methods are tSNE, UMAP and diffusion maps.
 
 <details>
 <summary>**PCA**</summary>
@@ -692,7 +711,7 @@ t-distributed stochastic neighborhood embedding (tSNE) is a **nonlinear** dimens
 <div style="text-align: right"> Adapted from [Wikipedia](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding) </div>
 
 
-useful links:
+Useful links:
 
 * [How to Use t-SNE Effectively](https://distill.pub/2016/misread-tsne/)
 
@@ -966,6 +985,14 @@ SeuratObject <- RunHarmony(
 # Clustering
 ***
 
+One of the main goals of scRNAseq studies is often to group cells into clusters of similar cells. There are many differnent ways of defining clusters. There are traditional clustering approaches like *K-mean*, *hierarchical clustering* and *affinity propagation*, but recently most pipelines make use of graphs (see section above) to define clusters as groups of interconnected cells.
+
+To define clusters in a graph we make use of different community detection algorithms like *Louvain*, *Leiden* and *Infomap*. The main idea behind all of them is to find groups of cells that have more edges (connections of high similiarity) between them than they have to other cells in the dataset.
+Still, all clustering methods begin with defining pairwise distances between cells. Commonly this is done by taking euklidean distances between cells in PCA space, after selecting a subset of variables and scaling the data. Hence, your clustering results will be strongly dependent on choises you made in preprocessing of the data, especially the variable gene selection and how many principal components you include from the PCA.
+
+In graph based methods, the distances from PCA space are used to create a graph with edges between neighboring cells. Also here, there are multiple parpameters, like number of neighbors in the KNN graph and pruning settings for the SNN construction that will impact the clustering results.
+
+
 <details>
 <summary>**Louvain**</summary>
 <p>
@@ -982,11 +1009,11 @@ How to run it:
 ```{r, eval=F}
 SeuratObject <- FindClusters(
   object = SeuratObject,
-  resolution = "0.8",
+  resolution = 0.8,
   algorithm = 1) #algorithim 1 = Louvain
 ```
 
-The number of clusters can be controlled using the `resolution` parameter.
+The number of clusters can be controled using the `resolution` parameter with higher values giving more (smaller) clusters.
 
 </p>
 </details>
@@ -1006,7 +1033,7 @@ SeuratObject <- FindClusters(
   algorithm = 4)  #algorithim 4 = Louvain
 ```
 
-The number of clusters can be controlled using the `resolution` parameter.
+The number of clusters can be controled using the `resolution` parameter with higher values giving more (smaller) clusters.
 
 </p>
 </details>
@@ -1015,7 +1042,7 @@ The number of clusters can be controlled using the `resolution` parameter.
 <summary>**Hierarchical clustering**</summary>
 <p>
 
-Hierarchical clustering (HC) is a method of cluster analysis which **seeks to build a hierarchy of clusters**. Strategies for hierarchical clustering generally fall into two types: Agglomerative or Divisive. [...] In general, the merges and splits are determined in a greedy manner. The results of hierarchical clustering are **usually presented in a dendrogram**. [...] The standard algorithm for hierarchical agglomerative clustering (HAC) has a time complexity of $O(n^3)$ and requires $O(n^2)$ memory, which makes it **too slow for even medium data sets**. In order to decide which clusters should be combined (for agglomerative), or where a cluster should be split (for divisive), **a measure of dissimilarity between sets of observations** is required. In most methods of hierarchical clustering, this is achieved by use of an appropriate metric (a measure of distance between pairs of observations), and **a linkage criterion** which specifies the dissimilarity of sets as a function of the pairwise distances of observations in the sets.
+Hierachical clustering (HC) is a method of cluster analysis which **seeks to build a hierarchy of clusters**. Strategies for hierarchical clustering generally fall into two types: Agglomerative or Divisive. [...] In general, the merges and splits are determined in a greedy manner. The results of hierarchical clustering are **usually presented in a dendrogram**. [...] The standard algorithm for hierarchical agglomerative clustering (HAC) has a time complexity of $O(n^3)$ and requires $O(n^2)$ memory, which makes it **too slow for even medium data sets**. In order to decide which clusters should be combined (for agglomerative), or where a cluster should be split (for divisive), **a measure of dissimilarity between sets of observations** is required. In most methods of hierarchical clustering, this is achieved by use of an appropriate metric (a measure of distance between pairs of observations), and **a linkage criterion** which specifies the dissimilarity of sets as a function of the pairwise distances of observations in the sets.
 
 <div style="text-align: right"> [Wikipedia](https://en.wikipedia.org/wiki/Hierarchical_clustering) </div>
 
@@ -1044,7 +1071,7 @@ Once the cluster hierarchy is defined, the next step is to define which samples 
 plot(h, labels = F)
 ```
 
-After identifying the dendrogram for the cells (above), we can now literally cut the tree at a fixed threshold (with the `cutree` function) at different levels (*a.k.a.* resolutions) to define the clusters. The number of clusters can be controlled using the height (`h`) or directly via the `k` parameters.
+After identifying the dendrogram for the cells (above), we can now literally cut the tree at a fixed threshold (with the `cutree` function) at different levels (a.k.a. resolutions) to define the clusters. The number of clusters can be controlled using the height (`h`) or directly via the `k` parameters.
 
 ```{r, eval=F}
 # Cutting the tree based on a dendrogram height
@@ -1061,6 +1088,7 @@ SeuratObject$HC_res <- cutree(
 table(SeuratObject$HC_res)
 ```
 
+The number of clusters can be controled using the height (`h`) or directly via the `k` parameters.
 
 </p>
 </details>
@@ -1069,8 +1097,7 @@ table(SeuratObject$HC_res)
 <summary>**K-mean**</summary>
 <p>
 
-K-means clustering is a method of vector quantization, originally from signal processing, that aims to partition $n$ observations into $k$ clusters in which **each observation belongs to the cluster with the nearest mean** (cluster centers or cluster centroid), serving as a prototype of the cluster. [...] The algorithm does not guarantee convergence to the global optimum. The result may depend on the initial clusters. As the algorithm is usually fast, **it is common to run it multiple times** with different starting conditions. [...] k-means clustering tends to find clusters of **comparable spatial extent (all with same size)**, while the expectation-maximization mechanism allows clusters to have different shapes.
-<div style="text-align: right"> [Wikipedia](https://en.wikipedia.org/wiki/K-means_clustering) </div>
+k-means clustering is a method of vector quantization, originally from signal processing, that aims to partition $n$ observations into $k$ clusters in which **each observation belongs to the cluster with the nearest mean** (cluster centers or cluster centroid), serving as a prototype of the cluster. [...] The algorithm does not guarantee convergence to the global optimum. The result may depend on the initial clusters. As the algorithm is usually fast, **it is common to run it multiple times** with different starting conditions. [...] k-means clustering tends to find clusters of **comparable spatial extent (all with same size)**, while the expectation-maximization mechanism allows clusters to have different shapes.
 
 K-means is a generic clustering algorithm that has been used in many application areas. In R, it can be applied via the kmeans function. Typically, it is applied to a reduced dimension representation of the expression data (most often PCA, because of the interpretability of the low-dimensional distances). We need to define the number of clusters in advance. Since the results depend on the initialization of the cluster centers, it is typically recommended to run K-means with multiple starting configurations (via the `nstart` argument).
 
@@ -1083,33 +1110,80 @@ SeuratObject$kmeans_12 <- kmeans(
   nstart = 10)$cluster
 ```
 
-The number of clusters can be controlled using the `centers` parameter.
+The number of clusters can be controled using the `centers` parameter.
 
 
 </p>
 </details>
 
 <details>
-<summary>**Affinity propagation**</summary>
+<summary>**What clustering resolution should I use?**</summary>
 <p>
 
+With all of these methods we can abtain any number of clusters by tweaking the settings. One of the hard problems in scRNAseq analysis is to make resonable decisions on how many clusters is reasonable. Unfortunately, there is no simple solution to this problem, it takes biological knowledge of the sample and some investigation to maker reasonable decisions on the number of clusters.
 
-In statistics and data mining, affinity propagation (AP) is a clustering algorithm based on the concept of "message passing" between data points. Unlike clustering algorithms such as k-means or k-medoids, affinity propagation **does not require the number of clusters to be determined** or estimated before running the algorithm. Similar to k-medoids, affinity propagation finds "exemplars," members of the input set that are representative of clusters. [...] Iterations are performed until either the cluster boundaries remain unchanged over a number of iterations, or some predetermined number (of iterations) is reached.
-
-<div style="text-align: right"> [Wikipedia](https://en.wikipedia.org/wiki/Affinity_propagation) </div>
-
+Differential gene expression may help in that analysis. If two clusters have the same DEGs and no clear genes that distinguish them, it may not be a good idea to split them into individual clusters.
+*Note!* Also examine the cluster you get with regards to the QC metrics (see above) to make sure that some clusters are not only formed due to low quality cells or doublets/multiples.
 
 </p>
 </details>
-
 <br/>
 
 # Differential expression
 ***
 
+Once clusters have been defined, it is often informative to find the genes that define each cluster. The methods for DE prediction in scRNAseq differs somewhat from bulkRNAseq methods. On one hand, we often have more samples (individual cells) compared to bulkRNAseq, but on the other hand, the scRNAseq data is noisy and suffer from drop-outs which complicates things.
+
 <details>
-<summary>**Finding Cluster Markers**</summary>
+<summary>**Finding DEGs**</summary>
 <p>
+
+Differentially expressed genes (DEGs) are often referred to as "marker genes", however, you have to be aware that most DE tests are designed to detect genes that have higher expression in one group of cells compared to another. A DEG is not automatically a unique marker for a celltype.
+
+The Seurat package has implemented many different tests for DE, some are designed for scRNAseq and others are used also for bulkRNAseq:
+* "wilcox" : Identifies differentially expressed genes between two groups of cells using a Wilcoxon Rank Sum test
+* "bimod" : Likelihood-ratio test for single cell gene expression, (McDavid et al., Bioinformatics, 2013)
+* "roc" : Identifies 'markers' of gene expression using ROC analysis. For each gene, evaluates (using AUC) a classifier built on that gene alone, to classify between two groups of cells. An AUC value of 1 means that expression values for this gene alone can perfectly classify the two groupings (i.e. Each of the cells in cells.1 exhibit a higher level than each of the cells in cells.2). An AUC value of 0 also means there is perfect classification, but in the other direction. A value of 0.5 implies that the gene has no predictive power to classify the two groups. Returns a 'predictive power' (abs(AUC-0.5) * 2) ranked matrix of putative differentially expressed genes.
+* "t" : Identify differentially expressed genes between two groups of cells using the Student's t-test.
+* "negbinom" : Identifies differentially expressed genes between two groups of cells using a negative binomial generalized linear model. Use only for UMI-based datasets
+* "poisson" : Identifies differentially expressed genes between two groups of cells using a poisson generalized linear model. Use only for UMI-based datasets
+* "LR" : Uses a logistic regression framework to determine differentially expressed genes. Constructs a logistic regression model predicting group membership based on each feature individually and compares this to a null model with a likelihood ratio test.
+* "MAST" : Identifies differentially expressed genes between two groups of cells using a hurdle model tailored to scRNA-seq data. Utilizes the MAST package to run the DE testing.
+* "DESeq2" : Identifies differentially expressed genes between two groups of cells based on a model using DESeq2 which uses a negative binomial distribution (Love et al, Genome Biology, 2014).This test does not support pre-filtering of genes based on average difference (or percent detection rate) between cell groups. However, genes may be pre-filtered based on their minimum detection rate (min.pct) across both cell groups. To use this method, please install DESeq2, using the instructions at https://bioconductor.org/packages/release/bioc/html/DESeq2.html
+
+To run DE prediction for all clusters in a Seurat object, each cluster vs. all other cells, use the `FindAllMarker` function:
+
+
+```{r, eval=F}
+markers <- FindAllMarkers( object = SeuratObject,
+  assay = "RNA",
+  logfc.threshold = 0.25,
+  test.use = "wilcox",
+  slot = "data",
+  min.pct = 0.1,
+  min.diff.pct = -Inf,
+  only.pos = FALSE,
+  max.cells.per.ident = Inf,
+  latent.vars = NULL,
+  min.cells.feature = 3,
+  min.cells.group = 3,
+  pseudocount.use = 1,
+  return.thresh = 0.01 )
+```
+
+There are multiple cutoffs for including genes, filtering output etc that you can tweak. For instance only testing up-regulated genes may speed up the test:
+* Only test upregulated genes with `onl.pos = TRUE`
+* Minimum number of cells a gene is expressed in `min.cells.feature`
+* Minimum number of cells of a cluster a gene is expressed in `min.cells.group`
+* Only test genes with `min.pct` expression in a cluster
+* Only test genes with `min.pct.diff` difference in percent expression between two groups.
+* Return only genes with p.value < `return.thresh`
+* Return only genes with logFoldchange > `logfc.threshold`
+
+Some other key features to think about:
+* If you have multiple assays in your object, make sure to run DE on the correct assay. For instance, if you have integrated data, you still want to do DE on the "RNA" assay.
+* If you have very uneven cluster sizes, it may bias the p-values of the genes so that clusters with many cells have more significant genes. It may be a good idea to set `max.cells.per.ident` to the size of your smallest cluster, and all clusters will be downsampled to the same size.
+* Some of the tests allow you to include confounding factors in `latent.vars`, those are 'LR', 'negbinom', 'poisson', or 'MAST'.
 
 </p>
 </details>
@@ -1118,12 +1192,54 @@ In statistics and data mining, affinity propagation (AP) is a clustering algorit
 <summary>**Comparing a cluster across experimental conditions**</summary>
 <p>
 
+The second way of computing differential expression is to answer which genes are differentially expressed within a cluster. For example, we may have libraries comming from 2 different library preparation methods (batches) and we would like to know which genes are influenced the most in a particular cell type. The same concenpt applies if you have instead two or more biological groups (control vs treated, time#0 vs time#1 vs time#2, etc).
+For this end, we will first subset our data for the desired cell cluster, then change the cell identities to the variable of comparison (which now in our case is the "Batch").
+
+```{r, eval=F}
+cell_selection <- subset(SeuratObject, cells = colnames(alldata)[alldata$seurat_clusters == 4])
+cell_selection <- SetIdent(cell_selection, value = "Batch")
+# Compute differentiall expression
+DGE_cell_selection <- FindAllMarkers(cell_selection, logfc.threshold = 0.2, test.use = "wilcox", min.pct = 0.1, mi
+```
+
+We can also test any two set of cells using the function `FindMarkers` and specify the cell names for two groups as `cells.1` and `cells.2`.
+
 </p>
 </details>
 
 <details>
 <summary>**Plotting DEG results**</summary>
 <p>
+
+Once we have ran a DE test, we may want to visualize the genes in different ways. But first, we need to get the top DEGs from each cluster. How to select top 10 genes per cluster:
+
+```{r, eval=F}
+top5 <- markers_genes %>% group_by(cluster) %>% top_n(-5, p_val_adj)
+```
+
+These can be visualized in a heatmap:
+
+```{r, eval=F}
+DoHeatmap(SeuratObject, features = as.character(unique(top5$gene)), group.by = "seurat_clusters", assay = "RNA")
+```
+
+Or with a dot-plot, where each cluster is represented with color by average expression, and size by proportion cells that have the gene expressed.
+
+```{r, eval=F}
+DotPlot(SeuratObject, features = as.character(unique(top5$gene)), group.by = "seurat_clusters", assay = "RNA") + coord_flip()
+```
+
+We can also plot a violin plot for each gene.
+
+```{r, eval=F}
+VlnPlot(SeuratObject, features = as.character(unique(top5$gene)), ncol = 5, group.by = "seurat_clusters", assay = "RNA")
+```
+
+The violin plot can also be split into batches, so if you have two batches with meta data column "Batch", these can be plotted separately within each cluster for each gene. This may be very useful to check that the DEGs you have detected are not just driven by a single batch.
+
+```{r, eval=F}
+VlnPlot(SeuratObject, features = as.character(unique(top5$gene)), ncol = 5, group.by = "seurat_clusters", assay = "RNA", split.by = "Batch")
+```
 
 </p>
 </details>
