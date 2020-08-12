@@ -82,14 +82,24 @@ At the end of this school, the participants should be able to:
 - Mihaela Zavolan, UNIBas/SIB, head or member of several WPs in the program.
 
 **Lecturers:**
-- Sarah Djebali, INSERM, France
-- Kathi Zarnack, Computational RNA Biology group, BLMS, Germany
-- Melina Klostermann, Computational RNA Biology group, BLMS, Germany
-- Paulo Czarnewski, senior bioinformatician at NBIS, Sweden
-- Erik Fasterius,  bioinformatician at NBIS, Sweden
-- Sebastian Leidel, RNA Biochemistry group, University of Bern, Switzerland
-- Geert van Geest, SIB / Interfacutly Bioinformatics Unit, University of Bern
-- Giancarlo Russo, FGCZ, ETHZ/UniZH
+- Sarah Djebali, Institute of Health and Medical Research (INSERM), 🇫🇷 France
+- Kathi Zarnack, Computational RNA Biology group, BLMS, 🇩🇪 Germany
+- Melina Klostermann, Computational RNA Biology group, BLMS, 🇩🇪 Germany
+- Paulo Czarnewski, National Bioinformatics Infrastructure (NBIS), 🇸🇪 Sweden
+- Erik Fasterius, National Bioinformatics Infrastructure (NBIS), 🇸🇪 Sweden
+- Sebastian Leidel, RNA Biochemistry group, UniBern, 🇨🇭 Switzerland
+- Geert van Geest, Interfaculty Bioinformatics Unit, SIB/UniBern, 🇨🇭 Switzerland
+- Giancarlo Russo, Functional Genomics Center, ETHZ/UniZH, 🇨🇭 Switzerland
+
+**Contributing institutions:**
+
+<img border="0" src="logos/nbis_logo.png" height="50">
+<img border="0" src="logos/inra_logo.png" height="50">
+<img border="0" src="logos/unibern_logo.png" height="50">
+<img border="0" src="logos/bmls_logo.png" height="50">
+<img border="0" src="logos/ethz_logo.png" height="50">
+
+
 
 
 **Additional information**
