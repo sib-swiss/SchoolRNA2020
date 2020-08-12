@@ -99,8 +99,14 @@ At the end of this school, the participants should be able to:
 <img border="0" src="logos/bmls_logo.png" height="50">    
 <img border="0" src="logos/ethz_logo.png" height="50">
 
+<br/>
+
 **Additional information**
 
 Slack channel: https://join.slack.com/t/nccr-sib-rna/shared_invite/zt-fxti8aom-7oxC2~r6CPWHgv1Eb2_g3A
 
 For more information, please contact <a href="mailto:gregoire.rossier@sib.swiss">Grégoire Rossier</a>.
+
+<br/>
+
+<br/>
