@@ -9,6 +9,9 @@ Since each of the 4 group themes have completely different softwares, please fol
 # <img border="0" src="/SchoolRNA2020/logos/single_cell.png" width="40" height="40"> Single cell RNA analysis
 ***
 
+<details>
+<summary>Click to expand!</summary>
+
 Please follow the [pre-course instructions](precourse.md) in order to install all necessary software and packages.
 
 The proposed educational plan for single cell RNA-seq data analysis project will be done using the Project-based learning (a.k.a. PBL) approach. This way, rather than having lectures on a topic and defined set of instructions and pre-given steps to follow (which focus on passive individual learning), you are required to learn the topic in a more **active** and **dynamic** way in order to solve the data analysis tasks as a group. Therefore, each group is provided with:
@@ -54,26 +57,43 @@ In the end, each group is expected to have 1 report file with all analysis steps
 
 </details>
 
-<br/>
+</details>
 
 <br/>
 
 # <img border="0" src="/SchoolRNA2020/logos/long_read.png" width="40" height="40"> Long-read RNA sequencing
 ***
 
-<br/>
+<details>
+<summary>Click to expand!</summary>
+
+  TO DO
+
+</details>
 
 <br/>
 
 # <img border="0" src="/SchoolRNA2020/logos/ribo_profiling.png" width="40" height="40"> Ribosome-profiling
 ***
 
-<br/>
+<details>
+<summary>Click to expand!</summary>
+
+  TO DO
+
+</details>
 
 <br/>
 
 # <img border="0" src="/SchoolRNA2020/logos/uv_crosslink_ip.png" width="40" height="40"> UV cross-linking immunoprecipitation (CLIP-seq)
 ***
+
+<details>
+<summary>Click to expand!</summary>
+
+  TO DO
+
+</details>
 
 <br/>
 
