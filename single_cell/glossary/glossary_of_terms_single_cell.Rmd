@@ -506,7 +506,7 @@ How to run it:
 ```{r, eval=F}
 SeuratObject <- ScaleData(
   object = SeuratObject,
-  vars.to.regress = c("nCount_RNA","mito.percent","nFeatures"),
+  vars.to.regress = c("nCount_RNA","mito.percent","nFeature_RNA"),
   model.use = "linear",
   do.scale = T,
   do.center = T)
@@ -528,7 +528,7 @@ How to run it:
 ```{r, eval=F}
 SeuratObject <- ScaleData(
   object = SeuratObject,
-  vars.to.regress = c("nCount_RNA","mito.percent","nFeatures"),
+  vars.to.regress = c("nCount_RNA","mito.percent","nFeature_RNA"),
   model.use = "poisson",
   do.scale = T,
   do.center = T)
@@ -551,7 +551,7 @@ How to run it:
 SeuratObject <- SCTransform(
   object = SeuratObject,
   assay="RNA",
-  vars.to.regress =  c("nCount_RNA","mito.percent","nFeatures"),
+  vars.to.regress =  c("nCount_RNA","mito.percent","nFeature_RNA"),
   new.assay.name = "sctransform",
   do.center=T )
 ```
