@@ -583,8 +583,8 @@ SeuratObject <- FindVariableFeatures(
   selection.method = "vst",
   verbose = FALSE,
   assay = "RNA",
-  dispersion.function = FastLogVMR,
-  mean.function = FastExpMean)
+  dispersion.function = "FastLogVMR",
+  mean.function = "FastExpMean")
 ```
 
 Variable gene plot:
