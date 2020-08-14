@@ -1027,6 +1027,7 @@ How to run it:
 ```{r, eval=F}
 SeuratObject <- FindClusters(
   object = SeuratObject,
+  graph.name = "SNN",
   resolution = 0.8,
   algorithm = 1) #algorithim 1 = Louvain
 ```
@@ -1047,7 +1048,8 @@ Leiden algorithm is applied iteratively, it converges to a partition in which al
 ```{r,eval=F }
 SeuratObject <- FindClusters(
   object = SeuratObject,
-  resolution = "0.8",
+  graph.name = "SNN",
+  resolution = 0.8,
   algorithm = 4)  #algorithim 4 = Louvain
 ```
 
