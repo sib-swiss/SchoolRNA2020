@@ -589,8 +589,8 @@ SeuratObject <- FindVariableFeatures(
 Variable gene plot:
 
 ```{r, eval=F}
-top20 <- head(VariableFeatures(alldata), 20)
-LabelPoints(plot = VariableFeaturePlot(alldata), points = top20, repel = TRUE)
+top20 <- head(VariableFeatures(SeuratObject), 20)
+LabelPoints(plot = VariableFeaturePlot(SeuratObject), points = top20, repel = TRUE)
 ```
 
 </p>
@@ -633,7 +633,7 @@ We can take a look at the kNN graph. It is a matrix where every connection betwe
 
 ```{r, eval=F}
 library(pheatmap)
-pheatmap(alldata@graphs$CCA_nn[1:200,1:200],
+pheatmap(SeuratObject@graphs$CCA_nn[1:200,1:200],
          col=c("white","black"),border_color = "grey90",
          legend = F,cluster_rows = F,cluster_cols = F,fontsize = 2)
 ```
@@ -1199,7 +1199,7 @@ The second way of computing differential expression is to answer which genes are
 For this end, we will first subset our data for the desired cell cluster, then change the cell identities to the variable of comparison (which now in our case is the "Batch").
 
 ```{r, eval=F}
-cell_selection <- subset(SeuratObject, cells = colnames(alldata)[alldata$seurat_clusters == 4])
+cell_selection <- subset(SeuratObject, cells = colnames(SeuratObject)[SeuratObject$seurat_clusters == 4])
 cell_selection <- SetIdent(cell_selection, value = "Batch")
 # Compute differentiall expression
 DGE_cell_selection <- FindAllMarkers(cell_selection, logfc.threshold = 0.2, test.use = "wilcox", min.pct = 0.1, mi
