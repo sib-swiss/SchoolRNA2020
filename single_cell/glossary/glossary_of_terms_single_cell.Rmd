@@ -314,6 +314,9 @@ SeuratObject <- PercentageFeatureSet(
   col.name = "percent_mito")
 ```
 
+Note that you might need to change the patterns if you are using an organism
+other than human, *e.g.* `"^Mt-"` for mouse.
+
 
 </p>
 </details>
