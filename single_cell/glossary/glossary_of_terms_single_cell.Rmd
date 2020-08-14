@@ -1240,7 +1240,7 @@ We can also test any two set of cells using the function `FindMarkers` and speci
 Once we have ran a DE test, we may want to visualize the genes in different ways. But first, we need to get the top DEGs from each cluster. How to select top 5 genes per cluster:
 
 ```{r, eval=F}
-top5 <- markers_genes %>% group_by(cluster) %>% top_n(-5, p_val_adj)
+top5 <- markers %>% group_by(cluster) %>% top_n(-5, p_val_adj)
 ```
 
 These can be visualized in a heatmap:
