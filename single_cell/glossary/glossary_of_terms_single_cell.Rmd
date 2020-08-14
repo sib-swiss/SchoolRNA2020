@@ -184,7 +184,7 @@ SeuratObject <- AddMetaData(
 
 The most common functions to use for plotting are the violin plot and the scatter plots for the dimensionality reduction calculated (you need to calculate it before using the function!).
 
-To plot **continous** variables as **violin** (press TAB inside the functions for more options):
+To plot **continuous** variables as **violin** (press TAB inside the functions for more options):
 
 ```{r, eval=F,  results='hold'}
 VlnPlot(object = SeuratObject,
@@ -195,7 +195,7 @@ VlnPlot(object = SeuratObject,
         y.max = 100) + NoLegend()
 ```
 
-To plot **CONTINOUS** variables as **scatter plot** using the `umap` reduction slot (press TAB inside the functions for more options):
+To plot **continuous** variables as **scatter plot** using the `umap` reduction slot (press TAB inside the functions for more options):
 
 ```{r, eval=F,  results='hold'}
 FeaturePlot(object = SeuratObject,
@@ -442,7 +442,7 @@ SeuratObject$G1.Score <- 1 - SeuratObject$S.Score - SeuratObject$G2M.Score
 <p>
 
 
-Having many metadata parameters to analyse individually makes it a bit hard to visualize the real differences between datasets, batches and experimental conditions. One way to try to combine all this information into one plot is by running dimensionality reduction via principal component analysis (PCA) on the continous variables in the metadata. Thus visualizing on the top principal components (1st and 2nd) reflects how different the datasets are.
+Having many metadata parameters to analyse individually makes it a bit hard to visualize the real differences between datasets, batches and experimental conditions. One way to try to combine all this information into one plot is by running dimensionality reduction via principal component analysis (PCA) on the continuous variables in the metadata. Thus visualizing on the top principal components (1st and 2nd) reflects how different the datasets are.
 
 ```{r, eval=F,  results='hold'}
 # Calculate PCA using selected metadata parameters
@@ -461,6 +461,19 @@ DimPlot(SeuratObject,
         reduction = "pca_metadata",
         dims = c(1,2),
         group.by = "orig.ident" )
+```
+
+**N.B.** Zero-count genes and identical/all-zero metadata columns (*i.e.* any
+value that does that have any variation) will interfere with analyses such as
+PCA. You will thus have to either remove those zero-count genes and/or exclude
+some metadata columns:
+
+```{r, eval=F}
+# Remove zero-count genes
+SeuratObject <- SeuratObject[Matrix::rowSums(SeuratObject) > 0, ]
+
+# Exclude metadata columns that are zero
+metadata_use <- metadata_use[colSums(SeuratObject@meta.data[, metadata_use] != 0 ) > 0 ]
 ```
 
 </p>
@@ -682,6 +695,7 @@ Setting `compute.SNN` to `TRUE` will compute both the k-NN and SNN graphs.
 The full gene expression space, with thousands of genes, contains quite a lot of noise in scRNAseq data and is hard to visualize. Hence, most scRNAseq analyses starts with a step of PCA (or similar method, e.g. ICA) to remove some of the variation of the data.
 
 For a simple scRNAseq dataset with only a few cell types, PCA may be sufficient to visualize the complexity of the data in 2 or 3 dimensions. However, with increasing complexity we need to run non-linear dimensionality reduction to be able to project the data down to 2 dimensions for visualization, such methods are tSNE, UMAP and diffusion maps.
+
 
 <details>
 <summary>**PCA**</summary>
