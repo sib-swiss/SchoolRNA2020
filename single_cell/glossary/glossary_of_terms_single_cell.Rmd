@@ -88,6 +88,7 @@ Additionally, one should also import any associated metadata file as a `data.fra
 # From .csv .tsv format (and then convert to sparse matrix)
 metadata <- read.delim(
   file = "data/metadata.csv",
+  sep = ",",
   row.names = 1 )
 ```
 
