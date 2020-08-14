@@ -372,7 +372,7 @@ item <- annot[match(rownames(SeuratObject@assays$RNA@counts) , annot[,1]),"gene_
 item[is.na(item)] <- "unknown"
 
 # Calculate the percentage of each gene biotype
-perc <- rowsum(as.matrix(SeuratObject@assays$RNA@counts) , group=item)
+temp <- rowsum(as.matrix(SeuratObject@assays$RNA@counts) , group=item)
 perc <- (t(temp)/Matrix::colSums(SeuratObject@assays$RNA@counts))
 o <- order(apply(perc,2,median),decreasing = F)
 perc <- perc[,o]
