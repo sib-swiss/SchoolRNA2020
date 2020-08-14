@@ -1075,7 +1075,7 @@ After having calculated the distances between samples calculated, we can now pro
 ```{r, eval=F}
 # Running HC on a PCA
 h <- hclust(
-  d = dist( SeuratObject@reductions["pca"]@cell.embeddings [ , 1:30 ],
+  d = dist( SeuratObject@reductions[["pca"]]@cell.embeddings [ , 1:30 ],
             method = "euclidean") ,
   method = "ward.D2")
 
