@@ -127,12 +127,6 @@ One can check the dimensions and subset Seurat Objects as a data.frame:
 ```{r, eval=F, include=F, result='hide'}
 # Checking the Seurat dimensions (Features x Cells)
 dim(SeuratObject)
-
-# Subsetting Features
-SeuratObject <- SeuratObject[ vector_FEATURES_TO_USE , ]
-
-# Subsetting Cells
-SeuratObject <- SeuratObject[ , vector_CELLS_TO_USE ]
 ```
 
 Seurat objects have a easy way to access their contents using the `@` or the `$` characters after the object name:
@@ -171,6 +165,23 @@ SeuratObject <- AddMetaData(
   object=SeuratObject,
   NEW_COLUMN,
   col.name=NEW_COLUMN_NAME)
+```
+
+</p>
+</details>
+
+<details>
+<summary>**Subsetting Seurat objects**</summary>
+<p>
+
+To subset a Seurat object, you can do it as if was a data.frame:
+
+```{r, eval=F, results='hold'}
+# Subsetting Features
+SeuratObject <- SeuratObject[ vector_FEATURES_TO_USE , ]
+
+# Subsetting Cells
+SeuratObject <- SeuratObject[ , vector_CELLS_TO_USE ]
 ```
 
 </p>
@@ -307,11 +318,11 @@ Citing from “Simple Single Cell” workflows (Lun, McCarthy & Marioni, 2017): 
 # Calculating % mitochondrial genes
 SeuratObject <- PercentageFeatureSet(
   object = SeuratObject,
-  features = rownames(SeuratObject),
-  pattern = "^MT-",
+  pattern = "^RP[SL]",
   assay = "RNA",
   col.name = "percent_mito")
 ```
+
 
 
 </p>
@@ -372,7 +383,7 @@ item[is.na(item)] <- "unknown"
 
 # Calculate the percentage of each gene biotype
 perc <- rowsum(as.matrix(SeuratObject@assays$RNA@counts) , group=item)
-perc <- (t(temp)/Matrix::colSums(SeuratObject@assays$RNA@counts))
+perc <- (t(perc)/Matrix::colSums(SeuratObject@assays$RNA@counts))
 o <- order(apply(perc,2,median),decreasing = F)
 perc <- perc[,o]
 
@@ -444,6 +455,11 @@ Having many metadata parameters to analyse individually makes it a bit hard to v
 # Calculate PCA using selected metadata parameters
 metadata_use <- grep("perc",colnames(SeuratObject@meta.data),value = T)
 metadata_use <- c("nCount_RNA","nFeature_RNA","S.Score","G2M.Score",metadata_use)
+
+#remove columns in the metadata that are all 0s
+metadata_use <- metadata_use [ colSums( SeuratObject@meta.data[,metadata_use] != 0 ) > 0 ]
+
+#Run PCA
 PC <- prcomp( SeuratObject@meta.data[,metadata_use] ,center = T, scale. = T)
 
 # Add the PCA (ran on the METADATA) in the object
@@ -483,6 +499,10 @@ $$logNormCounts = ln(NormCounts+1)$$
 How to run it:
 
 ```{r, eval=F}
+#remove genes with zero variance
+SeuratObject <- SeuratObject[ Matrix::rowSums(SeuratObject) > 0, ]
+
+#remove genes with zero variance
 SeuratObject <- NormalizeData(
   object = SeuratObject,
   scale.factor = 10000,
@@ -498,14 +518,14 @@ SeuratObject <- NormalizeData(
 
 Since each gene has a different expression level, it means that genes with higher expression values will naturally have higher variation that will be captured by downstream methods. This means that we need to somehow give each gene a similar weight beforehand (see below). A common practice is to center and scale each gene before performing PCA. This exact scaling is called Z-score normalization it is very useful for PCA, clustering and plotting heatmaps.
 
-Additionally, we can use regression to remove any unwanted sources of variation from the dataset, such as cell cycle, sequencing depth, percent mitocondria. This is achieved by doing a generalized linear regression (GLM) using these parameters as covariates in the model. Then the residuals of the model are taken as the “regressed data”. Although perhaps not in the best way, batch effect regression can also be done here.
+Additionally, we can use regression to remove any unwanted sources of variation from the dataset, such as cell cycle, sequencing depth, percent mitochondria. This is achieved by doing a generalized linear regression (GLM) using these parameters as covariates in the model. Then the residuals of the model are taken as the “regressed data”. Although perhaps not in the best way, batch effect regression can also be done here.
 
 How to run it:
 
 ```{r, eval=F}
 SeuratObject <- ScaleData(
   object = SeuratObject,
-  vars.to.regress = c("nCount_RNA","mito.percent","nFeatures"),
+  vars.to.regress = c("nCount_RNA","mito.percent","nFeatures_RNA"),
   model.use = "linear",
   do.scale = T,
   do.center = T)
@@ -527,7 +547,7 @@ How to run it:
 ```{r, eval=F}
 SeuratObject <- ScaleData(
   object = SeuratObject,
-  vars.to.regress = c("nCount_RNA","mito.percent","nFeatures"),
+  vars.to.regress = c("nCount_RNA","mito.percent","nFeatures_RNA"),
   model.use = "poisson",
   do.scale = T,
   do.center = T)
@@ -550,7 +570,7 @@ How to run it:
 SeuratObject <- SCTransform(
   object = SeuratObject,
   assay="RNA",
-  vars.to.regress =  c("nCount_RNA","mito.percent","nFeatures"),
+  vars.to.regress =  c("nCount_RNA","mito.percent","nFeatures_RNA"),
   new.assay.name = "sctransform",
   do.center=T )
 ```
@@ -581,16 +601,14 @@ SeuratObject <- FindVariableFeatures(
   nfeatures = 3000,
   selection.method = "vst",
   verbose = FALSE,
-  assay = "RNA",
-  dispersion.function = FastLogVMR,
-  mean.function = FastExpMean)
+  assay = "RNA")
 ```
 
 Variable gene plot:
 
 ```{r, eval=F}
-top20 <- head(VariableFeatures(alldata), 20)
-LabelPoints(plot = VariableFeaturePlot(alldata), points = top20, repel = TRUE)
+top20 <- head(VariableFeatures(SeuratObject), 20)
+LabelPoints(plot = VariableFeaturePlot(SeuratObject), points = top20, repel = TRUE)
 ```
 
 </p>
@@ -633,7 +651,7 @@ We can take a look at the kNN graph. It is a matrix where every connection betwe
 
 ```{r, eval=F}
 library(pheatmap)
-pheatmap(alldata@graphs$CCA_nn[1:200,1:200],
+pheatmap(SeuratObject@graphs$CCA_nn[1:200,1:200],
          col=c("white","black"),border_color = "grey90",
          legend = F,cluster_rows = F,cluster_cols = F,fontsize = 2)
 ```
@@ -690,6 +708,7 @@ Principal Component Analysis (PCA) is defined as an orthogonal **linear** transf
 How to run it:
 
 ```{r, eval=F}
+#run pca
 SeuratObject <- RunPCA(object = SeuratObject,
                        assay = "RNA",
                        npcs = 100,
@@ -893,19 +912,65 @@ SeuratObject <- IntegrateData(
 </p>
 </details>
 
+
+
 <details>
-<summary>**LIGER**</summary>
+<summary>**Scanorama**</summary>
 <p>
 
 <div style="text-align: right"> [Welch et al (2019) *Cell*](https://www.cell.com/cell/pdf/S0092-8674(19)30504-5.pdf) </div>
 
 ```{r, eval=F}
 
+
+#Split the object
+SeuratObject.list <- SplitObject(
+  object = SeuratObject,
+  split.by = "BATCH")
+
+assaylist <- list()
+genelist <- list()
+for(i in 1:length(seuratobjetclist))
+{ assaylist[[i]] <- t(as.matrix(GetAssayData(seuratobjectlist[[i]], "data")))
+   genelist[[i]] <- rownames(seuratobjetclist[[i]]) }
+```
+
+
+```{r, eval=F}
+library(reticulate)
+scanorama <- import("scanorama")
+
+integrated.data <- scanorama$integrate(assaylist, genelist)
+corrected.data <- scanorama$correct(assaylist, genelist, return_dense=TRUE)
+integrated.corrected.data <- scanorama$correct(assaylist, genelist, return_dimred=TRUE, return_dense=TRUE)
+```
+
+
+```{r, eval=F}
+intdata <- lapply(integrated.corrected.data[[2]], t)
+panorama <- do.call(cbind, intdata)
+rownames(panorama) <- as.character(integrated.corrected.data[[3]])
+colnames(panorama) <- unlist(sapply(assaylist, rownames))
+
+intdimred <- do.call(rbind, integrated.corrected.data[[1]])
+colnames(intdimred) <- paste0("PC_", 1:100)
+
+   #We also add standard deviations in order to draw Elbow Plots in Seurat
+
+stdevs <- apply(intdimred, MARGIN = 2, FUN = sd)
+
+SeuratObject[["pca_scanorama"]] <- CreateDimReducObject(
+  embeddings = intdimred, 
+  stdev = stdevs, 
+  key = "PC_", 
+  assay = "pano")
 ```
 
 
 </p>
 </details>
+
+
 
 <details>
 <summary>**Conos**</summary>
@@ -1199,7 +1264,7 @@ The second way of computing differential expression is to answer which genes are
 For this end, we will first subset our data for the desired cell cluster, then change the cell identities to the variable of comparison (which now in our case is the "Batch").
 
 ```{r, eval=F}
-cell_selection <- subset(SeuratObject, cells = colnames(alldata)[alldata$seurat_clusters == 4])
+cell_selection <- subset(SeuratObject, cells = colnames(SeuratObject)[SeuratObject$seurat_clusters == 4])
 cell_selection <- SetIdent(cell_selection, value = "Batch")
 # Compute differentiall expression
 DGE_cell_selection <- FindAllMarkers(cell_selection, logfc.threshold = 0.2, test.use = "wilcox", min.pct = 0.1, mi
@@ -1252,9 +1317,106 @@ VlnPlot(SeuratObject, features = as.character(unique(top5$gene)), ncol = 5, grou
 # Trajectory inference
 ***
 
+If you have been using the `scran/scater` pipeline so far. Below you can find a summary code for data processing until getting:
+
+* A reduction where to perform the trajectory ( PCA > MDS > DM > UMAP > tSNE )
+* The cell clustering information
+
 <details>
 <summary>**Slingshot**</summary>
 <p>
+
+Slingshot is one of the most prototypical TI methods, as it contains many popular components that can also be found in other TI methods (Cannoodt, Saelens, and Saeys 2016): dimensionality reduction, clustering and principal curves.
+
+As many other TI methods, Slingshot is not restricted to a particular dimensionality reduction method. So which one should you use? There are three important points to take into account:
+
+You should use enough dimensions to capture the whole complexity of the data. This is especially important for linear dimensionality reductions such as PCA and MDS, and if the trajectory topology is more complex than a bifurcation. Note that even when the trajectory is not clearly visible in two dimensions, the TI method may still see it in multiple dimensions. TI methods can see in a lot more dimensions compare to use silly earthlings!
+
+* Some dimensionality reduction methods may enlarge (or blow up) the distance in high-density regions. t-SNE and, to a lesser extent UMAP, have this problem. The dataset that we have here doesn’t really have this problem, but it is quite common if you do an unbiased sampling of your biological populations.
+* Some dimensionality reduction methods try to enforce a grouping of the cells, and remove continuities. t-SNE and, to a lesser extent UMAP, have this problem. These same methods may also put cells together that actually do not
+* For these reasons, MDS and diffusion maps are often the preferred choice , although t-SNE and UMAP may work if you have a balanced and simple sample.
+
+```{r, eval=F}
+dimred <- data@reductions[['embedding_to_be_used']]@cell.embeddings
+```
+
+We want to find continuities in our data, why then do so many TI methods use methods that split up the data in distinct groups using clustering?
+
+The answer is simple: clustering simplifies the problem by finding groups of cells that are at approximately the same location in the trajectory. These groups can then be connected to find the different paths that cells take, and where they branch off. Ideally, the clustering method for TI should therefore not group cells based on a density, such as DBSCAN A trajectory is by definition a group of cells that are all connected through high-density regions, but still differ in their expression.
+
+We’ll use standard Seurat clustering here (louvain clustering), but alternative methods may be appropriate as well. Sometimes, it may be useful to ‘overcluster’ to make sure that all subbranches are captured. We’ll increase the resolution a bit, so that we find more granular clusters. As an exercise, you might tweak this resolution a bit and see how it affects downstream analyses.
+
+```{r, eval=F}
+clustering <- factor(SeuratObject@meta.data[,"clustering_to_be_used"])
+```
+
+Until up to this point, the steps above have been covered in the previous lectures. From now on, we will start using that clustering and data reduction techniques for trajectory inference. The whole process can be done using a single function named `slingshot`, which is simply a wrapper for the 2 main steps for trajectory inference. The first step of the process is to define the lineages and then fit a curve through the data that defines a trajectory. These steps are break donw below for clarity.
+
+#### Defining cell lineages with Slingshot
+
+```{r, eval=F}
+library(slingshot)
+
+#Run default Slingshot lineage identification
+set.seed(1)
+lineages <- getLineages(
+  data = dimred,
+  clusterLabels = clustering,
+ #end.clus = c("11","7","10","9","5"), #define how many branches/lineages to consider
+ #start.clus = "5" #define where to start the trajectories
+ ) 
+
+lineages
+
+
+#Plot the lineages
+par(mfrow=c(1,2))
+plot(dimred[,1:2], col = pal[clustering],  cex=.5,pch = 16)
+for(i in levels(clustering)){ 
+  text( mean(dimred[clustering==i,1]),
+        mean(dimred[clustering==i,2]), labels = i,font = 2) }
+plot(dimred[,1:2], col = pal[clustering],cex=.5, pch = 16)
+lines(lineages, lwd = 3, col = 'black')
+``` 
+
+Here we see one central issue with trajectory analysis: where does the trajectory begin? Without any extra information, this is nearly an impossible task for a TI method. We need prior biological information to be able to define where the trajectory starts and where it should end.
+
+```{r,eval=F}
+#Run default Slingshot
+set.seed(1)
+lineages <- getLineages(data = dimred,
+                        clusterLabels = clustering,
+                        #end.clus = c("11","7","10","9","5"), #define how many branches/lineages to consider
+                        start.clus = "5") #define where to start the trajectories
+lineages
+#Plot the lineages
+par(mfrow=c(1,2))
+plot(dimred[,1:2], col = pal[clustering],  cex=.5,pch = 16)
+for(i in levels(clustering)){ 
+  text( mean(dimred[clustering==i,1]),
+        mean(dimred[clustering==i,2]), labels = i,font = 2) }
+plot(dimred, col = pal[clustering],  pch = 16)
+lines(lineages, lwd = 3, col = 'black')
+```
+
+
+#### Defining Principal Curves
+
+Once the clusters are connected, Slingshot allows you to transform them to a smooth trajectory using principal curves. This is an algorithm that iteratively changes an initial curve to better match the data points. It was developed for linear data. To apply it to single-cell data, slingshot adds two enhancements:
+
+* It will run principal curves for each ‘lineage’, which is a set of clusters that go from a defined start cluster to some end cluster
+* Lineages with a same set of clusters will be constrained so that their principal curves remain bundled around the overlapping clusters
+
+Since the function `getCurves()` takes some time to run, we can speed up the convergence of the curve fitting process by reducing the amount of cells to use in each lineage. Ideally you could all cells, but here we had set `approx_points` to 300 to speed up. Feel free to adjust that for your dataset.
+ 
+```{r,eval=F}
+curves <- getCurves(lineages, approx_points = 300, thresh = 0.01, stretch = .8, allow.breaks = FALSE, shrink=.99)
+curves
+
+plot(dimred, col = pal[clustering], asp = 1, pch = 16)
+lines(curves, lwd = 3, col = 'black')
+```
+
 
 </p>
 </details>
@@ -1262,6 +1424,142 @@ VlnPlot(SeuratObject, features = as.character(unique(top5$gene)), ncol = 5, grou
 <details>
 <summary>**Differential expression along trajectories**</summary>
 <p>
+
+The main way to interpret a trajectory is to find genes that change along the trajectory. There are many ways to define differential expression along a trajectory:
+
+* Expression changes along a particular path (i.e. change with pseudotime)
+* Expression differences between branches
+* Expression changes at branch points
+* Expression changes somewhere along the trajectory
+* …
+
+`tradeSeq` is a recently proposed algorithm to find trajectory differentially expressed genes. It works by smoothing the gene expression along the trajectory by fitting a smoother using generalized additive models (GAMs), and testing whether certain coefficients are statstically different between points in the trajectory.
+
+The fitting of GAMs can take quite a while, so for demonstration purposes we first do a very stringent filtering of the genes. In an ideal experiment, you would use all the genes, or at least those defined as being variable.
+
+```{r,eval=F}
+BiocParallel::register(BiocParallel::SerialParam())
+
+library(tradeSeq)
+counts <- as.matrix( SeuratObject@assays$RNA@counts[ SeuratObject@assays$RNA@var.features , ] )
+
+#Removing some genes to speed up the computations for this tutorial
+filt_counts <- counts [ rowSums(counts > 5) > ncol(counts)/100, ] 
+dim(filt_counts)
+
+#Fitting a Gamma distribution
+sce <- fitGAM(  counts = as.matrix(filt_counts),
+                sds = curves )
+plotGeneCount(curve = curves,
+              counts = filt_counts,
+              clusters = clustering,
+              models = sce)
+```
+
+```{r,eval=F}
+#Define function to plot
+library(dplyr)
+plot_differential_expression <- function(feature_id) {
+feature_id <- pseudotime_association %>%
+  filter(pvalue < 0.05) %>%
+  top_n(1, -waldStat) %>%
+  pull(feature_id)
+
+cowplot::plot_grid(
+  plotGeneCount(curve = curves,
+                counts = filt_counts,
+                gene=feature_id[1],
+                clusters = clustering,
+                models = sce) + 
+    ggplot2::theme(legend.position = "none"),
+  
+  plotSmoothers(models = sce, 
+                counts=as.matrix(counts),
+                gene = feature_id[1])
+)}
+```
+
+ 
+
+#### Genes that change with pseudotime
+
+```{r,eval=F}
+pseudotime_association <- associationTest(sce)
+pseudotime_association$fdr <- p.adjust(pseudotime_association$pvalue, method = "fdr")
+pseudotime_association <- pseudotime_association[ order(pseudotime_association$pvalue), ]
+pseudotime_association$feature_id <- rownames(pseudotime_association)
+```
+
+
+```{r,eval=F}
+feature_id <- pseudotime_association %>%
+  filter(pvalue < 0.05) %>%
+  top_n(1, -waldStat) %>%
+  pull(feature_id)
+
+plot_differential_expression(feature_id)
+```
+
+ 
+
+#### Genes that change between two pseudotime points
+
+We can define custom pseudotime values of interest if we’re interested in genes that change between particular point in pseudotime. By default, we can look at differences between start and end:
+
+```{r,eval=F}
+pseudotime_start_end_association <- startVsEndTest(sce, pseudotimeValues = c(0, 1))
+pseudotime_start_end_association$feature_id <- rownames(pseudotime_start_end_association)
+
+feature_id <- pseudotime_start_end_association %>% 
+  filter(pvalue < 0.05) %>% 
+  top_n(1, waldStat) %>% 
+  pull(feature_id)
+plot_differential_expression(feature_id)
+```
+
+ 
+
+#### Genes that are different between lineages
+
+More interesting are genes that are different between two branches. We may have seen some of these genes already pop up in previous analyses of pseudotime. There are several ways to define “different between branches”, and each have their own functions:
+
+* Different at the end points, using `diffEndTest`
+* Different at the branching point, using `earlyDETest`
+* Different somewhere in pseudotime the branching point, using `patternTest`
+* Note that the last function requires that the pseudotimes between two lineages are aligned.
+
+```{r,eval=F}
+different_end_association <- diffEndTest(sce)
+different_end_association$feature_id <- rownames(different_end_association)
+feature_id <- different_end_association %>% 
+  filter(pvalue < 0.05) %>% 
+  arrange(desc(waldStat)) %>% 
+  dplyr::slice(1) %>% 
+  pull(feature_id)
+plot_differential_expression(feature_id)
+```
+
+
+```{r,eval=F}
+branch_point_association <- earlyDETest(sce)
+branch_point_association$feature_id <- rownames(branch_point_association)
+feature_id <- branch_point_association %>% 
+  filter(pvalue < 0.05) %>% 
+  arrange(desc(waldStat)) %>% 
+  dplyr::slice(1) %>% 
+  pull(feature_id)
+plot_differential_expression(feature_id)
+```
+
+
+Check out this [vignette](https://statomics.github.io/tradeSeq/articles/tradeSeq.html) for a more in-depth overview of tradeSeq
+
+ 
+#### References
+
+Cannoodt, Robrecht, Wouter Saelens, and Yvan Saeys. 2016. “Computational Methods for Trajectory Inference from Single-Cell Transcriptomics.” *European Journal of Immunology* 46 (11): 2496–2506. [doi](https://doi.org/10.1002/eji.201646347).
+
+Saelens, Wouter, Robrecht Cannoodt, Helena Todorov, and Yvan Saeys. 2019. “A Comparison of Single-Cell Trajectory Inference Methods.” *Nature Biotechnology* 37 (5): 547–54. [doi](https://doi.org/10.1038/s41587-019-0071-9).
 
 </p>
 </details>
