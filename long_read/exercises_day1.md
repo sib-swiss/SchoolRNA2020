@@ -19,7 +19,7 @@ Once you have logged in, initiate conda:
 /opt/miniconda3/bin/conda init
 ```
 
-This modifies your `.bashrc`. So logout and login again, and you can use conda.
+This modifies your `.bashrc`. So **logout** and **login** again, and you can use conda.
 
 ### Setup your favourite editor to work remotely
 
@@ -88,7 +88,7 @@ fastqc \
 
 > **HINT:** Find the equation to calculate error probability from quality score on [Wikipedia](https://en.wikipedia.org/wiki/Phred_quality_score)
 
-> **SEE ALSO:** This [blog](https://gigabaseorgigabyte.wordpress.com/2017/06/26/averaging-basecall-quality-scores-the-right-way/) of the author of NanoPlot, and this [thread](https://github.com/wdecoster/NanoPlot/issues/191). 
+> **SEE ALSO:** This [blog](https://gigabaseorgigabyte.wordpress.com/2017/06/26/averaging-basecall-quality-scores-the-right-way/) of the author of NanoPlot, and this [thread](https://github.com/wdecoster/NanoPlot/issues/191).
 
 ## 1.3 Read alignment
 ><img border="0" src="https://www.svgrepo.com/show/14756/person-silhouette.svg" width="30" height="30"> 1 hour
@@ -149,5 +149,5 @@ samtools index ~/read_alignment/CACNA1C_combined.bam
 ```
 
 ### Go to:
-* [Exercises day 2](https://github.com/GeertvanGeest/NCCR_SIB_lrRNAseq/blob/master/exercises_day2.md)
-* [Main page](https://github.com/GeertvanGeest/NCCR_SIB_lrRNAseq)
+* [Exercises day 2](./exercises_day2.md)
+* [Main page](./README.md)
