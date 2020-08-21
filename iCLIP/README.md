@@ -18,5 +18,6 @@ Here is a quick introduction/refresher into [basic R programming](R_intro.pdf).
 ### GRanges
 We will use the GRanges package a lot. We will also introduce it during the course, but a nice introduction can be found at
 https://bioconductor.org/packages/release/bioc/vignettes/GenomicRanges/inst/doc/GenomicRangesIntroduction.html. 
-(The Section "2 GRanges: Genomic Ranges" is enough for our purpose)
+(The Section "2 GRanges: Genomic Ranges" is enough for our purpose) </p>
+Another good (a bit more advanced) workshop on GRanges is [Solving common bioinformatic challenges using GenomicRanges](https://bioconductor.github.io/BiocWorkshops/solving-common-bioinformatic-challenges-using-genomicranges.html)
 

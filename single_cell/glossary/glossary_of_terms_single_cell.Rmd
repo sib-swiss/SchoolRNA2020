@@ -88,6 +88,7 @@ Additionally, one should also import any associated metadata file as a `data.fra
 # From .csv .tsv format (and then convert to sparse matrix)
 metadata <- read.delim(
   file = "data/metadata.csv",
+  sep = ",",
   row.names = 1 )
 ```
 
@@ -194,7 +195,7 @@ SeuratObject <- SeuratObject[ , vector_CELLS_TO_USE ]
 
 The most common functions to use for plotting are the violin plot and the scatter plots for the dimensionality reduction calculated (you need to calculate it before using the function!).
 
-To plot **continous** variables as **violin** (press TAB inside the functions for more options):
+To plot **continuous** variables as **violin** (press TAB inside the functions for more options):
 
 ```{r, eval=F,  results='hold'}
 VlnPlot(object = SeuratObject,
@@ -205,7 +206,7 @@ VlnPlot(object = SeuratObject,
         y.max = 100) + NoLegend()
 ```
 
-To plot **CONTINOUS** variables as **scatter plot** using the `umap` reduction slot (press TAB inside the functions for more options):
+To plot **continuous** variables as **scatter plot** using the `umap` reduction slot (press TAB inside the functions for more options):
 
 ```{r, eval=F,  results='hold'}
 FeaturePlot(object = SeuratObject,
@@ -323,6 +324,9 @@ SeuratObject <- PercentageFeatureSet(
   col.name = "percent_mito")
 ```
 
+Note that you might need to change the patterns if you are using an organism
+other than human, *e.g.* `"^Mt-"` for mouse.
+
 
 
 </p>
@@ -382,8 +386,13 @@ item <- annot[match(rownames(SeuratObject@assays$RNA@counts) , annot[,1]),"gene_
 item[is.na(item)] <- "unknown"
 
 # Calculate the percentage of each gene biotype
+<<<<<<< HEAD
 perc <- rowsum(as.matrix(SeuratObject@assays$RNA@counts) , group=item)
 perc <- (t(perc)/Matrix::colSums(SeuratObject@assays$RNA@counts))
+=======
+temp <- rowsum(as.matrix(SeuratObject@assays$RNA@counts) , group=item)
+perc <- (t(temp)/Matrix::colSums(SeuratObject@assays$RNA@counts))
+>>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
 o <- order(apply(perc,2,median),decreasing = F)
 perc <- perc[,o]
 
@@ -449,7 +458,7 @@ SeuratObject$G1.Score <- 1 - SeuratObject$S.Score - SeuratObject$G2M.Score
 <p>
 
 
-Having many metadata parameters to analyse individually makes it a bit hard to visualize the real differences between datasets, batches and experimental conditions. One way to try to combine all this information into one plot is by running dimensionality reduction via principal component analysis (PCA) on the continous variables in the metadata. Thus visualizing on the top principal components (1st and 2nd) reflects how different the datasets are.
+Having many metadata parameters to analyse individually makes it a bit hard to visualize the real differences between datasets, batches and experimental conditions. One way to try to combine all this information into one plot is by running dimensionality reduction via principal component analysis (PCA) on the continuous variables in the metadata. Thus visualizing on the top principal components (1st and 2nd) reflects how different the datasets are.
 
 ```{r, eval=F,  results='hold'}
 # Calculate PCA using selected metadata parameters
@@ -473,6 +482,19 @@ DimPlot(SeuratObject,
         reduction = "pca_metadata",
         dims = c(1,2),
         group.by = "orig.ident" )
+```
+
+**N.B.** Zero-count genes and identical/all-zero metadata columns (*i.e.* any
+value that does that have any variation) will interfere with analyses such as
+PCA. You will thus have to either remove those zero-count genes and/or exclude
+some metadata columns:
+
+```{r, eval=F}
+# Remove zero-count genes
+SeuratObject <- SeuratObject[Matrix::rowSums(SeuratObject) > 0, ]
+
+# Exclude metadata columns that are zero
+metadata_use <- metadata_use[colSums(SeuratObject@meta.data[, metadata_use] != 0 ) > 0 ]
 ```
 
 </p>
@@ -525,7 +547,11 @@ How to run it:
 ```{r, eval=F}
 SeuratObject <- ScaleData(
   object = SeuratObject,
+<<<<<<< HEAD
   vars.to.regress = c("nCount_RNA","mito.percent","nFeatures_RNA"),
+=======
+  vars.to.regress = c("nCount_RNA","mito.percent","nFeature_RNA"),
+>>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
   model.use = "linear",
   do.scale = T,
   do.center = T)
@@ -547,7 +573,11 @@ How to run it:
 ```{r, eval=F}
 SeuratObject <- ScaleData(
   object = SeuratObject,
+<<<<<<< HEAD
   vars.to.regress = c("nCount_RNA","mito.percent","nFeatures_RNA"),
+=======
+  vars.to.regress = c("nCount_RNA","mito.percent","nFeature_RNA"),
+>>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
   model.use = "poisson",
   do.scale = T,
   do.center = T)
@@ -570,7 +600,11 @@ How to run it:
 SeuratObject <- SCTransform(
   object = SeuratObject,
   assay="RNA",
+<<<<<<< HEAD
   vars.to.regress =  c("nCount_RNA","mito.percent","nFeatures_RNA"),
+=======
+  vars.to.regress =  c("nCount_RNA","mito.percent","nFeature_RNA"),
+>>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
   new.assay.name = "sctransform",
   do.center=T )
 ```
@@ -601,7 +635,13 @@ SeuratObject <- FindVariableFeatures(
   nfeatures = 3000,
   selection.method = "vst",
   verbose = FALSE,
+<<<<<<< HEAD
   assay = "RNA")
+=======
+  assay = "RNA",
+  dispersion.function = "FastLogVMR",
+  mean.function = "FastExpMean")
+>>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
 ```
 
 Variable gene plot:
@@ -696,6 +736,7 @@ Setting `compute.SNN` to `TRUE` will compute both the k-NN and SNN graphs.
 The full gene expression space, with thousands of genes, contains quite a lot of noise in scRNAseq data and is hard to visualize. Hence, most scRNAseq analyses starts with a step of PCA (or similar method, e.g. ICA) to remove some of the variation of the data.
 
 For a simple scRNAseq dataset with only a few cell types, PCA may be sufficient to visualize the complexity of the data in 2 or 3 dimensions. However, with increasing complexity we need to run non-linear dimensionality reduction to be able to project the data down to 2 dimensions for visualization, such methods are tSNE, UMAP and diffusion maps.
+
 
 <details>
 <summary>**PCA**</summary>
@@ -1074,6 +1115,7 @@ How to run it:
 ```{r, eval=F}
 SeuratObject <- FindClusters(
   object = SeuratObject,
+  graph.name = "SNN",
   resolution = 0.8,
   algorithm = 1) #algorithim 1 = Louvain
 ```
@@ -1094,7 +1136,8 @@ Leiden algorithm is applied iteratively, it converges to a partition in which al
 ```{r,eval=F }
 SeuratObject <- FindClusters(
   object = SeuratObject,
-  resolution = "0.8",
+  graph.name = "SNN",
+  resolution = 0.8,
   algorithm = 4)  #algorithim 4 = Louvain
 ```
 
@@ -1120,7 +1163,7 @@ After having calculated the distances between samples calculated, we can now pro
 ```{r, eval=F}
 # Running HC on a PCA
 h <- hclust(
-  d = dist( SeuratObject@reductions["pca"]@cell.embeddings [ , 1:30 ],
+  d = dist( SeuratObject@reductions[["pca"]]@cell.embeddings [ , 1:30 ],
             method = "euclidean") ,
   method = "ward.D2")
 
@@ -1197,7 +1240,7 @@ Differential gene expression may help in that analysis. If two clusters have the
 # Differential expression
 ***
 
-Once clusters have been defined, it is often informative to find the genes that define each cluster. The methods for DE prediction in scRNAseq differs somewhat from bulk RNAseq methods. On one hand, we often have more samples (individual cells) compared to bulk RNA-seq, but on the other hand, the scRNAseq data is noisy and suffer from drop-outs which complicates things.
+Once clusters have been defined, it is often informative to find the genes that define each cluster. The methods for DE prediction in scRNAseq differs somewhat from bulk RNAseq methods. On one hand, we often have more samples (individual cells) compared to bulk RNA-seq, but on the other hand, the scRNAseq data is noisy and suffer from drop-outs, which complicates things.
 
 <details>
 <summary>**Finding DEGs**</summary>
@@ -1207,15 +1250,15 @@ Differentially expressed genes (DEGs) are often referred to as "marker genes", h
 
 The Seurat package has implemented many different tests for DE, some are designed for scRNAseq and others are used also for bulk RNA-seq:
 
-* "wilcox" : Identifies differentially expressed genes between two groups of cells using a Wilcoxon Rank Sum test
-* "bimod" : Likelihood-ratio test for single cell gene expression, (McDavid et al., Bioinformatics, 2013)
-* "roc" : Identifies 'markers' of gene expression using ROC analysis. For each gene, evaluates (using AUC) a classifier built on that gene alone, to classify between two groups of cells. An AUC value of 1 means that expression values for this gene alone can perfectly classify the two groupings (i.e. Each of the cells in cells.1 exhibit a higher level than each of the cells in cells.2). An AUC value of 0 also means there is perfect classification, but in the other direction. A value of 0.5 implies that the gene has no predictive power to classify the two groups. Returns a 'predictive power' (abs(AUC-0.5) * 2) ranked matrix of putative differentially expressed genes.
-* "t" : Identify differentially expressed genes between two groups of cells using the Student's t-test.
-* "negbinom" : Identifies differentially expressed genes between two groups of cells using a negative binomial generalized linear model. Use only for UMI-based datasets
-* "poisson" : Identifies differentially expressed genes between two groups of cells using a poisson generalized linear model. Use only for UMI-based datasets
-* "LR" : Uses a logistic regression framework to determine differentially expressed genes. Constructs a logistic regression model predicting group membership based on each feature individually and compares this to a null model with a likelihood ratio test.
-* "MAST" : Identifies differentially expressed genes between two groups of cells using a hurdle model tailored to scRNA-seq data. Utilizes the MAST package to run the DE testing.
-* "DESeq2" : Identifies differentially expressed genes between two groups of cells based on a model using DESeq2 which uses a negative binomial distribution (Love et al, Genome Biology, 2014).This test does not support pre-filtering of genes based on average difference (or percent detection rate) between cell groups. However, genes may be pre-filtered based on their minimum detection rate (min.pct) across both cell groups. To use this method, please install DESeq2, using the instructions at https://bioconductor.org/packages/release/bioc/html/DESeq2.html
+* `wilcox` : Identifies differentially expressed genes between two groups of cells using a Wilcoxon Rank Sum test
+* `bimod` : Likelihood-ratio test for single cell gene expression (McDavid et al., Bioinformatics, 2013)
+* `roc` : Identifies 'markers' of gene expression using ROC analysis. For each gene, evaluates (using AUC) a classifier built on that gene alone, to classify between two groups of cells. An AUC value of 1 means that expression values for this gene alone can perfectly classify the two groupings (*i.e.* Each of the cells in cells.1 exhibit a higher level than each of the cells in cells.2). An AUC value of 0 also means there is perfect classification, but in the other direction. A value of 0.5 implies that the gene has no predictive power to classify the two groups. Returns a 'predictive power' (abs(AUC-0.5) * 2) ranked matrix of putative differentially expressed genes.
+* `t` : Identify differentially expressed genes between two groups of cells using the Student's t-test.
+* `negbinom` : Identifies differentially expressed genes between two groups of cells using a negative binomial generalized linear model. Use only for UMI-based datasets
+* `poisson` : Identifies differentially expressed genes between two groups of cells using a poisson generalized linear model. Use only for UMI-based datasets
+* `LR` : Uses a logistic regression framework to determine differentially expressed genes. Constructs a logistic regression model predicting group membership based on each feature individually and compares this to a null model with a likelihood ratio test.
+* `MAST` : Identifies differentially expressed genes between two groups of cells using a hurdle model tailored to scRNA-seq data. Utilizes the MAST package to run the DE testing.
+* `DESeq2` : Identifies differentially expressed genes between two groups of cells based on a model using DESeq2 which uses a negative binomial distribution (Love *et al*, Genome Biology, 2014). This test does not support pre-filtering of genes based on average difference (or percent detection rate) between cell groups. However, genes may be pre-filtered based on their minimum detection rate (min.pct) across both cell groups. To use this method, please install DESeq2, using the instructions at [https://bioconductor.org/packages/release/bioc/html/DESeq2.html][]
 
 To run DE prediction for all clusters in a Seurat object, each cluster vs. all other cells, use the `FindAllMarker` function:
 
@@ -1239,7 +1282,7 @@ markers <- FindAllMarkers( object = SeuratObject,
 
 There are multiple cutoffs for including genes, filtering output etc that you can tweak. For instance only testing up-regulated genes may speed up the test:
 
-* Only test up-regulated genes with `onl.pos = TRUE`
+* Only test up-regulated genes with `only.pos = TRUE`
 * Minimum number of cells a gene is expressed in `min.cells.feature`
 * Minimum number of cells of a cluster a gene is expressed in `min.cells.group`
 * Only test genes with `min.pct` expression in a cluster
@@ -1250,8 +1293,8 @@ There are multiple cutoffs for including genes, filtering output etc that you ca
 Some other key features to think about:
 
 * If you have multiple assays in your object, make sure to run DE on the correct assay. For instance, if you have integrated data, you still want to do DE on the "RNA" assay.
-* If you have very uneven cluster sizes, it may bias the p-values of the genes so that clusters with many cells have more significant genes. It may be a good idea to set `max.cells.per.ident` to the size of your smallest cluster, and all clusters will be down sampled to the same size.
-* Some of the tests allow you to include confounding factors in `latent.vars`, those are 'LR', 'negbinom', 'poisson', or 'MAST'.
+* If you have very uneven cluster sizes, it may bias the p-values of the genes so that clusters with many cells have more significant genes. It may be a good idea to set `max.cells.per.ident` to the size of your smallest cluster, and all clusters will be down-sampled to the same size.
+* Some of the tests allow you to include confounding factors in `latent.vars`, those are `LR`, `negbinom`, `poisson`, or `MAST`.
 
 </p>
 </details>
@@ -1260,11 +1303,17 @@ Some other key features to think about:
 <summary>**Comparing a cluster across experimental conditions**</summary>
 <p>
 
-The second way of computing differential expression is to answer which genes are differentially expressed within a cluster. For example, we may have libraries coming from 2 different library preparation methods (batches) and we would like to know which genes are influenced the most in a particular cell type. The same concept applies if you have instead two or more biological groups (control vs treated, time#0 vs time#1 vs time#2, etc).
+The second way of computing differential expression is to answer which genes are differentially expressed within a cluster. For example, we may have libraries coming from 2 different library preparation methods (batches) and we would like to know which genes are influenced the most in a particular cell type. The same concept applies if you have instead two or more biological groups (control vs treated, time#0 vs time#1 vs time#2, *etc.*).
+
 For this end, we will first subset our data for the desired cell cluster, then change the cell identities to the variable of comparison (which now in our case is the "Batch").
 
 ```{r, eval=F}
+<<<<<<< HEAD
 cell_selection <- SeuratObject[,SeuratObject$seurat_clusters == 4]
+=======
+# Select the desired cluster
+cell_selection <- subset(SeuratObject, cells = colnames(SeuratObject)[SeuratObject$seurat_clusters == 4])
+>>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
 cell_selection <- SetIdent(cell_selection, value = "Batch")
 
 # Compute differentiall expression
@@ -1292,10 +1341,10 @@ We can also test any two set of cells using the function `FindMarkers` and speci
 <summary>**Plotting DEG results**</summary>
 <p>
 
-Once we have ran a DE test, we may want to visualize the genes in different ways. But first, we need to get the top DEGs from each cluster. How to select top 10 genes per cluster:
+Once we have ran a DE test, we may want to visualize the genes in different ways. But first, we need to get the top DEGs from each cluster. How to select top 5 genes per cluster:
 
 ```{r, eval=F}
-top5 <- markers_genes %>% group_by(cluster) %>% top_n(-5, p_val_adj)
+top5 <- markers %>% group_by(cluster) %>% top_n(-5, p_val_adj)
 ```
 
 These can be visualized in a heatmap:
