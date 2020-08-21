@@ -34,9 +34,13 @@ In the end, each group is expected to have 1 report file with all analysis steps
 <br/>
 
 <details>
-<summary>**PROJECT 1: Blocking myeloid development during colitis**</summary>
+<summary>
+**PROJECT 1: Blocking myeloid development during colitis**
+</summary>
 
-**Background:** Ulcerative colitis (UC) is an inflammatory bowel disease (IBD) driven mainly by colonic innate inflammatory cells such as macrophages, monocytes and neutrophils ( (Czarnewski et al 2019)[https://www.nature.com/articles/s41467-019-10769-x], (Skatteborg et al 2020)[https://academic.oup.com/ecco-jcc/advance-article-abstract/doi/10.1093/ecco-jcc/jjaa121/5859161?redirectedFrom=fulltext]). A recent study showed that patients that present higher neutrophilic/monocytic inflammatory signature (known as UC1) become refractory to both anti-TNF and anti-a4b7 integrin therapy ( (Czarnewski et al 2019)[https://www.nature.com/articles/s41467-019-10769-x], (Skatteborg et al 2020)[https://academic.oup.com/ecco-jcc/advance-article-abstract/doi/10.1093/ecco-jcc/jjaa121/5859161?redirectedFrom=fulltext]), which leads to surgical intervention for removal of the colon. Both of these inflammatory cells are short lived and originate from the common myeloid progenitor (CMP) in the bone marrow and requires constant replenishment in order to sustain elevated cell number in the colon. Herein, our main goal is to identify potential gene candidates that can block either one or both pathways of neutrophil and monocyte differentiation in the bone marrow.
+<br/>
+
+**Background:** Ulcerative colitis (UC) is an inflammatory bowel disease (IBD) driven mainly by colonic innate inflammatory cells such as macrophages, monocytes and neutrophils ( [Czarnewski et al 2019](https://www.nature.com/articles/s41467-019-10769-x), [Skatteborg et al 2020](https://academic.oup.com/ecco-jcc/advance-article-abstract/doi/10.1093/ecco-jcc/jjaa121/5859161?redirectedFrom=fulltext)). A recent study showed that patients that present higher neutrophilic/monocytic inflammatory signature (known as UC1) become refractory to both anti-TNF and anti-a4b7 integrin therapy ( [Czarnewski et al 2019](https://www.nature.com/articles/s41467-019-10769-x), [Skatteborg et al 2020](https://academic.oup.com/ecco-jcc/advance-article-abstract/doi/10.1093/ecco-jcc/jjaa121/5859161?redirectedFrom=fulltext)), which leads to surgical intervention for removal of the colon. Both of these inflammatory cells are short lived and originate from the common myeloid progenitor (CMP) in the bone marrow and requires constant replenishment in order to sustain elevated cell number in the colon. Herein, our main goal is to identify potential gene candidates that can block either one or both pathways of neutrophil and monocyte differentiation in the bone marrow.
 
 **Main research question:** Which genes specifically drive the differentiation of 1) common myeloid progenitors, 2) Monocytes and 3) Neutrophils.
 
@@ -47,9 +51,13 @@ In the end, each group is expected to have 1 report file with all analysis steps
 <br/>
 
 <details>
-<summary>**PROJECT 2: Identifying cell and gene candidates in severe COVID-19 patients**</summary>
+<summary>
+**PROJECT 2: Identifying cell and gene candidates in severe COVID-19 patients**
+</summary>
 
-**Background:** COVID-19 is an infectious disease driven by the virus SARS-CoV-2, which primarily infects lung epithelial cells. However, elderly patients usually develop severe lung inflammation and lung disfunction, ultimately leading to respiratory failure ((Guan et al 2020)[https://www.nejm.org/doi/full/10.1056/nejmoa2002032]). The onset of the disease is characterised by a cytokine storm comprising several inflammatory mediators ((Pedersen et al 2020)[https://www.jci.org/articles/view/137647]), specially in severe cases of the disease. Many cell types orchestrate the immune response to the virus, but their relative contribution at the single-cell resolution is still unclear. Herein, our main goal is to identify which cell types and gene pathways are altered in the blood of patients with severe COVID-19.
+<br/>
+
+**Background:** COVID-19 is an infectious disease driven by the virus SARS-CoV-2, which primarily infects lung epithelial cells. However, elderly patients usually develop severe lung inflammation and lung disfunction, ultimately leading to respiratory failure ([Guan et al 2020](https://www.nejm.org/doi/full/10.1056/nejmoa2002032)). The onset of the disease is characterised by a cytokine storm comprising several inflammatory mediators ([Pedersen et al 2020](https://www.jci.org/articles/view/137647)), specially in severe cases of the disease. Many cell types orchestrate the immune response to the virus, but their relative contribution at the single-cell resolution is still unclear. Herein, our main goal is to identify which cell types and gene pathways are altered in the blood of patients with severe COVID-19.
 
 **Main research question:** Which cell types and genes are altered when comparing blood immune cells from healthy versus COVID-19 patients.
 
