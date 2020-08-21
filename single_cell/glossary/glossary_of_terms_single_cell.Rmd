@@ -1264,10 +1264,23 @@ The second way of computing differential expression is to answer which genes are
 For this end, we will first subset our data for the desired cell cluster, then change the cell identities to the variable of comparison (which now in our case is the "Batch").
 
 ```{r, eval=F}
-cell_selection <- subset(SeuratObject, cells = colnames(SeuratObject)[SeuratObject$seurat_clusters == 4])
+cell_selection <- SeuratObject[,SeuratObject$seurat_clusters == 4]
 cell_selection <- SetIdent(cell_selection, value = "Batch")
+
 # Compute differentiall expression
-DGE_cell_selection <- FindAllMarkers(cell_selection, logfc.threshold = 0.2, test.use = "wilcox", min.pct = 0.1, mi
+DGE_cell_selection <- FindAllMarkers(
+  object = cell_selection,
+  logfc.threshold = 0.2,
+  test.use = "wilcox",
+  min.pct = 0.1,
+  min.diff.pct = -Inf,
+  only.pos = FALSE,
+  max.cells.per.ident = Inf,
+  latent.vars = NULL,
+  min.cells.feature = 3,
+  min.cells.group = 3,
+  pseudocount.use = 1,
+  return.thresh = 0.01 )
 ```
 
 We can also test any two set of cells using the function `FindMarkers` and specify the cell names for two groups as `cells.1` and `cells.2`.
@@ -1288,25 +1301,84 @@ top5 <- markers_genes %>% group_by(cluster) %>% top_n(-5, p_val_adj)
 These can be visualized in a heatmap:
 
 ```{r, eval=F}
-DoHeatmap(SeuratObject, features = as.character(unique(top5$gene)), group.by = "seurat_clusters", assay = "RNA")
+DoHeatmap(object = SeuratObject,
+          features = as.character(unique(top5$gene)),
+          group.by = "seurat_clusters",
+          assay = "RNA")
 ```
 
 Or with a dot-plot, where each cluster is represented with color by average expression, and size by proportion cells that have the gene expressed.
 
 ```{r, eval=F}
-DotPlot(SeuratObject, features = as.character(unique(top5$gene)), group.by = "seurat_clusters", assay = "RNA") + coord_flip()
+DotPlot(object = SeuratObject,
+        features = as.character(unique(top5$gene)),
+        group.by = "seurat_clusters",
+        assay = "RNA") + coord_flip()
 ```
 
 We can also plot a violin plot for each gene.
 
 ```{r, eval=F}
-VlnPlot(SeuratObject, features = as.character(unique(top5$gene)), ncol = 5, group.by = "seurat_clusters", assay = "RNA")
+VlnPlot(object = SeuratObject,
+        features = as.character(unique(top5$gene)),
+        ncol = 5,
+        group.by = "seurat_clusters",
+        assay = "RNA")
 ```
 
 The violin plot can also be split into batches, so if you have two batches with meta data column "Batch", these can be plotted separately within each cluster for each gene. This may be very useful to check that the DEGs you have detected are not just driven by a single batch.
 
 ```{r, eval=F}
-VlnPlot(SeuratObject, features = as.character(unique(top5$gene)), ncol = 5, group.by = "seurat_clusters", assay = "RNA", split.by = "Batch")
+VlnPlot(object = SeuratObject,
+        features = as.character(unique(top5$gene)), 
+        ncol = 5,
+        group.by = "seurat_clusters",
+        assay = "RNA",
+        split.by = "Batch")
+```
+
+
+</p>
+</details>
+
+<details>
+<summary>**Functional enrichment analysis**</summary>
+<p>
+
+Having a defined list of enriched terms, you can now look for their combined function using enrichR:
+
+```{r, eval=F}
+library(enrichR)
+
+# Check available databases to perform enrichment (then choose one)
+enrichR::listEnrichrDbs()
+
+# perfomrm enrichment
+enrich_results <- enrichr(
+  genes = top5$gene[ top5$cluster == "CLUSTER_OF_INTEREST" ],
+  databases = "DATABASE_OF_INTEREST" )[[1]]
+```
+
+Some databases of interest:
+
+* `GO_Biological_Process_2017b`
+* `KEGG_2019_Human`
+* `KEGG_2019_Mouse`
+* `WikiPathways_2019_Human`
+* `WikiPathways_2019_Mouse`
+
+You visualize your results using a simple barplot, for example:
+
+```{r, eval=F}
+mypar(1,1,mar=c(3,20,2,1))
+barplot( height = -log10(en$P.value)[20:1],
+         names.arg = en$Term[20:1],
+         horiz = T,
+         las=2,
+         border=F,
+         cex.names = .6 )
+abline( v=c( -log10(0.05) ),lty=2 )
+abline( v=0,lty=1 )
 ```
 
 </p>

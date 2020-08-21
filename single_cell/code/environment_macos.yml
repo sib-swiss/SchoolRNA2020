@@ -25,6 +25,7 @@ dependencies:
  - r-igraph
  - r-scales
  - r-rafalib
+ - r-enrichr
  - r-umap=0.2
  - r-grr
  - r-hdf5r=1.2.0
