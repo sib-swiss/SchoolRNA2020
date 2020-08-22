@@ -1575,14 +1575,20 @@ plotGeneCount(curve = curves,
               models = sce)
 ```
 
+
+#### Genes that change with pseudotime
+
+```{r, eval=F}
+pseudotime_association <- associationTest(sce)
+pseudotime_association$fdr <- p.adjust(pseudotime_association$pvalue, method = "fdr")
+pseudotime_association <- pseudotime_association[ order(pseudotime_association$pvalue), ]
+pseudotime_association$feature_id <- rownames(pseudotime_association)
+```
+
 ```{r, eval=F}
 # Define function to plot
 library(dplyr)
 plot_differential_expression <- function(feature_id) {
-    feature_id <- pseudotime_association %>%
-      filter(pvalue < 0.05) %>%
-      top_n(1, -waldStat) %>%
-      pull(feature_id)
 
     cowplot::plot_grid(
       plotGeneCount(curve = curves,
@@ -1596,24 +1602,12 @@ plot_differential_expression <- function(feature_id) {
                     counts=as.matrix(counts),
                     gene = feature_id[1])
 )}
-```
 
-
-#### Genes that change with pseudotime
-
-```{r, eval=F}
-pseudotime_association <- associationTest(sce)
-pseudotime_association$fdr <- p.adjust(pseudotime_association$pvalue, method = "fdr")
-pseudotime_association <- pseudotime_association[ order(pseudotime_association$pvalue), ]
-pseudotime_association$feature_id <- rownames(pseudotime_association)
-```
-
-```{r, eval=F}
+# Get genes and plot
 feature_id <- pseudotime_association %>%
   filter(pvalue < 0.05) %>%
   top_n(1, -waldStat) %>%
   pull(feature_id)
-
 plot_differential_expression(feature_id)
 ```
 
