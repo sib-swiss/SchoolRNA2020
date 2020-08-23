@@ -1511,11 +1511,11 @@ lineages
 
 # Plot the lineages
 par(mfrow=c(1,2))
-plot(dimred[,1:2], col = pal[clustering], cex=.5, pch = 16)
+plot(dimred[,1:2], col = clustering, cex=.5, pch = 16)
 for(i in levels(clustering)){
   text( mean(dimred[clustering==i, 1]),
         mean(dimred[clustering==i, 2]), labels = i, font = 2) }
-plot(dimred, col = pal[clustering], pch = 16)
+plot(dimred, col = clustering, pch = 16)
 lines(lineages, lwd = 3, col = 'black')
 ```
 
@@ -1532,7 +1532,7 @@ Since the function `getCurves()` takes some time to run, we can speed up the con
 curves <- getCurves(lineages, approx_points = 300, thresh = 0.01, stretch = .8, allow.breaks = FALSE, shrink = .99)
 curves
 
-plot(dimred, col = pal[clustering], asp = 1, pch = 16)
+plot(dimred, col = clustering, asp = 1, pch = 16)
 lines(curves, lwd = 3, col = 'black')
 ```
 
