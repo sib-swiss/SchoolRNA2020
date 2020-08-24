@@ -41,6 +41,7 @@ devtools::install_github('satijalab/seurat-wrappers')
 devtools::install_github("immunogenomics/harmony")
 BiocManager::install("batchelor")
 BiocManager::install("glmpca")
+BiocManager::install("tradeSeq")
 ```
 
 On MacOS, you might need to do this before starting `rstudio`:
