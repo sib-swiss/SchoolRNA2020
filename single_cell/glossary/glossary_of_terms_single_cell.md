@@ -3,7 +3,7 @@ title: '<img border="0" src="https://d1nhio0ox7pgb.cloudfront.net/_img/o_collect
 output:
   html_document:
     keep_md: true
-    toc: true
+    toc: false
     toc_depth: 3
     code_folding: show
   pdf_document: default
@@ -91,6 +91,7 @@ Additionally, one should also import any associated metadata file as a `data.fra
 # From .csv .tsv format (and then convert to sparse matrix)
 metadata <- read.delim(
   file = "data/metadata.csv",
+  sep = ",",
   row.names = 1 )
 ```
 
@@ -192,7 +193,7 @@ SeuratObject <- SeuratObject[ , vector_CELLS_TO_USE ]
 
 The most common functions to use for plotting are the violin plot and the scatter plots for the dimensionality reduction calculated (you need to calculate it before using the function!).
 
-To plot **continous** variables as **violin** (press TAB inside the functions for more options):
+To plot **continuous** variables as **violin** (press TAB inside the functions for more options):
 
 
 ```r
@@ -204,7 +205,7 @@ VlnPlot(object = SeuratObject,
         y.max = 100) + NoLegend()
 ```
 
-To plot **CONTINOUS** variables as **scatter plot** using the `umap` reduction slot (press TAB inside the functions for more options):
+To plot **continuous** variables as **scatter plot** using the `umap` reduction slot (press TAB inside the functions for more options):
 
 
 ```r
@@ -328,6 +329,9 @@ SeuratObject <- PercentageFeatureSet(
   col.name = "percent_mito")
 ```
 
+Note that you might need to change the patterns if you are using an organism
+other than human, *e.g.* `"^Mt-"` for mouse.
+
 
 
 </p>
@@ -390,8 +394,13 @@ item <- annot[match(rownames(SeuratObject@assays$RNA@counts) , annot[,1]),"gene_
 item[is.na(item)] <- "unknown"
 
 # Calculate the percentage of each gene biotype
+<<<<<<< HEAD
 perc <- rowsum(as.matrix(SeuratObject@assays$RNA@counts) , group=item)
 perc <- (t(perc)/Matrix::colSums(SeuratObject@assays$RNA@counts))
+=======
+temp <- rowsum(as.matrix(SeuratObject@assays$RNA@counts) , group=item)
+perc <- (t(temp)/Matrix::colSums(SeuratObject@assays$RNA@counts))
+>>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
 o <- order(apply(perc,2,median),decreasing = F)
 perc <- perc[,o]
 
@@ -460,7 +469,7 @@ SeuratObject$G1.Score <- 1 - SeuratObject$S.Score - SeuratObject$G2M.Score
 <p>
 
 
-Having many metadata parameters to analyse individually makes it a bit hard to visualize the real differences between datasets, batches and experimental conditions. One way to try to combine all this information into one plot is by running dimensionality reduction via principal component analysis (PCA) on the continous variables in the metadata. Thus visualizing on the top principal components (1st and 2nd) reflects how different the datasets are.
+Having many metadata parameters to analyse individually makes it a bit hard to visualize the real differences between datasets, batches and experimental conditions. One way to try to combine all this information into one plot is by running dimensionality reduction via principal component analysis (PCA) on the continuous variables in the metadata. Thus visualizing on the top principal components (1st and 2nd) reflects how different the datasets are.
 
 
 ```r
@@ -485,6 +494,20 @@ DimPlot(SeuratObject,
         reduction = "pca_metadata",
         dims = c(1,2),
         group.by = "orig.ident" )
+```
+
+**N.B.** Zero-count genes and identical/all-zero metadata columns (*i.e.* any
+value that does that have any variation) will interfere with analyses such as
+PCA. You will thus have to either remove those zero-count genes and/or exclude
+some metadata columns:
+
+
+```r
+# Remove zero-count genes
+SeuratObject <- SeuratObject[Matrix::rowSums(SeuratObject) > 0, ]
+
+# Exclude metadata columns that are zero
+metadata_use <- metadata_use[colSums(SeuratObject@meta.data[, metadata_use] != 0 ) > 0 ]
 ```
 
 </p>
@@ -539,7 +562,11 @@ How to run it:
 ```r
 SeuratObject <- ScaleData(
   object = SeuratObject,
+<<<<<<< HEAD
   vars.to.regress = c("nCount_RNA","mito.percent","nFeatures_RNA"),
+=======
+  vars.to.regress = c("nCount_RNA","mito.percent","nFeature_RNA"),
+>>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
   model.use = "linear",
   do.scale = T,
   do.center = T)
@@ -562,7 +589,11 @@ How to run it:
 ```r
 SeuratObject <- ScaleData(
   object = SeuratObject,
+<<<<<<< HEAD
   vars.to.regress = c("nCount_RNA","mito.percent","nFeatures_RNA"),
+=======
+  vars.to.regress = c("nCount_RNA","mito.percent","nFeature_RNA"),
+>>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
   model.use = "poisson",
   do.scale = T,
   do.center = T)
@@ -586,7 +617,11 @@ How to run it:
 SeuratObject <- SCTransform(
   object = SeuratObject,
   assay="RNA",
+<<<<<<< HEAD
   vars.to.regress =  c("nCount_RNA","mito.percent","nFeatures_RNA"),
+=======
+  vars.to.regress =  c("nCount_RNA","mito.percent","nFeature_RNA"),
+>>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
   new.assay.name = "sctransform",
   do.center=T )
 ```
@@ -618,7 +653,13 @@ SeuratObject <- FindVariableFeatures(
   nfeatures = 3000,
   selection.method = "vst",
   verbose = FALSE,
+<<<<<<< HEAD
   assay = "RNA")
+=======
+  assay = "RNA",
+  dispersion.function = "FastLogVMR",
+  mean.function = "FastExpMean")
+>>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
 ```
 
 Variable gene plot:
@@ -717,6 +758,7 @@ Setting `compute.SNN` to `TRUE` will compute both the k-NN and SNN graphs.
 The full gene expression space, with thousands of genes, contains quite a lot of noise in scRNAseq data and is hard to visualize. Hence, most scRNAseq analyses starts with a step of PCA (or similar method, e.g. ICA) to remove some of the variation of the data.
 
 For a simple scRNAseq dataset with only a few cell types, PCA may be sufficient to visualize the complexity of the data in 2 or 3 dimensions. However, with increasing complexity we need to run non-linear dimensionality reduction to be able to project the data down to 2 dimensions for visualization, such methods are tSNE, UMAP and diffusion maps.
+
 
 <details>
 <summary>**PCA**</summary>
@@ -988,9 +1030,9 @@ colnames(intdimred) <- paste0("PC_", 1:100)
 stdevs <- apply(intdimred, MARGIN = 2, FUN = sd)
 
 SeuratObject[["pca_scanorama"]] <- CreateDimReducObject(
-  embeddings = intdimred, 
-  stdev = stdevs, 
-  key = "PC_", 
+  embeddings = intdimred,
+  stdev = stdevs,
+  key = "PC_",
   assay = "pano")
 ```
 
@@ -1105,6 +1147,7 @@ How to run it:
 ```r
 SeuratObject <- FindClusters(
   object = SeuratObject,
+  graph.name = "SNN",
   resolution = 0.8,
   algorithm = 1) #algorithim 1 = Louvain
 ```
@@ -1126,7 +1169,8 @@ Leiden algorithm is applied iteratively, it converges to a partition in which al
 ```r
 SeuratObject <- FindClusters(
   object = SeuratObject,
-  resolution = "0.8",
+  graph.name = "SNN",
+  resolution = 0.8,
   algorithm = 4)  #algorithim 4 = Louvain
 ```
 
@@ -1153,7 +1197,7 @@ After having calculated the distances between samples calculated, we can now pro
 ```r
 # Running HC on a PCA
 h <- hclust(
-  d = dist( SeuratObject@reductions["pca"]@cell.embeddings [ , 1:30 ],
+  d = dist( SeuratObject@reductions[["pca"]]@cell.embeddings [ , 1:30 ],
             method = "euclidean") ,
   method = "ward.D2")
 
@@ -1233,7 +1277,7 @@ Differential gene expression may help in that analysis. If two clusters have the
 # Differential expression
 ***
 
-Once clusters have been defined, it is often informative to find the genes that define each cluster. The methods for DE prediction in scRNAseq differs somewhat from bulk RNAseq methods. On one hand, we often have more samples (individual cells) compared to bulk RNA-seq, but on the other hand, the scRNAseq data is noisy and suffer from drop-outs which complicates things.
+Once clusters have been defined, it is often informative to find the genes that define each cluster. The methods for DE prediction in scRNAseq differs somewhat from bulk RNAseq methods. On one hand, we often have more samples (individual cells) compared to bulk RNA-seq, but on the other hand, the scRNAseq data is noisy and suffer from drop-outs, which complicates things.
 
 <details>
 <summary>**Finding DEGs**</summary>
@@ -1243,15 +1287,15 @@ Differentially expressed genes (DEGs) are often referred to as "marker genes", h
 
 The Seurat package has implemented many different tests for DE, some are designed for scRNAseq and others are used also for bulk RNA-seq:
 
-* "wilcox" : Identifies differentially expressed genes between two groups of cells using a Wilcoxon Rank Sum test
-* "bimod" : Likelihood-ratio test for single cell gene expression, (McDavid et al., Bioinformatics, 2013)
-* "roc" : Identifies 'markers' of gene expression using ROC analysis. For each gene, evaluates (using AUC) a classifier built on that gene alone, to classify between two groups of cells. An AUC value of 1 means that expression values for this gene alone can perfectly classify the two groupings (i.e. Each of the cells in cells.1 exhibit a higher level than each of the cells in cells.2). An AUC value of 0 also means there is perfect classification, but in the other direction. A value of 0.5 implies that the gene has no predictive power to classify the two groups. Returns a 'predictive power' (abs(AUC-0.5) * 2) ranked matrix of putative differentially expressed genes.
-* "t" : Identify differentially expressed genes between two groups of cells using the Student's t-test.
-* "negbinom" : Identifies differentially expressed genes between two groups of cells using a negative binomial generalized linear model. Use only for UMI-based datasets
-* "poisson" : Identifies differentially expressed genes between two groups of cells using a poisson generalized linear model. Use only for UMI-based datasets
-* "LR" : Uses a logistic regression framework to determine differentially expressed genes. Constructs a logistic regression model predicting group membership based on each feature individually and compares this to a null model with a likelihood ratio test.
-* "MAST" : Identifies differentially expressed genes between two groups of cells using a hurdle model tailored to scRNA-seq data. Utilizes the MAST package to run the DE testing.
-* "DESeq2" : Identifies differentially expressed genes between two groups of cells based on a model using DESeq2 which uses a negative binomial distribution (Love et al, Genome Biology, 2014).This test does not support pre-filtering of genes based on average difference (or percent detection rate) between cell groups. However, genes may be pre-filtered based on their minimum detection rate (min.pct) across both cell groups. To use this method, please install DESeq2, using the instructions at https://bioconductor.org/packages/release/bioc/html/DESeq2.html
+* `wilcox` : Identifies differentially expressed genes between two groups of cells using a Wilcoxon Rank Sum test
+* `bimod` : Likelihood-ratio test for single cell gene expression (McDavid et al., Bioinformatics, 2013)
+* `roc` : Identifies 'markers' of gene expression using ROC analysis. For each gene, evaluates (using AUC) a classifier built on that gene alone, to classify between two groups of cells. An AUC value of 1 means that expression values for this gene alone can perfectly classify the two groupings (*i.e.* Each of the cells in cells.1 exhibit a higher level than each of the cells in cells.2). An AUC value of 0 also means there is perfect classification, but in the other direction. A value of 0.5 implies that the gene has no predictive power to classify the two groups. Returns a 'predictive power' (abs(AUC-0.5) * 2) ranked matrix of putative differentially expressed genes.
+* `t` : Identify differentially expressed genes between two groups of cells using the Student's t-test.
+* `negbinom` : Identifies differentially expressed genes between two groups of cells using a negative binomial generalized linear model. Use only for UMI-based datasets
+* `poisson` : Identifies differentially expressed genes between two groups of cells using a poisson generalized linear model. Use only for UMI-based datasets
+* `LR` : Uses a logistic regression framework to determine differentially expressed genes. Constructs a logistic regression model predicting group membership based on each feature individually and compares this to a null model with a likelihood ratio test.
+* `MAST` : Identifies differentially expressed genes between two groups of cells using a hurdle model tailored to scRNA-seq data. Utilizes the MAST package to run the DE testing.
+* `DESeq2` : Identifies differentially expressed genes between two groups of cells based on a model using DESeq2 which uses a negative binomial distribution (Love *et al*, Genome Biology, 2014). This test does not support pre-filtering of genes based on average difference (or percent detection rate) between cell groups. However, genes may be pre-filtered based on their minimum detection rate (min.pct) across both cell groups. To use this method, please install DESeq2, using the instructions at [https://bioconductor.org/packages/release/bioc/html/DESeq2.html][]
 
 To run DE prediction for all clusters in a Seurat object, each cluster vs. all other cells, use the `FindAllMarker` function:
 
@@ -1276,7 +1320,7 @@ markers <- FindAllMarkers( object = SeuratObject,
 
 There are multiple cutoffs for including genes, filtering output etc that you can tweak. For instance only testing up-regulated genes may speed up the test:
 
-* Only test up-regulated genes with `onl.pos = TRUE`
+* Only test up-regulated genes with `only.pos = TRUE`
 * Minimum number of cells a gene is expressed in `min.cells.feature`
 * Minimum number of cells of a cluster a gene is expressed in `min.cells.group`
 * Only test genes with `min.pct` expression in a cluster
@@ -1287,8 +1331,8 @@ There are multiple cutoffs for including genes, filtering output etc that you ca
 Some other key features to think about:
 
 * If you have multiple assays in your object, make sure to run DE on the correct assay. For instance, if you have integrated data, you still want to do DE on the "RNA" assay.
-* If you have very uneven cluster sizes, it may bias the p-values of the genes so that clusters with many cells have more significant genes. It may be a good idea to set `max.cells.per.ident` to the size of your smallest cluster, and all clusters will be down sampled to the same size.
-* Some of the tests allow you to include confounding factors in `latent.vars`, those are 'LR', 'negbinom', 'poisson', or 'MAST'.
+* If you have very uneven cluster sizes, it may bias the p-values of the genes so that clusters with many cells have more significant genes. It may be a good idea to set `max.cells.per.ident` to the size of your smallest cluster, and all clusters will be down-sampled to the same size.
+* Some of the tests allow you to include confounding factors in `latent.vars`, those are `LR`, `negbinom`, `poisson`, or `MAST`.
 
 </p>
 </details>
@@ -1297,15 +1341,34 @@ Some other key features to think about:
 <summary>**Comparing a cluster across experimental conditions**</summary>
 <p>
 
-The second way of computing differential expression is to answer which genes are differentially expressed within a cluster. For example, we may have libraries coming from 2 different library preparation methods (batches) and we would like to know which genes are influenced the most in a particular cell type. The same concept applies if you have instead two or more biological groups (control vs treated, time#0 vs time#1 vs time#2, etc).
+The second way of computing differential expression is to answer which genes are differentially expressed within a cluster. For example, we may have libraries coming from 2 different library preparation methods (batches) and we would like to know which genes are influenced the most in a particular cell type. The same concept applies if you have instead two or more biological groups (control vs treated, time#0 vs time#1 vs time#2, *etc.*).
+
 For this end, we will first subset our data for the desired cell cluster, then change the cell identities to the variable of comparison (which now in our case is the "Batch").
 
 
 ```r
+<<<<<<< HEAD
+cell_selection <- SeuratObject[,SeuratObject$seurat_clusters == 4]
+=======
+# Select the desired cluster
 cell_selection <- subset(SeuratObject, cells = colnames(SeuratObject)[SeuratObject$seurat_clusters == 4])
+>>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
 cell_selection <- SetIdent(cell_selection, value = "Batch")
+
 # Compute differentiall expression
-DGE_cell_selection <- FindAllMarkers(cell_selection, logfc.threshold = 0.2, test.use = "wilcox", min.pct = 0.1, mi
+DGE_cell_selection <- FindAllMarkers(
+  object = cell_selection,
+  logfc.threshold = 0.2,
+  test.use = "wilcox",
+  min.pct = 0.1,
+  min.diff.pct = -Inf,
+  only.pos = FALSE,
+  max.cells.per.ident = Inf,
+  latent.vars = NULL,
+  min.cells.feature = 3,
+  min.cells.group = 3,
+  pseudocount.use = 1,
+  return.thresh = 0.01 )
 ```
 
 We can also test any two set of cells using the function `FindMarkers` and specify the cell names for two groups as `cells.1` and `cells.2`.
@@ -1317,39 +1380,100 @@ We can also test any two set of cells using the function `FindMarkers` and speci
 <summary>**Plotting DEG results**</summary>
 <p>
 
-Once we have ran a DE test, we may want to visualize the genes in different ways. But first, we need to get the top DEGs from each cluster. How to select top 10 genes per cluster:
+Once we have ran a DE test, we may want to visualize the genes in different ways. But first, we need to get the top DEGs from each cluster. How to select top 5 genes per cluster:
 
 
 ```r
-top5 <- markers_genes %>% group_by(cluster) %>% top_n(-5, p_val_adj)
+top5 <- markers %>% group_by(cluster) %>% top_n(-5, p_val_adj)
 ```
 
 These can be visualized in a heatmap:
 
 
 ```r
-DoHeatmap(SeuratObject, features = as.character(unique(top5$gene)), group.by = "seurat_clusters", assay = "RNA")
+DoHeatmap(object = SeuratObject,
+          features = as.character(unique(top5$gene)),
+          group.by = "seurat_clusters",
+          assay = "RNA")
 ```
 
 Or with a dot-plot, where each cluster is represented with color by average expression, and size by proportion cells that have the gene expressed.
 
 
 ```r
-DotPlot(SeuratObject, features = as.character(unique(top5$gene)), group.by = "seurat_clusters", assay = "RNA") + coord_flip()
+DotPlot(object = SeuratObject,
+        features = as.character(unique(top5$gene)),
+        group.by = "seurat_clusters",
+        assay = "RNA") + coord_flip()
 ```
 
 We can also plot a violin plot for each gene.
 
 
 ```r
-VlnPlot(SeuratObject, features = as.character(unique(top5$gene)), ncol = 5, group.by = "seurat_clusters", assay = "RNA")
+VlnPlot(object = SeuratObject,
+        features = as.character(unique(top5$gene)),
+        ncol = 5,
+        group.by = "seurat_clusters",
+        assay = "RNA")
 ```
 
 The violin plot can also be split into batches, so if you have two batches with meta data column "Batch", these can be plotted separately within each cluster for each gene. This may be very useful to check that the DEGs you have detected are not just driven by a single batch.
 
 
 ```r
-VlnPlot(SeuratObject, features = as.character(unique(top5$gene)), ncol = 5, group.by = "seurat_clusters", assay = "RNA", split.by = "Batch")
+VlnPlot(object = SeuratObject,
+        features = as.character(unique(top5$gene)),
+        ncol = 5,
+        group.by = "seurat_clusters",
+        assay = "RNA",
+        split.by = "Batch")
+```
+
+
+</p>
+</details>
+
+<details>
+<summary>**Functional enrichment analysis**</summary>
+<p>
+
+Having a defined list of enriched terms, you can now look for their combined function using enrichR:
+
+
+```r
+library(enrichR)
+
+# Check available databases to perform enrichment (then choose one)
+enrichR::listEnrichrDbs()
+
+# perform enrichment
+enrich_results <- enrichr(
+  genes = top5$gene[ top5$cluster == "CLUSTER_OF_INTEREST" ],
+  databases = "DATABASE_OF_INTEREST" )[[1]]
+```
+
+Some databases of interest:
+
+* `GO_Biological_Process_2017b`
+* `KEGG_2019_Human`
+* `KEGG_2019_Mouse`
+* `WikiPathways_2019_Human`
+* `WikiPathways_2019_Mouse`
+
+You visualize your results using a simple barplot, for example:
+
+
+```r
+mypar(1,1,mar=c(3,20,2,1))
+barplot( height = -log10(en$P.value)[20:1],
+         names.arg = en$Term[20:1],
+         horiz = T,
+         las=2,
+         border=F,
+         cex.names = .6 )
+abline( v=c( -log10(0.05) ),lty=2 )
+abline( v=0,lty=1 )
 ```
 
 </p>
@@ -1360,65 +1484,64 @@ VlnPlot(SeuratObject, features = as.character(unique(top5$gene)), ncol = 5, grou
 # Trajectory inference
 ***
 
-If you have been using the `scran/scater` pipeline so far. Below you can find a summary code for data processing until getting:
+Below you can find a summary of data processing required for trajectory
+inference:
 
 * A reduction where to perform the trajectory ( PCA > MDS > DM > UMAP > tSNE )
 * The cell clustering information
 
 <details>
-<summary>**Slingshot**</summary>
+<summary>**Trajectory inference with Slingshot**</summary>
 <p>
 
-Slingshot is one of the most prototypical TI methods, as it contains many popular components that can also be found in other TI methods (Cannoodt, Saelens, and Saeys 2016): dimensionality reduction, clustering and principal curves.
+Slingshot is one of the most prototypical TI methods, as it contains many popular components that can also be found in other TI methods (Cannoodt, Saelens and Saeys 2016): dimensionality reduction, clustering and principal curves.
 
 As many other TI methods, Slingshot is not restricted to a particular dimensionality reduction method. So which one should you use? There are three important points to take into account:
 
-You should use enough dimensions to capture the whole complexity of the data. This is especially important for linear dimensionality reductions such as PCA and MDS, and if the trajectory topology is more complex than a bifurcation. Note that even when the trajectory is not clearly visible in two dimensions, the TI method may still see it in multiple dimensions. TI methods can see in a lot more dimensions compare to use silly earthlings!
+You should use enough dimensions to capture the whole complexity of the data. This is especially important for linear dimensionality reductions such as PCA and MDS, and if the trajectory topology is more complex than a bifurcation. Note that even when the trajectory is not clearly visible in two dimensions, the TI method may still see it in multiple dimensions. TI methods can see in a lot more dimensions compared to us silly earthlings!
 
-* Some dimensionality reduction methods may enlarge (or blow up) the distance in high-density regions. t-SNE and, to a lesser extent UMAP, have this problem. The dataset that we have here doesn’t really have this problem, but it is quite common if you do an unbiased sampling of your biological populations.
-* Some dimensionality reduction methods try to enforce a grouping of the cells, and remove continuities. t-SNE and, to a lesser extent UMAP, have this problem. These same methods may also put cells together that actually do not
-* For these reasons, MDS and diffusion maps are often the preferred choice , although t-SNE and UMAP may work if you have a balanced and simple sample.
+* Some dimensionality reduction methods may enlarge (or blow up) the distance in high-density regions. Both t-SNE and UMAP (to a lesser extent) have this problem. The dataset that we have here doesn't really have this problem, but it is quite common if you do an unbiased sampling of your biological populations.
+* Some dimensionality reduction methods try to enforce a grouping of the cells, and remove continuities. Both t-SNE and UMAP (to a lesser extent) have this problem. These same methods may also put cells together that actually do not
+* For these reasons, MDS and diffusion maps are often the preferred choice, although t-SNE and UMAP may work if you have a balanced and simple sample.
 
 
 ```r
-dimred <- data@reductions[['embedding_to_be_used']]@cell.embeddings
+dimred <- SeuratObject@reductions[['embedding_to_be_used']]@cell.embeddings
 ```
 
 We want to find continuities in our data, why then do so many TI methods use methods that split up the data in distinct groups using clustering?
 
 The answer is simple: clustering simplifies the problem by finding groups of cells that are at approximately the same location in the trajectory. These groups can then be connected to find the different paths that cells take, and where they branch off. Ideally, the clustering method for TI should therefore not group cells based on a density, such as DBSCAN A trajectory is by definition a group of cells that are all connected through high-density regions, but still differ in their expression.
 
-We’ll use standard Seurat clustering here (louvain clustering), but alternative methods may be appropriate as well. Sometimes, it may be useful to ‘overcluster’ to make sure that all subbranches are captured. We’ll increase the resolution a bit, so that we find more granular clusters. As an exercise, you might tweak this resolution a bit and see how it affects downstream analyses.
+We'll use standard Seurat clustering here (louvain clustering), but alternative methods may be appropriate as well. Sometimes, it may be useful to "overcluster" to make sure that all sub-branches are captured. We’ll increase the resolution a bit, so that we find more granular clusters. As an exercise, you might tweak this resolution a bit and see how it affects downstream analyses.
 
 
 ```r
 clustering <- factor(SeuratObject@meta.data[,"clustering_to_be_used"])
 ```
 
-Until up to this point, the steps above have been covered in the previous lectures. From now on, we will start using that clustering and data reduction techniques for trajectory inference. The whole process can be done using a single function named `slingshot`, which is simply a wrapper for the 2 main steps for trajectory inference. The first step of the process is to define the lineages and then fit a curve through the data that defines a trajectory. These steps are break donw below for clarity.
+Until up to this point, the steps above have been covered in the previous lectures. From now on, we will start using that clustering and data reduction techniques for trajectory inference. The whole process can be done using a single function named `slingshot`, which is simply a wrapper for the 2 main steps for trajectory inference. The first step of the process is to define the lineages and then fit a curve through the data that defines a trajectory. These steps are break down below for clarity.
 
-#### Defining cell lineages with Slingshot
+**Defining cell lineages with Slingshot**
 
 
 ```r
 library(slingshot)
 
-#Run default Slingshot lineage identification
+# Run default Slingshot lineage identification
 set.seed(1)
 lineages <- getLineages(
   data = dimred,
   clusterLabels = clustering,
  #end.clus = c("11","7","10","9","5"), #define how many branches/lineages to consider
  #start.clus = "5" #define where to start the trajectories
- ) 
-
+ )
 lineages
 
-
-#Plot the lineages
+# Plot the lineages
 par(mfrow=c(1,2))
 plot(dimred[,1:2], col = pal[clustering],  cex=.5,pch = 16)
-for(i in levels(clustering)){ 
+for(i in levels(clustering)){
   text( mean(dimred[clustering==i,1]),
         mean(dimred[clustering==i,2]), labels = i,font = 2) }
 plot(dimred[,1:2], col = pal[clustering],cex=.5, pch = 16)
@@ -1429,39 +1552,39 @@ Here we see one central issue with trajectory analysis: where does the trajector
 
 
 ```r
-#Run default Slingshot
+# Run default Slingshot
 set.seed(1)
 lineages <- getLineages(data = dimred,
                         clusterLabels = clustering,
                         #end.clus = c("11","7","10","9","5"), #define how many branches/lineages to consider
                         start.clus = "5") #define where to start the trajectories
 lineages
-#Plot the lineages
+
+# Plot the lineages
 par(mfrow=c(1,2))
-plot(dimred[,1:2], col = pal[clustering],  cex=.5,pch = 16)
-for(i in levels(clustering)){ 
-  text( mean(dimred[clustering==i,1]),
-        mean(dimred[clustering==i,2]), labels = i,font = 2) }
-plot(dimred, col = pal[clustering],  pch = 16)
+plot(dimred[,1:2], col = clustering, cex=.5, pch = 16)
+for(i in levels(clustering)){
+  text( mean(dimred[clustering==i, 1]),
+        mean(dimred[clustering==i, 2]), labels = i, font = 2) }
+plot(dimred, col = clustering, pch = 16)
 lines(lineages, lwd = 3, col = 'black')
 ```
 
-
-#### Defining Principal Curves
+**Defining Principal Curves**
 
 Once the clusters are connected, Slingshot allows you to transform them to a smooth trajectory using principal curves. This is an algorithm that iteratively changes an initial curve to better match the data points. It was developed for linear data. To apply it to single-cell data, slingshot adds two enhancements:
 
-* It will run principal curves for each ‘lineage’, which is a set of clusters that go from a defined start cluster to some end cluster
+* It will run principal curves for each "lineage", which is a set of clusters that go from a defined start cluster to some end cluster
 * Lineages with a same set of clusters will be constrained so that their principal curves remain bundled around the overlapping clusters
 
-Since the function `getCurves()` takes some time to run, we can speed up the convergence of the curve fitting process by reducing the amount of cells to use in each lineage. Ideally you could all cells, but here we had set `approx_points` to 300 to speed up. Feel free to adjust that for your dataset.
- 
+Since the function `getCurves()` takes some time to run, we can speed up the convergence of the curve fitting process by reducing the amount of cells to use in each lineage. Ideally you could use all cells, but here we had set `approx_points` to 300 to speed up; feel free to adjust for your particular dataset.
+
 
 ```r
-curves <- getCurves(lineages, approx_points = 300, thresh = 0.01, stretch = .8, allow.breaks = FALSE, shrink=.99)
+curves <- getCurves(lineages, approx_points = 300, thresh = 0.01, stretch = .8, allow.breaks = FALSE, shrink = .99)
 curves
 
-plot(dimred, col = pal[clustering], asp = 1, pch = 16)
+plot(dimred, col = clustering, asp = 1, pch = 16)
 lines(curves, lwd = 3, col = 'black')
 ```
 
@@ -1481,7 +1604,7 @@ The main way to interpret a trajectory is to find genes that change along the tr
 * Expression changes somewhere along the trajectory
 * …
 
-`tradeSeq` is a recently proposed algorithm to find trajectory differentially expressed genes. It works by smoothing the gene expression along the trajectory by fitting a smoother using generalized additive models (GAMs), and testing whether certain coefficients are statstically different between points in the trajectory.
+`tradeSeq` is a recently proposed algorithm to find trajectory differentially expressed genes. It works by smoothing the gene expression along the trajectory by fitting a smoother using generalized additive models (GAMs), and testing whether certain coefficients are statistically different between points in the trajectory.
 
 The fitting of GAMs can take quite a while, so for demonstration purposes we first do a very stringent filtering of the genes. In an ideal experiment, you would use all the genes, or at least those defined as being variable.
 
@@ -1492,46 +1615,20 @@ BiocParallel::register(BiocParallel::SerialParam())
 library(tradeSeq)
 counts <- as.matrix( SeuratObject@assays$RNA@counts[ SeuratObject@assays$RNA@var.features , ] )
 
-#Removing some genes to speed up the computations for this tutorial
-filt_counts <- counts [ rowSums(counts > 5) > ncol(counts)/100, ] 
+# Removing some genes to speed up the computations for this tutorial
+filt_counts <- counts [ rowSums(counts > 5) > ncol(counts)/100, ]
 dim(filt_counts)
 
-#Fitting a Gamma distribution
-sce <- fitGAM(  counts = as.matrix(filt_counts),
-                sds = curves )
+# Fitting a Gamma distribution
+sce <- fitGAM( counts = as.matrix(filt_counts),
+               sds = curves )
 plotGeneCount(curve = curves,
               counts = filt_counts,
               clusters = clustering,
               models = sce)
 ```
 
-
-```r
-#Define function to plot
-library(dplyr)
-plot_differential_expression <- function(feature_id) {
-feature_id <- pseudotime_association %>%
-  filter(pvalue < 0.05) %>%
-  top_n(1, -waldStat) %>%
-  pull(feature_id)
-
-cowplot::plot_grid(
-  plotGeneCount(curve = curves,
-                counts = filt_counts,
-                gene=feature_id[1],
-                clusters = clustering,
-                models = sce) + 
-    ggplot2::theme(legend.position = "none"),
-  
-  plotSmoothers(models = sce, 
-                counts=as.matrix(counts),
-                gene = feature_id[1])
-)}
-```
-
- 
-
-#### Genes that change with pseudotime
+**Genes that change with pseudotime**
 
 
 ```r
@@ -1542,75 +1639,85 @@ pseudotime_association$feature_id <- rownames(pseudotime_association)
 ```
 
 
-
 ```r
+# Define function to plot
+library(dplyr)
+plot_differential_expression <- function(feature_id) {
+
+    cowplot::plot_grid(
+      plotGeneCount(curve = curves,
+                    counts = filt_counts,
+                    gene=feature_id[1],
+                    clusters = clustering,
+                    models = sce) +
+        ggplot2::theme(legend.position = "none"),
+
+      plotSmoothers(models = sce,
+                    counts=as.matrix(counts),
+                    gene = feature_id[1])
+)}
+
+# Get genes and plot
 feature_id <- pseudotime_association %>%
   filter(pvalue < 0.05) %>%
   top_n(1, -waldStat) %>%
   pull(feature_id)
-
 plot_differential_expression(feature_id)
 ```
 
- 
+**Genes that change between two pseudotime points**
 
-#### Genes that change between two pseudotime points
-
-We can define custom pseudotime values of interest if we’re interested in genes that change between particular point in pseudotime. By default, we can look at differences between start and end:
+We can define custom pseudotime values of interest if we're interested in genes that change between particular point in pseudotime. By default, we can look at differences between start and end:
 
 
 ```r
 pseudotime_start_end_association <- startVsEndTest(sce, pseudotimeValues = c(0, 1))
 pseudotime_start_end_association$feature_id <- rownames(pseudotime_start_end_association)
 
-feature_id <- pseudotime_start_end_association %>% 
-  filter(pvalue < 0.05) %>% 
-  top_n(1, waldStat) %>% 
+feature_id <- pseudotime_start_end_association %>%
+  filter(pvalue < 0.05) %>%
+  top_n(1, waldStat) %>%
   pull(feature_id)
 plot_differential_expression(feature_id)
 ```
 
- 
-
-#### Genes that are different between lineages
+**Genes that are different between lineages**
 
 More interesting are genes that are different between two branches. We may have seen some of these genes already pop up in previous analyses of pseudotime. There are several ways to define “different between branches”, and each have their own functions:
 
 * Different at the end points, using `diffEndTest`
 * Different at the branching point, using `earlyDETest`
 * Different somewhere in pseudotime the branching point, using `patternTest`
-* Note that the last function requires that the pseudotimes between two lineages are aligned.
+
+Note that the last function requires that the pseudotimes between two lineages are aligned.
 
 
 ```r
 different_end_association <- diffEndTest(sce)
 different_end_association$feature_id <- rownames(different_end_association)
-feature_id <- different_end_association %>% 
-  filter(pvalue < 0.05) %>% 
-  arrange(desc(waldStat)) %>% 
-  dplyr::slice(1) %>% 
+feature_id <- different_end_association %>%
+  filter(pvalue < 0.05) %>%
+  arrange(desc(waldStat)) %>%
+  dplyr::slice(1) %>%
   pull(feature_id)
 plot_differential_expression(feature_id)
 ```
-
 
 
 ```r
 branch_point_association <- earlyDETest(sce)
 branch_point_association$feature_id <- rownames(branch_point_association)
-feature_id <- branch_point_association %>% 
-  filter(pvalue < 0.05) %>% 
-  arrange(desc(waldStat)) %>% 
-  dplyr::slice(1) %>% 
+feature_id <- branch_point_association %>%
+  filter(pvalue < 0.05) %>%
+  arrange(desc(waldStat)) %>%
+  dplyr::slice(1) %>%
   pull(feature_id)
 plot_differential_expression(feature_id)
 ```
 
-
 Check out this [vignette](https://statomics.github.io/tradeSeq/articles/tradeSeq.html) for a more in-depth overview of tradeSeq
 
- 
-#### References
+**References**
 
 Cannoodt, Robrecht, Wouter Saelens, and Yvan Saeys. 2016. “Computational Methods for Trajectory Inference from Single-Cell Transcriptomics.” *European Journal of Immunology* 46 (11): 2496–2506. [doi](https://doi.org/10.1002/eji.201646347).
 
@@ -1624,4 +1731,75 @@ Saelens, Wouter, Robrecht Cannoodt, Helena Todorov, and Yvan Saeys. 2019. “A C
 
 <br/>
 
-### [Back to main](https://sib-swiss.github.io/SchoolRNA2020/)
+# Additional material
+
+The field of scRNA-seq is both large and continuously evolving - there is thus
+a slew of available methods, tools and software to do both varied and similar
+things with. Here you we list some additional materials that you might find
+useful to explore to get an even deeper understanding.
+
+<details>
+<summary>**Online courses**</summary>
+<p>
+* [Exercises for the NBIS scRNA-seq course](https://nbisweden.github.io/workshop-scRNAseq/exercises.html)
+* [The GitHub repository for the NBIS scRNA-seq course](https://github.com/NBISweden/workshop-scRNAseq)
+* [Single cell RNA-seq course at from Hemberg lab](https://scrnaseq-course.cog.sanger.ac.uk/website/index.html)
+* [Single cell RNA-seq course in Python](https://chanzuckerberg.github.io/scRNA-python-workshop/intro/about)
+* [Single cell RNA-seq course at Broad](https://broadinstitute.github.io/2019_scWorkshop/)
+</p>
+</details>
+
+<details>
+<summary>**Presentations and lectures**</summary>
+<p>
+* [Single-cell methodologies](https://nbisweden.github.io/workshop-scRNAseq/lectures/single_cell_methodologies_Karolina_Wallenborg_2020.pdf)
+* [Quaility controls](https://nbisweden.github.io/workshop-scRNAseq/lectures/scRNAseq_QC_Asa_Bjorklund_2020.pdf)
+* [Normalisation](https://nbisweden.github.io/workshop-scRNAseq/lectures/scRNAseq_normalization_Asa_Bjorklund_2020.pdf)
+* [Dimensionality reduction](https://nbisweden.github.io/workshop-scRNAseq/lectures/dimensionality_reduction_paulo_czarnewski.pdf)
+* [Batch correction and data integration](https://nbisweden.github.io/workshop-scRNAseq/lectures/data_integration_paulo_czarnewski_2020.pdf)
+* [Clustering techniques](https://nbisweden.github.io/workshop-scRNAseq/lectures/scRNAseq_clustering_Asa_Bjorklund_2020.pdf)
+* [Differential expression analysis](https://nbisweden.github.io/workshop-scRNAseq/lectures/differenatial_expression_olga_dethlefsen_2020.pdf)
+* [Trajectory inference analyses](https://nbisweden.github.io/workshop-scRNAseq/lectures/trajectory_inference_analysis_paulo_czarnewski.pdf)
+* [All of the above in a YouTube playlist](https://youtu.be/BfxDfL1GBzk)
+</p>
+</details>
+
+<details>
+<summary>**Tools and pipelines**</summary>
+<p>
+* [Repository listing many scRNA-seq tools](https://github.com/seandavi/awesome-single-cell)
+* [Bitbucket repository for QC report scripts](https://bitbucket.org/asbj/qc-summary_scrnaseq)
+* [Bitbucket repository for an NBIS scRNA-seq pipeline](https://bitbucket.org/scilifelab-lts/lts-workflows-sm-scrnaseq)
+* [A catalogue of many scRNA-seq tools](https://www.scrna-tools.org/)
+</p>
+</details>
+
+<details>
+<summary>**Websites**</summary>
+<p>
+* [SingleCellExperiment objects for many datasets](https://hemberg-lab.github.io/scRNA.seq.datasets/)
+* [Conquer datasets - many different datasets based on a salmon pipeline](http://imlspenticton.uzh.ch:3838/conquer/)
+* [The Human Cell Atlas project](https://www.humancellatlas.org/)
+* [The EBI Single-cell expression atlas](https://www.ebi.ac.uk/gxa/sc)
+</p>
+</details>
+
+<details>
+<summary>**Papers**</summary>
+<p>
+* [The technology and biology of single-cell RNA sequencing](https://pubmed.ncbi.nlm.nih.gov/26000846/)
+* [A systematic evaluation of single cell RNA-seq analysis pipelines](https://www.nature.com/articles/s41467-019-12266-7)
+* [Visualizing Structure and Transitions for Biological Data Exploration](https://www.biorxiv.org/content/10.1101/120378v4)
+* [A systematic performance evaluation of clustering methods for single-cell RNA-seq data](https://f1000research.com/articles/7-1141)
+* [A benchmark of batch-effect correction methods for single-cell RNA sequencing data](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1850-9)
+* [Bias, robustness and scalability in single-cell differential expression analysis](https://www.nature.com/articles/nmeth.4612)
+* [A comparison of single-cell trajectory inference methods](https://www.nature.com/articles/s41587-019-0071-9)
+</p>
+</details>
+
+
+<br/>
+
+<br/>
+
+[**Back to main**](https://sib-swiss.github.io/SchoolRNA2020/)
