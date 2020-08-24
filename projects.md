@@ -12,6 +12,12 @@ Since each of the 4 group themes have completely different softwares, please fol
 <details>
 <summary>Click to expand!</summary>
 
+<br/>
+
+[Overview of Single Cell RNA-seq Data Analysis](single_cell/single_cell.pdf)
+
+<br/>
+
 Please follow the [pre-course instructions](precourse.md) in order to install all necessary software and packages.
 
 The proposed educational plan for single cell RNA-seq data analysis project will be done using the Project-based learning (a.k.a. PBL) approach. This way, rather than having lectures on a topic and defined set of instructions and pre-given steps to follow (which focus on passive individual learning), you are required to learn the topic in a more **active** and **dynamic** way in order to solve the data analysis tasks as a group. Therefore, each group is provided with:
