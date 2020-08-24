@@ -394,13 +394,8 @@ item <- annot[match(rownames(SeuratObject@assays$RNA@counts) , annot[,1]),"gene_
 item[is.na(item)] <- "unknown"
 
 # Calculate the percentage of each gene biotype
-<<<<<<< HEAD
 perc <- rowsum(as.matrix(SeuratObject@assays$RNA@counts) , group=item)
 perc <- (t(perc)/Matrix::colSums(SeuratObject@assays$RNA@counts))
-=======
-temp <- rowsum(as.matrix(SeuratObject@assays$RNA@counts) , group=item)
-perc <- (t(temp)/Matrix::colSums(SeuratObject@assays$RNA@counts))
->>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
 o <- order(apply(perc,2,median),decreasing = F)
 perc <- perc[,o]
 
@@ -562,11 +557,7 @@ How to run it:
 ```r
 SeuratObject <- ScaleData(
   object = SeuratObject,
-<<<<<<< HEAD
   vars.to.regress = c("nCount_RNA","mito.percent","nFeatures_RNA"),
-=======
-  vars.to.regress = c("nCount_RNA","mito.percent","nFeature_RNA"),
->>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
   model.use = "linear",
   do.scale = T,
   do.center = T)
@@ -589,11 +580,7 @@ How to run it:
 ```r
 SeuratObject <- ScaleData(
   object = SeuratObject,
-<<<<<<< HEAD
   vars.to.regress = c("nCount_RNA","mito.percent","nFeatures_RNA"),
-=======
-  vars.to.regress = c("nCount_RNA","mito.percent","nFeature_RNA"),
->>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
   model.use = "poisson",
   do.scale = T,
   do.center = T)
@@ -617,11 +604,7 @@ How to run it:
 SeuratObject <- SCTransform(
   object = SeuratObject,
   assay="RNA",
-<<<<<<< HEAD
   vars.to.regress =  c("nCount_RNA","mito.percent","nFeatures_RNA"),
-=======
-  vars.to.regress =  c("nCount_RNA","mito.percent","nFeature_RNA"),
->>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
   new.assay.name = "sctransform",
   do.center=T )
 ```
@@ -653,13 +636,7 @@ SeuratObject <- FindVariableFeatures(
   nfeatures = 3000,
   selection.method = "vst",
   verbose = FALSE,
-<<<<<<< HEAD
   assay = "RNA")
-=======
-  assay = "RNA",
-  dispersion.function = "FastLogVMR",
-  mean.function = "FastExpMean")
->>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
 ```
 
 Variable gene plot:
@@ -993,7 +970,13 @@ SeuratObject <- IntegrateData(
 <summary>**Scanorama**</summary>
 <p>
 
-<div style="text-align: right"> [Welch et al (2019) *Cell*](https://www.cell.com/cell/pdf/S0092-8674(19)30504-5.pdf) </div>
+Scanorama's approach generalizes mutual nearest-neighbors matching, a technique that finds similar elements between two datasets, to instead find similar elements among many datasets.
+
+While recent approaches have shown that it is possible to integrate scRNA-seq studies across multiple experiments, these approaches automatically assume that all datasets share at least one cell type in common or that the gene expression profiles share largely the same correlation structure across all datasets. These methods are therefore prone to overcor- rection, especially when integrating collections of datasets with considerable differences in cellular composition.
+
+Scanorama is a strategy for efficiently integrating multiple scRNA-seq datasets, even when they are composed of heterogeneous transcriptional phenotypes. Its approach is analogous to computer vision algorithms for panorama stitching that identify images with overlapping content and merge these into a larger panorama. Likewise, Scanorama automatically identifies scRNA-seq datasets containing cells with similar transcriptional profiles and can leverage those matches for batch correction and integration, without also merging datasets that do not overlap. Scanorama is robust to different dataset sizes and sources, preserves dataset-specific populations and does not require that all datasets share at least one cell population.
+
+<div style="text-align: right"> edited from [Welch et al (2019) *Cell*](https://www.nature.com/articles/s41587-019-0113-3) </div>
 
 
 ```r
@@ -1035,6 +1018,11 @@ colnames(intdimred) <- paste0("PC_", 1:100)
 
 stdevs <- apply(intdimred, MARGIN = 2, FUN = sd)
 
+SeuratObject@assays[["pano"]] <- CreateAssayObject(data = panorama,
+                                           min.cells = 0,
+                                           min.features = 0)
+
+
 SeuratObject[["pca_scanorama"]] <- CreateDimReducObject(
   embeddings = intdimred,
   stdev = stdevs,
@@ -1047,65 +1035,17 @@ SeuratObject[["pca_scanorama"]] <- CreateDimReducObject(
 </details>
 
 
-
-<details>
-<summary>**Conos**</summary>
-<p>
-
-<div style="text-align: right"> [Barkas et al (2019) *Nat Methods*](https://www.nature.com/articles/s41592-019-0466-z) </div>
-
-
-```r
-# Load additional libraries
-library(conos)
-library(SeuratWrappers)
-
-# Split the data per batch to be corrected
-SeuratObject.list <- SplitObject(SeuratObject, split.by = "Method")
-for (i in 1:length(SeuratObject.list)) {
-    SeuratObject.list[[i]] <-
-      NormalizeData(SeuratObject.list[[i]]) %>%
-      FindVariableFeatures() %>%
-      ScaleData() %>%
-      RunPCA(verbose = FALSE)
-}
-
-# Create a Conos object
-SeuratObject.con <- Conos$new(SeuratObject.list)
-
-# Build a joint graph across datasets and find shared communities
-SeuratObject.con$buildGraph(
-  k = 15,
-  k.self = 5,
-  space = "PCA",
-  ncomps = 30,
-  n.odgenes = 2000,
-  matching.method = "mNN",
-  metric = "angular",
-  score.component.variance = TRUE,
-  verbose = TRUE)
-
-SeuratObject.con$findCommunities()
-
-# Create a Joint embedding and conver it back to Seurat Object
-SeuratObject.con$embedGraph()
-SeuratObject <- as.Seurat(SeuratObject.con)
-
-# Free memory from working environment
-rm( c( SeuratObject.con, SeuratObject.list ) )
-gc(verbose = FALSE)
-```
-
-
-</p>
-</details>
-
 <details>
 <summary>**Harmony**</summary>
 <p>
 
+Harmony begins with a low-dimensional embedding of cells, such as principal components analysis (PCA), (Supplementary Note 1 and Methods). Using this embedding, Harmony first groups cells into multi-dataset clusters. We use soft clustering to assign cells to potentially multiple clusters, to account for smooth transi- tions between cell states. These clusters serve as surrogate variables, rather than to identify discrete cell types
 
-<div style="text-align: right"> [Korsunsky et al (2019) *Nat Mathods*](https://www.nature.com/articles/s41592-019-0619-0) </div>
+After clustering, each dataset has cluster-specific centroids that are used to compute cluster-specific linear correction factors. Since clusters correspond to cell types and states, cluster-specific correction factors correspond to individual cell-type and cell-state specific correction factors. In this way, Harmony learns a simple linear adjustment function that is sensitive to intrinsic cel- lular phenotypes. Finally, each cell is assigned a cluster-weighted average of these terms and corrected by its cell-specific linear factor. Since each cell may be in multiple clusters, each cell has a potentially unique correction factor. Harmony iterates these four steps until cell cluster assignments are stable.
+
+Harmony is an algorithm for robust, scalable and flexible multi-dataset integration to meet four key challenges of unsupervised scRNAseq joint embedding: scaling to large datasets, identification of both broad populations and fine-grained subpopulations, flexibility to accommodate complex experimental design, and the power to integrate across modalities.
+
+<div style="text-align: right"> adapted from [Korsunsky et al (2019) *Nat Mathods*](https://www.nature.com/articles/s41592-019-0619-0) </div>
 
 
 
@@ -1354,12 +1294,7 @@ For this end, we will first subset our data for the desired cell cluster, then c
 
 
 ```r
-<<<<<<< HEAD
 cell_selection <- SeuratObject[,SeuratObject$seurat_clusters == 4]
-=======
-# Select the desired cluster
-cell_selection <- subset(SeuratObject, cells = colnames(SeuratObject)[SeuratObject$seurat_clusters == 4])
->>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
 cell_selection <- SetIdent(cell_selection, value = "Batch")
 
 # Compute differentiall expression
@@ -1676,7 +1611,7 @@ plot_differential_expression(feature_id)
 
 **Genes that change between two pseudotime points**
 
-We can define custom pseudotime values of interest if we're interested in genes that change between particular point in pseudotime. By default, we can look at differences between start and end:
+We can define custom pseudotime values of interest if we're interested in genes that change between particular point in pseudotime (for example, the progenitor cell markers). By default, we can look at differences between start and end:
 
 
 ```r
@@ -1694,8 +1629,8 @@ plot_differential_expression(feature_id)
 
 More interesting are genes that are different between two branches. We may have seen some of these genes already pop up in previous analyses of pseudotime. There are several ways to define “different between branches”, and each have their own functions:
 
-* Different at the end points, using `diffEndTest`
-* Different at the branching point, using `earlyDETest`
+* Different at the end points between lineages, using `diffEndTest`
+* Different at the branching point between lineages, using `earlyDETest`
 * Different somewhere in pseudotime the branching point, using `patternTest`
 
 Note that the last function requires that the pseudotimes between two lineages are aligned.

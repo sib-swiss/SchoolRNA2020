@@ -386,13 +386,8 @@ item <- annot[match(rownames(SeuratObject@assays$RNA@counts) , annot[,1]),"gene_
 item[is.na(item)] <- "unknown"
 
 # Calculate the percentage of each gene biotype
-<<<<<<< HEAD
 perc <- rowsum(as.matrix(SeuratObject@assays$RNA@counts) , group=item)
 perc <- (t(perc)/Matrix::colSums(SeuratObject@assays$RNA@counts))
-=======
-temp <- rowsum(as.matrix(SeuratObject@assays$RNA@counts) , group=item)
-perc <- (t(temp)/Matrix::colSums(SeuratObject@assays$RNA@counts))
->>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
 o <- order(apply(perc,2,median),decreasing = F)
 perc <- perc[,o]
 
@@ -547,11 +542,7 @@ How to run it:
 ```{r, eval=F}
 SeuratObject <- ScaleData(
   object = SeuratObject,
-<<<<<<< HEAD
   vars.to.regress = c("nCount_RNA","mito.percent","nFeatures_RNA"),
-=======
-  vars.to.regress = c("nCount_RNA","mito.percent","nFeature_RNA"),
->>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
   model.use = "linear",
   do.scale = T,
   do.center = T)
@@ -573,11 +564,7 @@ How to run it:
 ```{r, eval=F}
 SeuratObject <- ScaleData(
   object = SeuratObject,
-<<<<<<< HEAD
   vars.to.regress = c("nCount_RNA","mito.percent","nFeatures_RNA"),
-=======
-  vars.to.regress = c("nCount_RNA","mito.percent","nFeature_RNA"),
->>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
   model.use = "poisson",
   do.scale = T,
   do.center = T)
@@ -600,11 +587,7 @@ How to run it:
 SeuratObject <- SCTransform(
   object = SeuratObject,
   assay="RNA",
-<<<<<<< HEAD
   vars.to.regress =  c("nCount_RNA","mito.percent","nFeatures_RNA"),
-=======
-  vars.to.regress =  c("nCount_RNA","mito.percent","nFeature_RNA"),
->>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
   new.assay.name = "sctransform",
   do.center=T )
 ```
@@ -635,13 +618,7 @@ SeuratObject <- FindVariableFeatures(
   nfeatures = 3000,
   selection.method = "vst",
   verbose = FALSE,
-<<<<<<< HEAD
   assay = "RNA")
-=======
-  assay = "RNA",
-  dispersion.function = "FastLogVMR",
-  mean.function = "FastExpMean")
->>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
 ```
 
 Variable gene plot:
@@ -1279,12 +1256,7 @@ The second way of computing differential expression is to answer which genes are
 For this end, we will first subset our data for the desired cell cluster, then change the cell identities to the variable of comparison (which now in our case is the "Batch").
 
 ```{r, eval=F}
-<<<<<<< HEAD
 cell_selection <- SeuratObject[,SeuratObject$seurat_clusters == 4]
-=======
-# Select the desired cluster
-cell_selection <- subset(SeuratObject, cells = colnames(SeuratObject)[SeuratObject$seurat_clusters == 4])
->>>>>>> 4e5d215ab5f4a14bc678d09f2201a96c8aaa123f
 cell_selection <- SetIdent(cell_selection, value = "Batch")
 
 # Compute differentiall expression
