@@ -1438,7 +1438,8 @@ abline( v=0,lty=1 )
 # Trajectory inference
 ***
 
-If you have been using the `scran/scater` pipeline so far. Below you can find a summary code for data processing until getting:
+Below you can find a summary of data processing required for trajectory
+inference:
 
 * A reduction where to perform the trajectory ( PCA > MDS > DM > UMAP > tSNE )
 * The cell clustering information
