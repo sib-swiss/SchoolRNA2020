@@ -1,5 +1,5 @@
 ---
-title: '<img border="0" src="https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/dictionary.png" width="40" height="40"> Glossary of terms'
+title: '<img border="0" src="https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/dictionary.png" width="40" height="40"> Glossary of scRNA-seq terms'
 output:
   html_document:
     keep_md: true
@@ -135,7 +135,7 @@ Seurat objects have a easy way to access their contents using the `@` or the `$`
 * The `@` attribute allows you to access to all analysis slots including: `assays`, `meta.data`, `graphs` and `reduction` slots.
 * The `$` sign allows you to access the columns of the metadata (just like you normally would do in a data.frame) in your Seurat object directly so that `SeuratObject$column1` is equal to `SeuratObject@meta.data$column1`.
 
-By default, the data is loaded into an `assay` slot named `RNA`, but you can change the names of the slots when creating them (e.g., when creating the seurat object, or computing the reductions). Therefore, check the options in each of the Seurat functions to know where you are storing the data. Each `assay` contains information about the raw counts (`counts`), the normalized counts (`data`), the scaled/regressed data (`scale.data`) as well as information about the dispersion of genes (`var`). Additional assays will be created when doing data analysis, for example when performing data integration, you might store the data as new `assay` or as a new `reduction` slot (depending on the integration method used).
+By default, the data is loaded into an `assay` slot named `RNA`, but you can change the names of the slots when creating them (*e.g.*, when creating the seurat object, or computing the reductions). Therefore, check the options in each of the Seurat functions to know where you are storing the data. Each `assay` contains information about the raw counts (`counts`), the normalized counts (`data`), the scaled/regressed data (`scale.data`) as well as information about the dispersion of genes (`var`). Additional assays will be created when doing data analysis, for example when performing data integration, you might store the data as new `assay` or as a new `reduction` slot (depending on the integration method used).
 
 
 
@@ -755,9 +755,11 @@ Setting `compute.SNN` to `TRUE` will compute both the k-NN and SNN graphs.
 # Dimensionality reduction
 ***
 
-The full gene expression space, with thousands of genes, contains quite a lot of noise in scRNAseq data and is hard to visualize. Hence, most scRNAseq analyses starts with a step of PCA (or similar method, e.g. ICA) to remove some of the variation of the data.
+The full gene expression space, with thousands of genes, contains quite a lot of noise in scRNAseq data and is hard to visualize. Hence, most scRNA-seq analyses starts with a step of PCA (or similar method, *e.g.* ICA) to remove some of the variation of the data.
 
 For a simple scRNAseq dataset with only a few cell types, PCA may be sufficient to visualize the complexity of the data in 2 or 3 dimensions. However, with increasing complexity we need to run non-linear dimensionality reduction to be able to project the data down to 2 dimensions for visualization, such methods are tSNE, UMAP and diffusion maps.
+
+Deciding which dimensionality reduction method to use is a non-trivial question, one that may have several good answers. Here is [a paper](https://www.biorxiv.org/content/10.1101/120378v4) comparing many of the methods available, if you want to read more details.
 
 
 <details>
@@ -917,9 +919,13 @@ SeuratObject <- RunICA(object = SeuratObject,
 # Dataset integration
 ***
 
-Existing batch correction methods were specifically designed for bulk RNA-seq. Thus, their applications to scRNA-seq data assume that the composition of the cell population within each batch is identical. Any systematic differences in the mean gene expression between batches are attributed to technical differences that can be regressed out. However, in practice, population composition is usually not identical across batches in scRNA-seq studies. Even assuming that the same cell types are present in each batch, the abundance of each cell type in the data set can change depending upon subtle differences in cell culture or tissue extraction, dissociation and sorting, etc. Consequently, the estimated coefficients for the batch blocking factors are not purely technical, but contain a non-zero biological component due to differences in composition. Batch correction based on these coefficients will thus yield inaccurate representations of the cellular expression proles, potentially yielding worse results than if no correction was performed.
+Existing batch correction methods were specifically designed for bulk RNA-seq. Thus, their applications to scRNA-seq data assume that the composition of the cell population within each batch is identical. Any systematic differences in the mean gene expression between batches are attributed to technical differences that can be regressed out. However, in practice, population composition is usually not identical across batches in scRNA-seq studies. Even assuming that the same cell types are present in each batch, the abundance of each cell type in the data set can change depending upon subtle differences in cell culture or tissue extraction, dissociation and sorting, *etc.* Consequently, the estimated coefficients for the batch blocking factors are not purely technical, but contain a non-zero biological component due to differences in composition. Batch correction based on these coefficients will thus yield inaccurate representations of the cellular expression proles, potentially yielding worse results than if no correction was performed.
 
 <div style="text-align: right"> [Haghverdi et al (2018) *Nat Biotechnology*](https://www.nature.com/articles/nbt.4091) </div>
+
+<br>
+
+As with many of the other scRNA-seq methodologies, it can be difficult to choose which batch-correction technique you should use for your dataset. You can read more in this [comparative paper](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1850-9).
 
 <details>
 <summary>**MNN**</summary>
@@ -1125,9 +1131,10 @@ SeuratObject <- RunHarmony(
 One of the main goals of scRNAseq studies is often to group cells into clusters of similar cells. There are many different ways of defining clusters. There are traditional clustering approaches like *K-mean*, *hierarchical clustering* and *affinity propagation*, but recently most pipelines make use of graphs (see section above) to define clusters as groups of interconnected cells.
 
 To define clusters in a graph we make use of different community detection algorithms like *Louvain*, *Leiden* and *Infomap*. The main idea behind all of them is to find groups of cells that have more edges (connections of high similarity) between them than they have to other cells in the dataset.
+
 Still, all clustering methods begin with defining pairwise distances between cells. Commonly this is done by taking euclidean distances between cells in PCA space, after selecting a subset of variables and scaling the data. Hence, your clustering results will be strongly dependent on choices you made in preprocessing of the data, especially the variable gene selection and how many principal components you include from the PCA.
 
-In graph based methods, the distances from PCA space are used to create a graph with edges between neighboring cells. Also here, there are multiple parameters, like number of neighbors in the KNN graph and pruning settings for the SNN construction that will impact the clustering results.
+In graph based methods, the distances from PCA space are used to create a graph with edges between neighboring cells. Also here, there are multiple parameters, like number of neighbors in the KNN graph and pruning settings for the SNN construction that will impact the clustering results. If you want to read more about clustering and comparisons between methods, have a look at [this paper](https://f1000research.com/articles/7-1141).
 
 
 <details>
@@ -1277,7 +1284,7 @@ Differential gene expression may help in that analysis. If two clusters have the
 # Differential expression
 ***
 
-Once clusters have been defined, it is often informative to find the genes that define each cluster. The methods for DE prediction in scRNAseq differs somewhat from bulk RNAseq methods. On one hand, we often have more samples (individual cells) compared to bulk RNA-seq, but on the other hand, the scRNAseq data is noisy and suffer from drop-outs, which complicates things.
+Once clusters have been defined, it is often informative to find the genes that define each cluster. The methods for DE prediction in scRNAseq differs somewhat from bulk RNAseq methods. On one hand, we often have more samples (individual cells) compared to bulk RNA-seq, but on the other hand, the scRNAseq data is noisy and suffer from drop-outs, which complicates things. You can read more about the different methods available in [this paper](https://www.nature.com/articles/nmeth.4612).
 
 <details>
 <summary>**Finding DEGs**</summary>
@@ -1489,6 +1496,8 @@ inference:
 
 * A reduction where to perform the trajectory ( PCA > MDS > DM > UMAP > tSNE )
 * The cell clustering information
+
+Choosing the "best" method for trajectory inference is, like for most of the other scRNA-seq analyses non-trivial. For a comparison, please check [this paper](https://www.nature.com/articles/s41587-019-0071-9).
 
 <details>
 <summary>**Trajectory inference with Slingshot**</summary>
@@ -1760,7 +1769,7 @@ useful to explore to get an even deeper understanding.
 * [Clustering techniques](https://nbisweden.github.io/workshop-scRNAseq/lectures/scRNAseq_clustering_Asa_Bjorklund_2020.pdf)
 * [Differential expression analysis](https://nbisweden.github.io/workshop-scRNAseq/lectures/differenatial_expression_olga_dethlefsen_2020.pdf)
 * [Trajectory inference analyses](https://nbisweden.github.io/workshop-scRNAseq/lectures/trajectory_inference_analysis_paulo_czarnewski.pdf)
-* [All of the above in a YouTube playlist](https://youtu.be/BfxDfL1GBzk)
+* [All of the above in a YouTube playlist](https://www.youtube.com/playlist?list=PLjiXAZO27elC_xnk7gVNM85I2IQl5BEJN)
 </p>
 </details>
 
@@ -1785,15 +1794,10 @@ useful to explore to get an even deeper understanding.
 </details>
 
 <details>
-<summary>**Papers**</summary>
+<summary>**Additional papers**</summary>
 <p>
 * [The technology and biology of single-cell RNA sequencing](https://pubmed.ncbi.nlm.nih.gov/26000846/)
 * [A systematic evaluation of single cell RNA-seq analysis pipelines](https://www.nature.com/articles/s41467-019-12266-7)
-* [Visualizing Structure and Transitions for Biological Data Exploration](https://www.biorxiv.org/content/10.1101/120378v4)
-* [A systematic performance evaluation of clustering methods for single-cell RNA-seq data](https://f1000research.com/articles/7-1141)
-* [A benchmark of batch-effect correction methods for single-cell RNA sequencing data](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1850-9)
-* [Bias, robustness and scalability in single-cell differential expression analysis](https://www.nature.com/articles/nmeth.4612)
-* [A comparison of single-cell trajectory inference methods](https://www.nature.com/articles/s41587-019-0071-9)
 </p>
 </details>
 
