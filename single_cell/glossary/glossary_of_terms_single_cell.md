@@ -1219,6 +1219,40 @@ Differential gene expression may help in that analysis. If two clusters have the
 
 </p>
 </details>
+
+<details>
+<summary>**Comparing clusterings and metadata**</summary>
+<p>
+
+A very useful task is to check how your clusters compare to other clustering conditions or metadata. 
+
+How to run it:
+
+
+```r
+comparison_table <- table(list(
+  SeuratObject$meta.data[,"METADATA_FACTOR_1"],
+  SeuratObject$meta.data[,"METADATA_FACTOR_2"]
+))
+```
+
+This will generate a table contating information of how many cells belong to the classes in comparisson. You can visualize it as a barplot, for example:
+
+
+```r
+#Transform data to percentages:
+comparison_table <- t(t(comparison_table)/colSums(comparison_table))*100
+
+#Barplot
+barplot(comparison_table,
+        col=scaleshue_pal()(nrow(comparison_table))[1:nrow(comparison_table)],
+        border=NA,
+        las=2)
+```
+
+</p>
+</details>
+
 <br/>
 
 # Differential expression

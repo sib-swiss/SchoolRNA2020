@@ -16,19 +16,10 @@ output:
 
 ## Milestone 1
 
-### Find and download suitable datasets to work
-- Consult the Glossary or additional sources for help
-- Go to PanglaoDB and look for an appropriate dataset
-- Which species should it be?
-- For this tutorial, please use 10X Chromium datasets only
-- For this tutorial, please limit the amount of cells to about 10000 cells
-- Describe in form of text the rationale for this step in your markdown report
-
-
 ### Load and merge datasets
 - Consult the Glossary or additional sources for help
 - Which file format do we have the data in?
-- Why do we need to create a seurat object?
+- Why do we need to create a Seurat object?
 - Where in the Seurat object is your counts stored?
 - Describe in form of text the rational for this step in your markdown report.
 
@@ -38,6 +29,7 @@ output:
 - Which QC metrics should you calculate?
 - What does each QC metric mean?
 - Describe in form of text the rationale for this step in your markdown report
+
 
 ### Define appropriate filtering thresholds
 - Consult the Glossary or additional sources for help
@@ -55,11 +47,11 @@ output:
 - Consult the Glossary or additional sources for help
 - Why do we need to normalize the data? What exactly are we normalizing?
 - Where in the Seurat object is your normalized data stored?
-- Which data covariates could potentially influence the interpreteation of the results?
+- Which data covariates could potentially influence the interpretation of the results?
 - Following the question above, are there any covariates that need to be regressed out?
 - Are all genes equally important for your analysis? Justify.
 - Where in the Seurat object is your scaled data stored?
-- Describe in form of text the rational for this step in your markdown report.
+- Describe in form of text the rational for this step in your markdown report
 
 
 ### Data Visualization
@@ -70,7 +62,7 @@ output:
 - Following the question above, how the parameters in this method influence your visual representation?
 - How some of your QC parameters and datasets influence the separation of your cells?
 - Where in the Seurat object is your reductions stored?
-- Describe in form of text the rational for this step in your markdown report.
+- Describe in form of text the rational for this step in your markdown report
 
 <br/>
 
@@ -84,8 +76,11 @@ output:
 - Would a simple linear regression be sufficient for removing batch effects on your dataset?
 - Which method for batch effect would you choose?
 - How could you tell the batch correction procedure worked?
-- Where in the Seurat object is your integrated data stored ()?
-- Describe in form of text the rational for this step in your markdown report.
+- Where in the Seurat object is your integrated data stored?
+- After batch correction, do you have corrected data matrix (genes x samples) or a matrix in a reduction embedding (samples x dimensions).
+- Where where should you put the embedding results?
+- Visualize your results using the new matricies.
+- Describe in form of text the rational for this step in your markdown report
 
 <br/>
 
@@ -96,10 +91,13 @@ output:
 - Consult the Glossary or additional sources for help
 - What is a graph?
 - Which kind of graph is the most robust to represent your data?
+- Where in the Seurat object is your graph stored?
 - Why do we need to cluster our cells?
 - Which parameters have you chosen when clustering?
 - How can you tell which clustering resolution is best?
 - Do the clustering reflect the cell separation seen by the visualization method you are using?
+- How are your clusters distributed across the samples, groups, experimental conditions, etc.?
+- Where in the Seurat object is your clustering data stored?
 - Describe in form of text the rationale for this step in your markdown report
 
 <br/>
@@ -109,6 +107,9 @@ output:
 
 ### Differential expression
 - Consult the Glossary or additional sources for help
+- Which biological question(s) do you want to answer with differential expression?
+- Are you interested in comparing all cells or using a specific cluster?
+- If you are interested in a particular cluster, which cluster, why?
 - Which clustering resolution would you run your differential expression?
 - Which test did you choose for differential expression?
 - What parameters did you set for computing differential expression? Justify each one
@@ -119,12 +120,14 @@ output:
 
 <br/>
 
-
-## Milestone 6 (optional)
-
 ### Trajectory inference analysis
-* Build trajectory embedding (change embedding variables, so you have a continuous path)
-* Define lineages
-* Visualize lineages
-* Perform differential expression on the desired branches
-* Report the best gene candidates for each population
+- Consult the Glossary or additional sources for help
+- Which biological question(s) do you want to answer with trajectory?
+- Are you sure you have a developmental path in your data? 
+- Are you interested in using all cells or using a specific cluster?
+- Which embeddings will you use for computing trajectories? why?
+- Which differential expression test are you interested in?
+- How would you visualize your results?
+- Describe in form of text the rationale for this step in your markdown report
+
+

@@ -11,7 +11,7 @@
 
 
 
-<title> Glossary of scRNA-seq terms</title>
+<title>Project report template</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -445,1309 +445,181 @@ summary {
 
 
 
-<h1 class="title toc-ignore"><img border="0" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAqKUlEQVR42u3d+49V1f3/cf4ZGYiMExAjl1QhXExtCSHGgD8YQoA0QFKo+UgaLw2MhEu0JB/6gxZToLFtipioRIVgJY6ifpoWjRWiwKcOjShj7XhDBgaY2R/WfEsz8mVm9jlnn7Mv6/FKnqllbmevvdZ6P88+a689LhEREZHoMk4TiIiIEAAREREhACIiIkIARCqYK1euDCHNaVdtK0IARAgAARARAiAiIiIEQERERAiAFDsjXd5N8+95/exYxzLaMab9HaN97/B/T/u7szzukdqxkeMa7felaYs03zMwMJDq9d7o++pt11r6f61/J217pDl/IgRAcpWAegpSXj9bz3HUUwAb/d56XkMjx5RlURpLAPJu23pEKO/X3+hrFiEAkrsA5P2zaY6j3nfVRfneWtuikb+fViCa0Qa1HFsWoljv68+6XWrp2yIEQFoiAGneKeb9s7Ucx1jfm/bybyMFoZErFmkLRiN/v14ByLK9ankNtbZrLd/TjHYhAEIApNACcKPJdazJMK+fbVQAannXmNU7wnou2TdSvGr5+41cAUj78UIjAjDaz9ZzSb0IfYMACAGQwl0FSPPfRfhZAkAAWiUAjfY5AiAEQAovAMNXYI800RblZ8skAGkzODjYFAFopA0aPa5mCkAWwusKgBAAIQApVzYX5WcbKX6tXgMQBKee89DMNQBlEoCRvjdtu9YrUdYACAGQyme0d55jFaS8fjZtoW7WSu9avreele3NvAvg2teuFdCs7gK4/vdm3bZZFdQi9A0CIARACnkVIO3klcfP1nNbWTPu9a7nOGr9rLzZ+wDU+0630eNKIxZZnbOs9mdoRt8gAEIApFACUOvXWv2zjUy+We8EWOskX4adALM8rnraK+udALPYSbBW2SIAQgBEpKWiJiIEQEQIgIgQABEhACJCAESEAIgIARARERECICIiIgRARERECICIiIgQABERESEAIiIiQgBERESEAIiIiAgBEBEREQIgwxKeiPaPf/wjOXz4cLJnz55k06ZNyZo1a5IlS5Ykd911VzJjxoyko6MjmThxYjJ+/PjkpptuAoBcCHNQmItuvfXWZO7cucn999+fPProo8kzzzyTvP/++8nly5dM6gRARkpPT0+yf//+5LHHHksWL16ctLe3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" width="40" height="40"> Glossary of scRNA-seq terms</h1>
+<h1 class="title toc-ignore">Project report template</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#project-report-single-cell"><img border="0" src="data:image/png;base64,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" width="40" height="40"> Project report (single cell)</a>
+<ul>
+<li><a href="#milestone-1">Milestone 1</a>
+<ul>
+<li><a href="#load-and-merge-datasets">Load and merge datasets</a></li>
+<li><a href="#compute-qc">Compute QC</a></li>
+<li><a href="#define-appropriate-filtering-thresholds">Define appropriate filtering thresholds</a></li>
+</ul></li>
+<li><a href="#milestone-2">Milestone 2</a>
+<ul>
+<li><a href="#normalization-and-scaling">Normalization and scaling</a></li>
+<li><a href="#data-visualization">Data Visualization</a></li>
+</ul></li>
+<li><a href="#milestone-3">Milestone 3</a>
+<ul>
+<li><a href="#dataset-integration">Dataset integration</a></li>
+</ul></li>
+<li><a href="#milestone-4">Milestone 4</a>
+<ul>
+<li><a href="#cell-clustering">Cell Clustering</a></li>
+</ul></li>
+<li><a href="#milestone-5">Milestone 5</a>
+<ul>
+<li><a href="#differential-expression">Differential expression</a></li>
+<li><a href="#trajectory-inference-analysis">Trajectory inference analysis</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
 
+<div id="project-report-single-cell" class="section level1">
+<h1><img border="0" src="data:image/png;base64,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" width="40" height="40"> Project report (single cell)</h1>
 <hr />
-<p><br /></p>
-<div id="downloading-data" class="section level1">
-<h1>Downloading data</h1>
-<hr />
-<details>
-<summary>
-<strong>Running bash code in Rstudio</strong>
-</summary>
-<p>It is possible to download data from within Rstudio by using the bash code chunk. It is usually a standard to have a folder with all your raw data stored in a separate place from your code or analysis results.</p>
-<p>How to run it:</p>
-<pre class="bash"><code># RMarkdown allows the use of languages other than R, such as bash or Python.
-# To use bash, use ```{bash} instead of ```{r}.
-# ```{bash}
-
-# make a data directory
-mkdir data
-
-# use curl to download the data
-curl -o data/FILENAME.h5 -O http://FILE_PATH.h5</code></pre>
-</details>
-<p><br /></p>
-<p><br /></p>
+<p><br /> # Research Analysis Tasks:</p>
+<div id="milestone-1" class="section level2">
+<h2>Milestone 1</h2>
+<div id="load-and-merge-datasets" class="section level3">
+<h3>Load and merge datasets</h3>
+<ul>
+<li>Consult the Glossary or additional sources for help</li>
+<li>Which file format do we have the data in?</li>
+<li>Why do we need to create a Seurat object?</li>
+<li>Where in the Seurat object is your counts stored?</li>
+<li>Describe in form of text the rational for this step in your markdown report.</li>
+</ul>
 </div>
-<div id="seurat-objects" class="section level1">
-<h1>Seurat Objects</h1>
-<hr />
-<p><a href="https://satijalab.org/seurat/">Seurat</a> is one of the most commonly used pipelines for scRNAseq analysis. For additional information on Seurat objects and commands, please look at this <a href="https://satijalab.org/seurat/essential_commands.html">page</a>. Many different tutorials are also available from their website.</p>
-<details>
-<summary>
-<strong>Reading files</strong>
-</summary>
-<p>
-<p>There are many formats available in which one can store single cell information, many of which cannot all be listed here. The most common formats are:</p>
-<ol style="list-style-type: decimal">
-<li>Using tab-delimited matrices saved as <code>.csv</code>, <code>.tsv</code> or <code>.txt</code> and with and additional matrix containing the sample metadata, which is common for SMARTseq2 and related methods</li>
-<li>Using a compressed <strong>sparce matrix</strong> file <code>.mtx</code> with annotations for genes and cells saved as <code>.tsv</code>, which was one of the defaults for 10X Chromium data</li>
-<li>Using HDF5 compressed file for in-file read-write access, which is now becoming the default method for storing single cell dataset (is the current default for 10X Chromium data). HDF5 in particular is fast, scalable and can load parts of the data that will be used at a time, and also can store the metadata in the same file, making it portable. It stores the data as binary compressed <strong>sparce matrix</strong> format</li>
-</ol>
-<p>How to run it:</p>
-<pre class="r"><code># From .csv .tsv .txt format (and then convert to sparse matrix)
-raw_matrix &lt;- read.delim(
-  file = &quot;data/folder_sample1.csv&quot;,
-  row.names = 1 )
-
-sparse_matrix &lt;- Matrix::Matrix(
-  data = raw_matrix,
-  sparse = T)
-rm(raw_matrix)
-
-
-# From .mtx format (it loads the files in the folder)
-sparse_matrix &lt;- Seurat::Read10X(
-  data.dir = &quot;data/folder_sample1&quot;)
-
-
-# From .h5 format
-sparse_matrix &lt;- Seurat::Read10X_h5(
-  filename = &quot;data/matrix_file.h5&quot;,
-  use.names = T)</code></pre>
-<p>Additionally, one should also import any associated metadata file as a <code>data.frame</code>, which opposed to a <code>matrix</code> can store both numbers, characters, booleans and factors.</p>
-<pre class="r"><code># From .csv .tsv format (and then convert to sparse matrix)
-metadata &lt;- read.delim(
-  file = &quot;data/metadata.csv&quot;,
-  sep = &quot;,&quot;,
-  row.names = 1 )</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>Creating Seurat objects</strong>
-</summary>
-<p>
-<p>In order to make the data analysis process a bit simpler, several single cell developers have implemented their own way of storing the data in a concise format in R and python (called <strong>objects</strong>).</p>
-<p>We can now load the expression matrices into objects and then later merge them into a single merged object. Each analysis workflow (Seurat, Scater, Scranpy, etc) has its own way of storing data and here is how you can create a Seurat Object:</p>
-<pre class="r"><code>SeuratObject &lt;- CreateSeuratObject(
-  counts = sparse_matrix,
-  assay = &quot;RNA&quot;,
-  project = &quot;SAMPLE1&quot;,
-  meta.data = metadata)</code></pre>
-<p>The <code>CreateSeuratObject</code> function can take as input a sparse matrix or a regular matrix with counts.</p>
-</p>
-</details>
-<details>
-<summary>
-<strong>Understanding Seurat objects</strong>
-</summary>
-<p>
-<p>For a very detailed explanation of all slots in the Seurat objects, please refer to the Seurat <a href="https://github.com/satijalab/seurat/wiki">wiki</a>.</p>
-<p>One can check the dimensions and subset Seurat Objects as a data.frame:</p>
-<p>Seurat objects have a easy way to access their contents using the <code>@</code> or the <code>$</code> characters after the object name: * The <code>@</code> attribute allows you to access to all analysis slots including: <code>assays</code>, <code>meta.data</code>, <code>graphs</code> and <code>reduction</code> slots. * The <code>$</code> sign allows you to access the columns of the metadata (just like you normally would do in a data.frame) in your Seurat object directly so that <code>SeuratObject$column1</code> is equal to <code>SeuratObject@meta.data$column1</code>.</p>
-<p>By default, the data is loaded into an <code>assay</code> slot named <code>RNA</code>, but you can change the names of the slots when creating them (<em>e.g.</em>, when creating the seurat object, or computing the reductions). Therefore, check the options in each of the Seurat functions to know where you are storing the data. Each <code>assay</code> contains information about the raw counts (<code>counts</code>), the normalized counts (<code>data</code>), the scaled/regressed data (<code>scale.data</code>) as well as information about the dispersion of genes (<code>var</code>). Additional assays will be created when doing data analysis, for example when performing data integration, you might store the data as new <code>assay</code> or as a new <code>reduction</code> slot (depending on the integration method used).</p>
-</p>
-</details>
-<details>
-<summary>
-<strong>Add in a metadata column</strong>
-</summary>
-<p>
-<p>You can simply add a column by using the <code>$</code> sign to allocate a vector to a metadata column.</p>
-<pre class="r"><code>SeuratObject$NEW_COLUMN_NAME &lt;- setNames(
-  colnames(SeuratObject) ,
-  c(&quot;VECTOR_CONTAINING_DATA_FOR_EACH_CELL&quot;) )</code></pre>
-<p>Or use the function <code>AddMetaData</code> to add one or multiple columns:</p>
-<pre class="r"><code>SeuratObject &lt;- AddMetaData(
-  object=SeuratObject,
-  NEW_COLUMN,
-  col.name=NEW_COLUMN_NAME)</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>Subsetting Seurat objects</strong>
-</summary>
-<p>
-<p>To subset a Seurat object, you can do it as if was a data.frame:</p>
-<pre class="r"><code># Subsetting Features
-SeuratObject &lt;- SeuratObject[ vector_FEATURES_TO_USE , ]
-
-# Subsetting Cells
-SeuratObject &lt;- SeuratObject[ , vector_CELLS_TO_USE ]</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>Plotting functions</strong>
-</summary>
-<p>
-<p>The most common functions to use for plotting are the violin plot and the scatter plots for the dimensionality reduction calculated (you need to calculate it before using the function!).</p>
-<p>To plot <strong>continuous</strong> variables as <strong>violin</strong> (press TAB inside the functions for more options):</p>
-<pre class="r"><code>VlnPlot(object = SeuratObject,
-        group.by= &quot;orig.ident&quot;,
-        features = c(&quot;percent_mito&quot;),
-        pt.size = 0.1,
-        ncol = 4,
-        y.max = 100) + NoLegend()</code></pre>
-<p>To plot <strong>continuous</strong> variables as <strong>scatter plot</strong> using the <code>umap</code> reduction slot (press TAB inside the functions for more options):</p>
-<pre class="r"><code>FeaturePlot(object = SeuratObject,
-            features = c(&quot;FEATURE_1&quot;,&quot;FEATURE_2&quot;,&quot;FEATURE_3&quot;),
-            reduction = &quot;umap&quot;,
-            dims = c(1,2),
-            order = T,
-            pt.size = .1,
-            ncol = 3)</code></pre>
-<p>To plot <strong>CATEGORICAL</strong> variables as <strong>scatter plot</strong> using the <code>umap</code> reduction slot (press TAB inside the functions for more options):</p>
-<pre class="r"><code>DimPlot(object = SeuratObject,
-        group.by = c(&quot;DATASET&quot;),
-        reduction = &quot;umap&quot;,
-        dims = c(1,2),
-        pt.size = .1,
-        label = T,
-        ncol = 3)</code></pre>
-<p>Many other plotting functions are available, check <code>Seurat::</code> (then press tab and look for the functions with “Plot” in the name).</p>
-</p>
-</details>
-<details>
-<summary>
-<strong>Combine datasets</strong>
-</summary>
-<p>
-<pre class="r"><code>CombinedSeuratObject &lt;- merge(
-  x = SeuratObject1,
-  y = c( SeuratObject2 ,
-         SeuratObject3,
-         SeuratObject4),
-  add.cell.ids=c(&quot;Dataset1&quot;,
-                 &quot;Dataset2&quot;,
-                 &quot;Dataset3&quot;,
-                 &quot;Dataset4&quot;))</code></pre>
-</p>
-</details>
+<div id="compute-qc" class="section level3">
+<h3>Compute QC</h3>
+<ul>
+<li>Consult the Glossary or additional sources for help</li>
+<li>Which QC metrics should you calculate?</li>
+<li>What does each QC metric mean?</li>
+<li>Describe in form of text the rationale for this step in your markdown report</li>
+</ul>
+</div>
+<div id="define-appropriate-filtering-thresholds" class="section level3">
+<h3>Define appropriate filtering thresholds</h3>
+<ul>
+<li>Consult the Glossary or additional sources for help</li>
+<li>Which QC metric needs filtering in your data?</li>
+<li>Which filtering parameters and respective thresholds suit your data?</li>
+<li>Describe in form of text the rationale for this step in your markdown report</li>
+</ul>
 <p><br /></p>
 </div>
-<div id="quality-control" class="section level1">
-<h1>Quality control</h1>
-<hr />
-<p>A very crucial step in scRNAseq analysis is Quality control (QC). There will always be some failed libraries, low quality cells and doublets in an scRNAseq dataset, hence the quelity of the cells need to be examined and possibly some cells need to be removed.</p>
-<details>
-<summary>
-<strong>Total number of features</strong>
-</summary>
-<p>
-<p>A standard approach is to filter cells with low amount of reads as well as genes that are present in at least a certain amount of cells. Here we will only consider cells with at least 200 detected genes and genes need to be expressed in at least 3 cells. Please note that those values are highly dependent on the library preparation method used. Extremely high number of detected genes could indicate doublets. However, depending on the cell type composition in your sample, you may have cells with higher number of genes (and also higher counts) from one cell type.</p>
-<pre class="r"><code>VlnPlot(SeuratObject,
-        group.by= &quot;orig.ident&quot;,
-        features = c(&quot;nFeature_RNA&quot;,&quot;nCount_RNA&quot;),
-        pt.size = 0.1,
-        ncol = 4) + NoLegend()</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>Gene QC</strong>
-</summary>
-<p>
-<p>In single cell, the most detected genes usually belong to housekeeping gene families, such as mitochondrial (MT-), ribossomal (RPL and RPS) and other structural proteins (i.e., ACTB, TMSB4X, B2M, EEF1A1).</p>
-<pre class="r"><code>#Compute the relative expression of each gene per cell
-rel_expression &lt;- Matrix::t( Matrix::t(SeuratObject@assays$RNA@counts) / Matrix::colSums(SeuratObject@assays$RNA@counts)) * 100
-most_expressed &lt;- sort(Matrix::rowSums( rel_expression ),T) / ncol(SeuratObject)
-
-#Plot the relative expression of each gene per cell
-par(mfrow=c(1,3),mar=c(4,6,1,1))
-boxplot( as.matrix(Matrix::t(rel_expression[names(most_expressed[30:1]),])),cex=.1, las=1, xlab=&quot;% total count per cell&quot;,col=scales::hue_pal()(90)[30:1],horizontal=TRUE,ylim=c(0,8))
-boxplot( as.matrix(Matrix::t(rel_expression[names(most_expressed[60:31]),])),cex=.1, las=1, xlab=&quot;% total count per cell&quot;,col=scales::hue_pal()(90)[60:31],horizontal=TRUE,ylim=c(0,8))
-boxplot( as.matrix(Matrix::t(rel_expression[names(most_expressed[90:61]),])),cex=.1, las=1, xlab=&quot;% total count per cell&quot;,col=scales::hue_pal()(90)[90:61],horizontal=TRUE,ylim=c(0,8))</code></pre>
-<p>You might see that some genes constitute up to 10-30% of the counts from a single cell and the other top genes are mitochondrial and ribosomal genes. It is quite common that nuclear lincRNAs have correlation with quality and mitochondrial reads. Let us assemble some information about such genes, which are important for quality control and downstream filtering.</p>
-These genes can serve several purposes in single-cell data analysis, such as computing cell quality metrics (see below), normalize data (see below) and even help account for batch effects (
-<div style="text-align: right">
-<a href="https://www.pnas.org/content/116/20/9775">Lin et al (2019) <em>PNAS</em></a>
 </div>
-<p>).</p>
-</p>
-</details>
-<details>
-<summary>
-<strong>% Mitochondrial genes</strong>
-</summary>
-<p>
-<p>Having the data in a suitable format, we can start calculating some quality metrics. We can for example calculate the percentage of mitocondrial and ribosomal genes per cell and add to the metadata. This will be helpfull to visualize them across different metadata parameteres (i.e. datasetID and chemistry version). There are several ways of doing this. Here is an example of how to manually calculate the proportion of mitochondrial reads and add to the metadata table.</p>
-<p>Citing from “Simple Single Cell” workflows (Lun, McCarthy &amp; Marioni, 2017): “High proportions are indicative of poor-quality cells (Islam et al. 2014; Ilicic et al. 2016), possibly because of loss of cytoplasmic RNA from perforated cells. The reasoning is that mitochondria are larger than individual transcript molecules and less likely to escape through tears in the cell membrane.”</p>
-<p>(PS: non-linear relationship)</p>
-<pre class="r"><code># Calculating % mitochondrial genes
-SeuratObject &lt;- PercentageFeatureSet(
-  object = SeuratObject,
-  pattern = &quot;^RP[SL]&quot;,
-  assay = &quot;RNA&quot;,
-  col.name = &quot;percent_mito&quot;)</code></pre>
-<p>Note that you might need to change the patterns if you are using an organism other than human, <em>e.g.</em> <code>&quot;^Mt-&quot;</code> for mouse.</p>
-</p>
-</details>
-<details>
-<summary>
-<strong>% Ribosomal genes</strong>
-</summary>
-<p>
-<p>In the same manner we will calculate the proportion gene expression that comes from ribosomal proteins. Ribosomal genes are the also among the top expressed genes in any cell and, on the contrary to mitochondrial genes, are inversely proportional to the mitochondrial content: the higher the mitochondrial content, the lower is the detection of ribosomal genes (PS: non-linear relationship).</p>
-<pre class="r"><code># Calculating % ribosomal genes
-SeuratObject &lt;- PercentageFeatureSet(
-  SeuratObject,
-  pattern = &quot;^RP[SL]&quot;,
-  col.name = &quot;percent_ribo&quot;)</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>% Gene biotype and chromossome location</strong>
-</summary>
-<p>
-<p>In RNA-sequencing, genes can be categorized into different groups depending on their RNA biotype. For example, “coding”, “non-coding”, “VDJ region genes” are “small interefering RNA” common gene biotypes. Besides, having information about chromossomal location might be usefull to identify bacth effects driven by sex chromossomes.</p>
-<p>Depending on the desired type of analysis, some gene categories can be filtered out if not of interest. For single cell specifically, cell libraries are usually constructed using poly-A enrichment and therefore enriching for “protein-coding proteins”, which usually contitutes around 80-90% of all available genes.</p>
-<p>How to run it:</p>
-<pre class="r"><code>library(biomaRt)
-
-# Retrieve mouse gene annotation from ENSEMBL
-mart = biomaRt::useMart(
-  biomart = &quot;ensembl&quot;,
-  dataset = &quot;mmusculus_gene_ensembl&quot;,
-  host = &quot;apr2020.archive.ensembl.org&quot;)
-
-# Retrieve the selected attributes mouse gene annotation
-annot &lt;- biomaRt::getBM(
-  attributes = c(
-    &quot;external_gene_name&quot;,
-    &quot;gene_biotype&quot;,
-    &quot;chromosome_name&quot;),
-  mart = mart)</code></pre>
-<p>Make sure you are using the right species for your dataset. A list of all species available on can be found using <code>biomaRt::listDatasets(mart)[,&quot;dataset&quot;]</code>. All species names are formated in the same way, such as <code>mmusculus_gene_ensembl</code> and <code>hsapiens_gene_ensembl</code>. For reproducibility reasons, it is also advised to specifically choose a biomart release version, since some genes will be renamed, inserted or deleted from the database. You can do so by running <code>biomaRt::listEnsemblArchives()</code>.</p>
-<pre class="r"><code># Match the gene names with theit respective gene biotype
-item &lt;- annot[match(rownames(SeuratObject@assays$RNA@counts) , annot[,1]),&quot;gene_biotype&quot;]
-item[is.na(item)] &lt;- &quot;unknown&quot;
-
-# Calculate the percentage of each gene biotype
-perc &lt;- rowsum(as.matrix(SeuratObject@assays$RNA@counts) , group=item)
-perc &lt;- (t(perc)/Matrix::colSums(SeuratObject@assays$RNA@counts))
-o &lt;- order(apply(perc,2,median),decreasing = F)
-perc &lt;- perc[,o]
-
-# Plot percentage of each gene biotype
-boxplot( perc*100,outline=F,las=2,main=&quot;% reads per cell&quot;,col=scales::hue_pal()(100),horizontal=T)
-
-# Add table to the object
-gene_biotype_table &lt;- setNames(as.data.frame((perc*100)[,names(sort(table(item),decreasing = T))]),paste0(&quot;percent_&quot;,names(sort(table(item),decreasing = T))))
-SeuratObject@meta.data &lt;- SeuratObject@meta.data[,!(colnames(SeuratObject@meta.data) %in% colnames(gene_biotype_table))]
-
-SeuratObject@meta.data &lt;- cbind(
-  SeuratObject@meta.data,
-  gene_biotype_table)</code></pre>
-<p>The code above can also be done again by replacing the string <code>&quot;gene_biotype&quot;</code> by <code>&quot;chromosome_name&quot;</code>:</p>
-<pre class="r"><code># Match the gene names with their respective chromosome location
-item &lt;- annot[match(rownames(SeuratObject@assays$RNA@counts) , annot[,1]),&quot;chromosome_name&quot;]
-item[is.na(item)] &lt;- &quot;unknown&quot;
-item[! item %in% as.character(c(1:23,&quot;X&quot;,&quot;Y&quot;,&quot;MT&quot;)) ] &lt;- &quot;other&quot;</code></pre>
-<p>If you want to focus the analysis on only protein-coding genes, for example, you can do it like so:</p>
-<pre class="r"><code>dim(SeuratObject)
-sel &lt;- annot[match(rownames(SeuratObject) ,
-                   annot[,1]),2] == &quot;protein_coding&quot;
-genes_use &lt;- rownames(SeuratObject)[sel]
-genes_use &lt;- as.character(na.omit(genes_use))
-SeuratObject &lt;- SeuratObject[genes_use,]
-dim(SeuratObject)</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>Cell cycle scoring</strong>
-</summary>
-<p>
-<p>We here perform cell cycle scoring. To score a gene list, the algorithm calculates the difference of mean expression of the given list and the mean expression of reference genes. To build the reference, the function randomly chooses a bunch of genes matching the distribution of the expression of the given list. Cell cycle scoring with Seurat adds three slots in data, a score for S phase, a score for G2M phase and the predicted cell cycle phase. The Seurat package provides a list of human G2M and S phase genes in <code>cc.genes</code>.</p>
-<p>How to run it:</p>
-<pre class="r"><code>SeuratObject &lt;- CellCycleScoring(
-  object = SeuratObject,
-  g2m.features = cc.genes$g2m.genes,
-  s.features = cc.genes$s.genes)
-
-SeuratObject$G1.Score &lt;- 1 - SeuratObject$S.Score - SeuratObject$G2M.Score</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>Visualizing all metadata in a PCA plot</strong>
-</summary>
-<p>
-<p>Having many metadata parameters to analyse individually makes it a bit hard to visualize the real differences between datasets, batches and experimental conditions. One way to try to combine all this information into one plot is by running dimensionality reduction via principal component analysis (PCA) on the continuous variables in the metadata. Thus visualizing on the top principal components (1st and 2nd) reflects how different the datasets are.</p>
-<pre class="r"><code># Calculate PCA using selected metadata parameters
-metadata_use &lt;- grep(&quot;perc&quot;,colnames(SeuratObject@meta.data),value = T)
-metadata_use &lt;- c(&quot;nCount_RNA&quot;,&quot;nFeature_RNA&quot;,&quot;S.Score&quot;,&quot;G2M.Score&quot;,metadata_use)
-
-#remove columns in the metadata that are all 0s
-metadata_use &lt;- metadata_use [ colSums( SeuratObject@meta.data[,metadata_use] != 0 ) &gt; 0 ]
-
-#Run PCA
-PC &lt;- prcomp( SeuratObject@meta.data[,metadata_use] ,center = T, scale. = T)
-
-# Add the PCA (ran on the METADATA) in the object
-SeuratObject@reductions[[&quot;pca_metadata&quot;]] &lt;- CreateDimReducObject(
-  embeddings = PC$x,
-  key = &quot;metadataPC_&quot;,
-  assay = &quot;RNA&quot;)
-
-# Plot the PCA ran on the METADATA
-DimPlot(SeuratObject,
-        reduction = &quot;pca_metadata&quot;,
-        dims = c(1,2),
-        group.by = &quot;orig.ident&quot; )</code></pre>
-<p><strong>N.B.</strong> Zero-count genes and identical/all-zero metadata columns (<em>i.e.</em> any value that does that have any variation) will interfere with analyses such as PCA. You will thus have to either remove those zero-count genes and/or exclude some metadata columns:</p>
-<pre class="r"><code># Remove zero-count genes
-SeuratObject &lt;- SeuratObject[Matrix::rowSums(SeuratObject) &gt; 0, ]
-
-# Exclude metadata columns that are zero
-metadata_use &lt;- metadata_use[colSums(SeuratObject@meta.data[, metadata_use] != 0 ) &gt; 0 ]</code></pre>
-</p>
-</details>
+<div id="milestone-2" class="section level2">
+<h2>Milestone 2</h2>
+<div id="normalization-and-scaling" class="section level3">
+<h3>Normalization and scaling</h3>
+<ul>
+<li>Consult the Glossary or additional sources for help</li>
+<li>Why do we need to normalize the data? What exactly are we normalizing?</li>
+<li>Where in the Seurat object is your normalized data stored?</li>
+<li>Which data covariates could potentially influence the interpretation of the results?</li>
+<li>Following the question above, are there any covariates that need to be regressed out?</li>
+<li>Are all genes equally important for your analysis? Justify.</li>
+<li>Where in the Seurat object is your scaled data stored?</li>
+<li>Describe in form of text the rational for this step in your markdown report</li>
+</ul>
+</div>
+<div id="data-visualization" class="section level3">
+<h3>Data Visualization</h3>
+<ul>
+<li>Consult the Glossary or additional sources for help</li>
+<li>Which method would you use to capture most significant information out of the data?</li>
+<li>Following the question above, which parameters would you choose? Why?</li>
+<li>Which method would you choose for visualization of the differences between your cells?</li>
+<li>Following the question above, how the parameters in this method influence your visual representation?</li>
+<li>How some of your QC parameters and datasets influence the separation of your cells?</li>
+<li>Where in the Seurat object is your reductions stored?</li>
+<li>Describe in form of text the rational for this step in your markdown report</li>
+</ul>
 <p><br /></p>
 </div>
-<div id="normalization-and-regression" class="section level1">
-<h1>Normalization and Regression</h1>
-<hr />
-<p>Before doing any other analyses, the data needs to be normalized to account for varying sequencing depths and logtransformed (in most cases). Furhter, it may be useful to regress out confounding factors, for example cell cycle or quality metrics, such as percent mitochondria or number of detected genes.</p>
-<details>
-<summary>
-<strong>Normalization</strong>
-</summary>
-<p>
-<p>The most common normalization for RNA-seq and also single-cell RNA-seq is log-normalization. This is done by dividing the gene counts of each gene by the sum of all gene counts (a.k.a., library size) to compensate for library size differences. Then the result is multiplied by a constant number, so all cell have the same sequencing depth. For bulk RNA-seq, the constant is usually <span class="math inline">\(1e6\)</span>, resulting in CPM (counts per million), but since single-cells library sizes are way lower than that, the number ranges from <span class="math inline">\(1e3\)</span> to <span class="math inline">\(1e4\)</span> (counts per 10000).</p>
-<p><span class="math display">\[NormCounts = \frac{GeneCounts * 10000}{LibrarySize}\]</span> The library size-corrected values are then log-transformed to achieve a log-normal data distribution.</p>
-<p><span class="math display">\[logNormCounts = ln(NormCounts+1)\]</span></p>
-<p>How to run it:</p>
-<pre class="r"><code>#remove genes with zero variance
-SeuratObject &lt;- SeuratObject[ Matrix::rowSums(SeuratObject) &gt; 0, ]
-
-#remove genes with zero variance
-SeuratObject &lt;- NormalizeData(
-  object = SeuratObject,
-  scale.factor = 10000,
-  normalization.method = &quot;LogNormalize&quot;)</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>Scaling and Centering (linear)</strong>
-</summary>
-<p>
-<p>Since each gene has a different expression level, it means that genes with higher expression values will naturally have higher variation that will be captured by downstream methods. This means that we need to somehow give each gene a similar weight beforehand (see below). A common practice is to center and scale each gene before performing PCA. This exact scaling is called Z-score normalization it is very useful for PCA, clustering and plotting heatmaps.</p>
-<p>Additionally, we can use regression to remove any unwanted sources of variation from the dataset, such as cell cycle, sequencing depth, percent mitochondria. This is achieved by doing a generalized linear regression (GLM) using these parameters as covariates in the model. Then the residuals of the model are taken as the “regressed data”. Although perhaps not in the best way, batch effect regression can also be done here.</p>
-<p>How to run it:</p>
-<pre class="r"><code>SeuratObject &lt;- ScaleData(
-  object = SeuratObject,
-  vars.to.regress = c(&quot;nCount_RNA&quot;,&quot;mito.percent&quot;,&quot;nFeatures_RNA&quot;),
-  model.use = &quot;linear&quot;,
-  do.scale = T,
-  do.center = T)</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>Scaling and Centering (poisson)</strong>
-</summary>
-<p>
-<p>Since the procedure above assumes a log-linear data distribution, it may be the case that it does not regress the variation correctly, as RNA-seq data (including single cell) relates more closely to a negative bionomial distribution. An alternative variation of the procedure above can also be run on the raw UMI count data but using a “poisson” or “negative binomial” distribution instead. This is performing a gene-wise GLM regression using a poisson model.</p>
-<p>How to run it:</p>
-<pre class="r"><code>SeuratObject &lt;- ScaleData(
-  object = SeuratObject,
-  vars.to.regress = c(&quot;nCount_RNA&quot;,&quot;mito.percent&quot;,&quot;nFeatures_RNA&quot;),
-  model.use = &quot;poisson&quot;,
-  do.scale = T,
-  do.center = T)</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>SCtransform</strong>
-</summary>
-<p>
-<p>Scaling and centering assuming a poisson distribution might in some cases overfit the data, see above. One can overcome this by pooling information across genes with similar abundances in order to obtain more stable parameter estimates to be used as gene weights in the regression model. This is called “scTransform” and, in simple terms, is performing a gene-wise GLM regression using a constrained negative binomial model.</p>
-<p>How to run it:</p>
-<pre class="r"><code>SeuratObject &lt;- SCTransform(
-  object = SeuratObject,
-  assay=&quot;RNA&quot;,
-  vars.to.regress =  c(&quot;nCount_RNA&quot;,&quot;mito.percent&quot;,&quot;nFeatures_RNA&quot;),
-  new.assay.name = &quot;sctransform&quot;,
-  do.center=T )</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>Feature selection</strong>
-</summary>
-<p>
-<p>An important step in many big-data analysis tasks is to identify features (genes, transcripts, proteins, metabolites, etc) that are actually very variable between the samples being looked at.</p>
-<p>For example. Imagine that you have a dataset known to contain different types of epithelial cells, and you use either 1) only genes that are expressed and shared across all epithelial cells at about the same level, 2) only genes that are not detected in epithelial cells, 3) only genes which expression differ greatly across epithelial cells or 4) using all genes. Which of these 4 gene lists can best distinguish the epithelial subtypes in this dataset?</p>
-<p>As you could now imagine, using only genes which expression differ greatly across epithelial cells is the best case scenario, followed by using all genes. Therefore, using only genes that are expressed and shared across all epithelial cells at about the same level or only genes that are not detected in epithelial cells do not contain sufficient information to distinguish the epithelial subtypes.</p>
-<p>However, since in single-cell we usually do not know the epithelial suptypes the cells before hand (since this is what we want to discover), we need another method to accomplish this task. In general terms, a common approach is to order genes by their overall variance across samples. This is because genes with higher variance will also likely be the ones that can separate the cells the best.</p>
-<p>Since genes with higher expression level usually also have naturally higher variation, the gene variation is then normalized by the log mean expression of each gene (see plot).</p>
-<p>How to run it:</p>
-<pre class="r"><code>SeuratObject &lt;- FindVariableFeatures(
-  object = SeuratObject,
-  nfeatures = 3000,
-  selection.method = &quot;vst&quot;,
-  verbose = FALSE,
-  assay = &quot;RNA&quot;)</code></pre>
-<p>Variable gene plot:</p>
-<pre class="r"><code>top20 &lt;- head(VariableFeatures(SeuratObject), 20)
-LabelPoints(plot = VariableFeaturePlot(SeuratObject), points = top20, repel = TRUE)</code></pre>
-</p>
-</details>
+</div>
+<div id="milestone-3" class="section level2">
+<h2>Milestone 3</h2>
+<div id="dataset-integration" class="section level3">
+<h3>Dataset integration</h3>
+<ul>
+<li>Consult the Glossary or additional sources for help</li>
+<li>Are there any batch effects in the data? Is batch correction / dataset integration necessary?</li>
+<li>Following the question above, which parameters allow you to say that batch effects are present?</li>
+<li>Would a simple linear regression be sufficient for removing batch effects on your dataset?</li>
+<li>Which method for batch effect would you choose?</li>
+<li>How could you tell the batch correction procedure worked?</li>
+<li>Where in the Seurat object is your integrated data stored?</li>
+<li>After batch correction, do you have corrected data matrix (genes x samples) or a matrix in a reduction embedding (samples x dimensions).</li>
+<li>Where where should you put the embedding results?</li>
+<li>Visualize your results using the new matricies.</li>
+<li>Describe in form of text the rational for this step in your markdown report</li>
+</ul>
 <p><br /></p>
 </div>
-<div id="intro-to-graphs" class="section level1">
-<h1>Intro to Graphs</h1>
-<hr />
-<p>Instead of doing clustering of scRNAseq data on the full expression matrix or in PCA space (which gives linear distances), it has proven quite powerful to use graphs to create a non-linear representation of cell-to-cell similarities.</p>
-<p>Graphs is simply a representation of all cells (as nodes/vertices) with edges drawn between them based on some similarity criteria. For instance, a graph can be constructed with edges between all cells that are less than X distance from each other in PCA space with 50 principal components.</p>
-<details>
-<summary>
-<strong>KNN</strong>
-</summary>
-<p>
-<p>KNN refers to “K Nearest Neighbors”, which is a basic and popular topic in data mining and machine learning areas. The KNN graph is a graph in which two vertices p and q are connected by an edge, if the distance between p and q is among the K-th smallest distances.[2] Given different similarity measure of these vectors, the pairwise distance can be Hamming distance, Cosine distance, Euclidean distance and so on. We take Euclidean distance as the way to measure similarity between vectors in this paper. The KNN Graph data structure has many advantages in data mining. For example, for a billion-level dataset, prebuilding a KNN graph offline as an index is much better than doing KNN search online many times.</p>
-<div style="text-align: right">
-Adapted from <a href="https://github.com/lengyyy/KNN-Graph">Github</a>
 </div>
-<pre class="r"><code>SeuratObject &lt;- FindNeighbors(SeuratObject,
-                              assay = &quot;RNA&quot;,
-                              compute.SNN = F,
-                              reduction = &quot;pca&quot;,
-                              dims = 1:50,
-                              graph.name=&quot;SNN&quot;,
-                              prune.SNN = 1/15,
-                              k.param = 20,
-                              force.recalc = T)</code></pre>
-<p>Setting <code>compute.SNN</code> to <code>FALSE</code> will only compute the k-NN graph.</p>
-<p>We can take a look at the kNN graph. It is a matrix where every connection between cells is represented as 1s. This is called a unweighted graph (default in Seurat). Some cell connections can however have more importance than others, in that case the scale of the graph from 0 to a maximum distance. Usually, the smaller the distance, the closer two points are, and stronger is their connection. This is called a weighted graph. Both weighted and unweighted graphs are suitable for clustering, but clustering on unweighted graphs is faster for large datasets (&gt; 100k cells).</p>
-<pre class="r"><code>library(pheatmap)
-pheatmap(SeuratObject@graphs$CCA_nn[1:200,1:200],
-         col=c(&quot;white&quot;,&quot;black&quot;),border_color = &quot;grey90&quot;,
-         legend = F,cluster_rows = F,cluster_cols = F,fontsize = 2)</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>SNN</strong>
-</summary>
-<p>
-<p>In addition to the k-NN graph, if we then determine the number of nearest neighbors shared by any two points. In graph terminology, we form what we call the “shared nearest neighbor” graph. We do this by replacing the weight of each link between two points (in the nearest neighbor graph) by the number of neighbors that the points share. In other words, this is the number of length 2 paths between any two points in the nearest neighbor graph.</p>
-<p>After, this shared nearest neighbor graph is created, all pairs of points are compared and if any two points share more than T neighbors, i.e., have a link in the shared nearest neighbor graph with a weight more than our threshold value, T( TS:. n), then the two points and any cluster they are part of are merged. In other words, clusters are connected components in our shared nearest neighbor graph after we sparsify using a threshold.</p>
-<p>How to run it:</p>
-<pre class="r"><code>SeuratObject &lt;- FindNeighbors(SeuratObject,
-                              assay = &quot;RNA&quot;,
-                              compute.SNN = T,
-                              reduction = &quot;pca&quot; ,
-                              dims = 1:50,
-                              graph.name=&quot;SNN&quot;,
-                              prune.SNN = 1/15,
-                              k.param = 20,
-                              force.recalc = T)</code></pre>
-<p>Setting <code>compute.SNN</code> to <code>TRUE</code> will compute both the k-NN and SNN graphs.</p>
-</p>
-</details>
+<div id="milestone-4" class="section level2">
+<h2>Milestone 4</h2>
+<div id="cell-clustering" class="section level3">
+<h3>Cell Clustering</h3>
+<ul>
+<li>Consult the Glossary or additional sources for help</li>
+<li>What is a graph?</li>
+<li>Which kind of graph is the most robust to represent your data?</li>
+<li>Where in the Seurat object is your graph stored?</li>
+<li>Why do we need to cluster our cells?</li>
+<li>Which parameters have you chosen when clustering?</li>
+<li>How can you tell which clustering resolution is best?</li>
+<li>Do the clustering reflect the cell separation seen by the visualization method you are using?</li>
+<li>How are your clusters distributed across the samples, groups, experimental conditions, etc.?</li>
+<li>Where in the Seurat object is your clustering data stored?</li>
+<li>Describe in form of text the rationale for this step in your markdown report</li>
+</ul>
 <p><br /></p>
 </div>
-<div id="dimensionality-reduction" class="section level1">
-<h1>Dimensionality reduction</h1>
-<hr />
-<p>The full gene expression space, with thousands of genes, contains quite a lot of noise in scRNAseq data and is hard to visualize. Hence, most scRNA-seq analyses starts with a step of PCA (or similar method, <em>e.g.</em> ICA) to remove some of the variation of the data.</p>
-<p>For a simple scRNAseq dataset with only a few cell types, PCA may be sufficient to visualize the complexity of the data in 2 or 3 dimensions. However, with increasing complexity we need to run non-linear dimensionality reduction to be able to project the data down to 2 dimensions for visualization, such methods are tSNE, UMAP and diffusion maps.</p>
-<p>Deciding which dimensionality reduction method to use is a non-trivial question, one that may have several good answers. Here is <a href="https://www.biorxiv.org/content/10.1101/120378v4">a paper</a> comparing many of the methods available, if you want to read more details.</p>
-<details>
-<summary>
-<strong>PCA</strong>
-</summary>
-<p>
-<p>Principal Component Analysis (PCA) is defined as an orthogonal <strong>linear</strong> transformation that transforms the data to a new coordinate system such that <strong>the greatest variance by some scalar projection of the data comes to lie on the first coordinate</strong> (called the first principal component), the second greatest variance on the second coordinate, and so on. […] Often, its operation can be thought of as revealing the internal structure of the data in a way that best explains the variance in the data. […] This is done by <strong>using only the first few principal components</strong> so that the dimensionality of the transformed data is reduced.</p>
-<div style="text-align: right">
-Adapted from <a href="https://en.wikipedia.org/wiki/Principal_component_analysis">Wikipedia</a>
 </div>
-<p>How to run it:</p>
-<pre class="r"><code>#run pca
-SeuratObject &lt;- RunPCA(object = SeuratObject,
-                       assay = &quot;RNA&quot;,
-                       npcs = 100,
-                       verbose = FALSE )</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>tSNE</strong>
-</summary>
-<p>
-<div style="text-align: right">
-<a href="http://jmlr.org/papers/volume9/vandermaaten08a/vandermaaten08a.pdf">Maaten, Hilton (2008) J of Machine Learning Research</a>
-</div>
-<p>t-distributed stochastic neighborhood embedding (tSNE) is a <strong>nonlinear</strong> dimensionality reduction technique well-suited for embedding high-dimensional data for <strong>visualization</strong> in a low-dimensional space of two or three dimensions. Specifically, it models each high-dimensional object by a two- or three-dimensional point in such a way that <strong>similar objects are modeled by nearby points</strong> and dissimilar objects are modeled by distant points with high probability. […] t-SNE has been used for visualization in a wide range of applications, including […] bioinformatics […]. While t-SNE plots often seem to display clusters, the <strong>visual clusters can be influenced strongly by the chosen parameterization</strong> and therefore a good understanding of the parameters for t-SNE is necessary.</p>
-<div style="text-align: right">
-Adapted from <a href="https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding">Wikipedia</a>
-</div>
-<p>Useful links:</p>
+<div id="milestone-5" class="section level2">
+<h2>Milestone 5</h2>
+<div id="differential-expression" class="section level3">
+<h3>Differential expression</h3>
 <ul>
-<li><a href="https://distill.pub/2016/misread-tsne/">How to Use t-SNE Effectively</a></li>
+<li>Consult the Glossary or additional sources for help</li>
+<li>Which biological question(s) do you want to answer with differential expression?</li>
+<li>Are you interested in comparing all cells or using a specific cluster?</li>
+<li>If you are interested in a particular cluster, which cluster, why?</li>
+<li>Which clustering resolution would you run your differential expression?</li>
+<li>Which test did you choose for differential expression?</li>
+<li>What parameters did you set for computing differential expression? Justify each one</li>
+<li>Which marker genes can separate each of the cell clusters in your data?</li>
+<li>Which cell types do they represent?</li>
+<li>How would you visualize the list of differentially expressed genes?</li>
+<li>Describe in form of text the rationale for this step in your markdown report</li>
 </ul>
-<p>How to run it:</p>
-<pre class="r"><code>SeuratObject &lt;- RunTSNE(object = SeuratObject,
-                        reduction = &quot;pca&quot;,
-                        perplexity=30,
-                        max_iter=1000,
-                        theta=0.5,
-                        eta=200,
-                        exaggeration_factor=12,
-                        dims.use = 1:50,
-                        verbose = T,
-                        num_threads=0)</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>UMAP</strong>
-</summary>
-<p>
-<p>Uniform Manifold Approximation and Projection (UMAP) is a dimension reduction technique that can be used for visualization similarly to t-SNE, but also for general <strong>non-linear</strong> dimension reduction […].</p>
-<div style="text-align: right">
-<a href="https://umap-learn.readthedocs.io/en/latest/">umap-learn documentation</a>
-</div>
-<p>The result is a practical scalable algorithm that applies to real world data. The UMAP algorithm is competitive with t-SNE for <strong>visualization</strong> quality, and arguably preserves <strong>more of the global structure</strong> with superior run time performance. Furthermore, UMAP has no computational restrictions on embedding dimension, making it viable as a general purpose dimension reduction technique for machine learning.</p>
-<div style="text-align: right">
-<a href="https://arxiv.org/pdf/1802.03426.pdf">UMAP Arxiv paper</a>
-</div>
-<p>How to run it:</p>
-<pre class="r"><code>SeuratObject &lt;- RunUMAP(object = SeuratObject,
-                        reduction = &quot;pca&quot;,
-                        dims = 1:top_PCs,
-                        n.components = 2,
-                        n.neighbors = 20,
-                        spread = .3,
-                        repulsion.strength = 1,
-                        min.dist= .001,
-                        verbose = T,
-                        num_threads=0,
-                        n.epochs = 200,
-                        metric = &quot;euclidean&quot;,
-                        seed.use = 42,
-                        reduction.name=&quot;umap&quot;)</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>DM</strong>
-</summary>
-<p>
-<p>Diffusion maps (DM) is a dimensionality reduction […] which computes a family of embeddings of a data set into Euclidean space (often low-dimensional) whose coordinates can be computed from the eigenvectors and eigenvalues of a diffusion operator on the data. The Euclidean distance between points in <strong>the embedded space is equal to the “diffusion distance” between probability distributions</strong> centered at those points. Different from linear dimensionality reduction methods such as principal component analysis (PCA) and multi-dimensional scaling (MDS), diffusion maps is part of the family of <strong>nonlinear</strong> dimensionality reduction methods which focus on discovering the underlying manifold that the data has been sampled from. […] The basic observation is that <strong>if we take a random walk on the data, walking to a nearby data-point is more likely than walking to another that is far away</strong>.</p>
-<div style="text-align: right">
-<a href="https://en.wikipedia.org/wiki/Diffusion_map">Wikipedia</a>
-</div>
-<p><a href="https://www.pnas.org/content/pnas/102/21/7426.full.pdf">Diffusion Maps paper</a></p>
-<p>How to run it:</p>
-<pre class="r"><code># Load additional libraries
-library(destiny)
-
-# Run diffusion maps using the destiny package
-dm &lt;- DiffusionMap( data = SeuratObject@reductions[[&quot;pca&quot;]]@cell.embeddings[ , 1:50],
-                    k = 20,
-                    n_eigs = 20)
-
-# Fix the cell names in the DM embedding
-rownames(dm@eigenvectors) &lt;- colnames(SeuratObject)
-
-# Add the DM embbedding to the SeuratObject
-SeuratObject@reductions[[&quot;dm&quot;]] &lt;- CreateDimReducObject(embeddings = dm@eigenvectors,
-                                                        key = &quot;DC_&quot;,
-                                                        assay = &quot;RNA&quot;)</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>ICA</strong>
-</summary>
-<p>
-<p>Independent Component Analysis (ICA) is a computational method for separating a multivariate signal into additive subcomponents. This is done by assuming that the subcomponents are non-Gaussian signals and that they are statistically independent from each other. ICA is a special case of blind source separation.</p>
-<div style="text-align: right">
-<a href="https://en.wikipedia.org/wiki/Independent_component_analysis">Wikipedia</a>
-</div>
-<p>How to run it:</p>
-<pre class="r"><code>SeuratObject &lt;- RunICA(object = SeuratObject,
-                       assay = &quot;pca&quot;,
-                       nics = 20,
-                       reduction.name = &quot;ica&quot;)</code></pre>
-</p>
-</details>
 <p><br /></p>
 </div>
-<div id="dataset-integration" class="section level1">
-<h1>Dataset integration</h1>
-<hr />
-<p>Existing batch correction methods were specifically designed for bulk RNA-seq. Thus, their applications to scRNA-seq data assume that the composition of the cell population within each batch is identical. Any systematic differences in the mean gene expression between batches are attributed to technical differences that can be regressed out. However, in practice, population composition is usually not identical across batches in scRNA-seq studies. Even assuming that the same cell types are present in each batch, the abundance of each cell type in the data set can change depending upon subtle differences in cell culture or tissue extraction, dissociation and sorting, <em>etc.</em> Consequently, the estimated coefficients for the batch blocking factors are not purely technical, but contain a non-zero biological component due to differences in composition. Batch correction based on these coefficients will thus yield inaccurate representations of the cellular expression proles, potentially yielding worse results than if no correction was performed.</p>
-<div style="text-align: right">
-<a href="https://www.nature.com/articles/nbt.4091">Haghverdi et al (2018) <em>Nat Biotechnology</em></a>
+<div id="trajectory-inference-analysis" class="section level3">
+<h3>Trajectory inference analysis</h3>
+<ul>
+<li>Consult the Glossary or additional sources for help</li>
+<li>Which biological question(s) do you want to answer with trajectory?</li>
+<li>Are you sure you have a developmental path in your data?</li>
+<li>Are you interested in using all cells or using a specific cluster?</li>
+<li>Which embeddings will you use for computing trajectories? why?</li>
+<li>Which differential expression test are you interested in?</li>
+<li>How would you visualize your results?</li>
+<li>Describe in form of text the rationale for this step in your markdown report</li>
+</ul>
 </div>
-<p><br></p>
-<p>As with many of the other scRNA-seq methodologies, it can be difficult to choose which batch-correction technique you should use for your dataset. You can read more in this <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1850-9">comparative paper</a>.</p>
-<details>
-<summary>
-<strong>MNN</strong>
-</summary>
-<p>
-<p>An alternative approach for data merging and comparison in the presence of batch effects uses a set of landmarks from a reference data set to project new data onto the reference. The rationale here is that a given cell type in the reference batch is most similar to cells of its own type in the new batch. This strategy depends on the selection of landmark points in high dimensional space picked from the reference data set, which cover all cell types that might appear in the later batches. However, if the new batches include cell types that fall outside the transcriptional space explored in the reference batch, these cell types will not be projected to an appropriate position in the space defined by the landmarks. […] The difference in expression values between cells in a MNN pair provides an estimate of the batch effect, which is made more precise by averaging across many such pairs. A correction vector is obtained from the estimated batch effect and applied to the expression values to perform batch correction. Our approach automatically identifies overlaps in population composition between batches and uses only the overlapping subsets for correction, thus avoiding the assumption of equal composition required by other methods.</p>
-<p>The use of MNN pairs involves three assumptions: (i) there is at least one cell population that is present in both batches, (ii) the batch effect is almost orthogonal to the biological subspace, and (iii) batch effect variation is much smaller than the biological effect variation between different cell types.</p>
-<div style="text-align: right">
-<a href="https://www.nature.com/articles/nbt.4091">Haghverdi et al (2018) <em>Nat Biotechnology</em></a>
 </div>
-<pre class="r"><code># Load additional libraries
-library(SeuratWrappers)
-
-SeuratObject.list &lt;- SplitObject(SeuratObject, split.by = &quot;BATCH&quot;)
-SeuratObject &lt;- RunFastMNN(object.list = SeuratObject.list,
-                           assay = &quot;RNA&quot;,
-                           features = 2000,
-                           reduction.name = &quot;mnn&quot;)
-
-# Free memory from working environment
-rm( c( SeuratObject.list ) )
-gc(verbose = FALSE)</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>CCA Anchors</strong>
-</summary>
-<p>
-<p>Since MNNs have previously been identified using L2-normalized gene expression, significant differences across batches can obscure the accurate identification of MNNs, particularly when the batch effect is on a similar scale to the biological differences between cell states. To overcome this, we first jointly reduce the dimensionality of both datasets using diagonalized CCA, then apply L2-normalization to the canonical correlation vectors. We next search for MNNs in this shared low-dimensional representation. We refer to the resulting cell pairs as anchors, as they encode the cellular relationships across datasets that will form the basis for all subsequent integration analyses.</p>
-<p>Obtaining an accurate set of anchors is paramount to successful integration. Aberrant anchors that form between different biological cell states across datasets are analogous to noisy edges that occur in k-nearest neighbor (KNN) graphs (Bendall et al., 2014) and can confound downstream analyses. This has motivated the use of shared nearest neighbor (SNN) graphs (Levine et al., 2015; Shekhar et al., 2016), where the similarity between two cells is assessed by the overlap in their local neighborhoods. As this measure effectively pools neighbor information across many cells, the result is robust to aberrant connections in the neighbor graph. We introduced an analogous procedure for the scoring of anchors, where each anchor pair was assigned a score based on the shared overlap of mutual neighborhoods for the two cells in a pair. High-scoring correspondences therefore represent cases where many similar cells in one dataset are predicted to correspond to the same group of similar cells in a second data- set, reflecting increased robustness in the association between the anchor cells. While we initially identify anchors in low-dimensional space, we also filter out anchors whose correspondence is not supported based on the original untransformed data.</p>
-<div style="text-align: right">
-<a href="https://www.cell.com/cell/fulltext/S0092-8674(19)30559-8">Stuart et al (2019) <em>Cell</em></a>
-</div>
-<pre class="r"><code>SeuratObject.list &lt;- SplitObject(
-  object = SeuratObject,
-  split.by = &quot;BATCH&quot;)
-
-SeuratObject.anchors &lt;- FindIntegrationAnchors(
-  object.list = SeuratObject.list,
-  dims = 1:30)
-
-SeuratObject &lt;- IntegrateData(
-  anchorset = SeuratObject.anchors,
-  dims = 1:30,
-  new.assay.name = &quot;cca&quot;)</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>Scanorama</strong>
-</summary>
-<p>
-<p>Scanorama’s approach generalizes mutual nearest-neighbors matching, a technique that finds similar elements between two datasets, to instead find similar elements among many datasets.</p>
-<p>While recent approaches have shown that it is possible to integrate scRNA-seq studies across multiple experiments, these approaches automatically assume that all datasets share at least one cell type in common or that the gene expression profiles share largely the same correlation structure across all datasets. These methods are therefore prone to overcor- rection, especially when integrating collections of datasets with considerable differences in cellular composition.</p>
-<p>Scanorama is a strategy for efficiently integrating multiple scRNA-seq datasets, even when they are composed of heterogeneous transcriptional phenotypes. Its approach is analogous to computer vision algorithms for panorama stitching that identify images with overlapping content and merge these into a larger panorama. Likewise, Scanorama automatically identifies scRNA-seq datasets containing cells with similar transcriptional profiles and can leverage those matches for batch correction and integration, without also merging datasets that do not overlap. Scanorama is robust to different dataset sizes and sources, preserves dataset-specific populations and does not require that all datasets share at least one cell population.</p>
-<div style="text-align: right">
-edited from <a href="https://www.nature.com/articles/s41587-019-0113-3">Welch et al (2019) <em>Cell</em></a>
-</div>
-<pre class="r"><code>#Split the object
-SeuratObject.list &lt;- SplitObject(
-  object = SeuratObject,
-  split.by = &quot;BATCH&quot;)
-
-assaylist &lt;- list()
-genelist &lt;- list()
-for(i in 1:length(seuratobjetclist))
-{ assaylist[[i]] &lt;- t(as.matrix(GetAssayData(seuratobjectlist[[i]], &quot;data&quot;)))
-   genelist[[i]] &lt;- rownames(seuratobjetclist[[i]]) }</code></pre>
-<pre class="r"><code>library(reticulate)
-scanorama &lt;- import(&quot;scanorama&quot;)
-
-integrated.data &lt;- scanorama$integrate(assaylist, genelist)
-corrected.data &lt;- scanorama$correct(assaylist, genelist, return_dense=TRUE)
-integrated.corrected.data &lt;- scanorama$correct(assaylist, genelist, return_dimred=TRUE, return_dense=TRUE)</code></pre>
-<pre class="r"><code>intdata &lt;- lapply(integrated.corrected.data[[2]], t)
-panorama &lt;- do.call(cbind, intdata)
-rownames(panorama) &lt;- as.character(integrated.corrected.data[[3]])
-colnames(panorama) &lt;- unlist(sapply(assaylist, rownames))
-
-intdimred &lt;- do.call(rbind, integrated.corrected.data[[1]])
-colnames(intdimred) &lt;- paste0(&quot;PC_&quot;, 1:100)
-
-   #We also add standard deviations in order to draw Elbow Plots in Seurat
-
-stdevs &lt;- apply(intdimred, MARGIN = 2, FUN = sd)
-
-SeuratObject@assays[[&quot;pano&quot;]] &lt;- CreateAssayObject(data = panorama,
-                                           min.cells = 0,
-                                           min.features = 0)
-
-
-SeuratObject[[&quot;pca_scanorama&quot;]] &lt;- CreateDimReducObject(
-  embeddings = intdimred,
-  stdev = stdevs,
-  key = &quot;PC_&quot;,
-  assay = &quot;pano&quot;)</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>Harmony</strong>
-</summary>
-<p>
-<p>Harmony begins with a low-dimensional embedding of cells, such as principal components analysis (PCA), (Supplementary Note 1 and Methods). Using this embedding, Harmony first groups cells into multi-dataset clusters. We use soft clustering to assign cells to potentially multiple clusters, to account for smooth transi- tions between cell states. These clusters serve as surrogate variables, rather than to identify discrete cell types</p>
-<p>After clustering, each dataset has cluster-specific centroids that are used to compute cluster-specific linear correction factors. Since clusters correspond to cell types and states, cluster-specific correction factors correspond to individual cell-type and cell-state specific correction factors. In this way, Harmony learns a simple linear adjustment function that is sensitive to intrinsic cel- lular phenotypes. Finally, each cell is assigned a cluster-weighted average of these terms and corrected by its cell-specific linear factor. Since each cell may be in multiple clusters, each cell has a potentially unique correction factor. Harmony iterates these four steps until cell cluster assignments are stable.</p>
-<p>Harmony is an algorithm for robust, scalable and flexible multi-dataset integration to meet four key challenges of unsupervised scRNAseq joint embedding: scaling to large datasets, identification of both broad populations and fine-grained subpopulations, flexibility to accommodate complex experimental design, and the power to integrate across modalities.</p>
-<div style="text-align: right">
-adapted from <a href="https://www.nature.com/articles/s41592-019-0619-0">Korsunsky et al (2019) <em>Nat Mathods</em></a>
-</div>
-<pre class="r"><code># Load additional libraries
-library(harmony)
-library(SeuratWrappers)
-
-SeuratObject &lt;- RunHarmony(
-  SeuratObject,
-  group.by.vars = &quot;Method&quot;)</code></pre>
-</p>
-</details>
-<p><br /></p>
-</div>
-<div id="clustering" class="section level1">
-<h1>Clustering</h1>
-<hr />
-<p>One of the main goals of scRNAseq studies is often to group cells into clusters of similar cells. There are many different ways of defining clusters. There are traditional clustering approaches like <em>K-mean</em>, <em>hierarchical clustering</em> and <em>affinity propagation</em>, but recently most pipelines make use of graphs (see section above) to define clusters as groups of interconnected cells.</p>
-<p>To define clusters in a graph we make use of different community detection algorithms like <em>Louvain</em>, <em>Leiden</em> and <em>Infomap</em>. The main idea behind all of them is to find groups of cells that have more edges (connections of high similarity) between them than they have to other cells in the dataset.</p>
-<p>Still, all clustering methods begin with defining pairwise distances between cells. Commonly this is done by taking euclidean distances between cells in PCA space, after selecting a subset of variables and scaling the data. Hence, your clustering results will be strongly dependent on choices you made in preprocessing of the data, especially the variable gene selection and how many principal components you include from the PCA.</p>
-<p>In graph based methods, the distances from PCA space are used to create a graph with edges between neighboring cells. Also here, there are multiple parameters, like number of neighbors in the KNN graph and pruning settings for the SNN construction that will impact the clustering results. If you want to read more about clustering and comparisons between methods, have a look at <a href="https://f1000research.com/articles/7-1141">this paper</a>.</p>
-<details>
-<summary>
-<strong>Louvain</strong>
-</summary>
-<p>
-<p>The Louvain method for community detection is a method to extract communities from large networks created by Blondel et al. from the University of Louvain. The method is a greedy optimization method that appears to run in time <span class="math inline">\(O(n.log^2n)\)</span> in the number of nodes in the network.The value to be optimized is modularity, defined as a value in the range that measures the density of links inside communities compared to links between communities. Optimizing this value theoretically results in <strong>the best possible grouping of the nodes of a given network</strong>, however going through all possible iterations of the nodes into groups is impractical so heuristic algorithms are used.</p>
-<div style="text-align: right">
-<a href="https://en.wikipedia.org/wiki/Independent_component_analysis">Wikipedia</a>
-</div>
-<p><a href="https://iopscience.iop.org/article/10.1088/1742-5468/2008/10/P10008/pdf">Louvain Paper</a></p>
-<p>How to run it:</p>
-<pre class="r"><code>SeuratObject &lt;- FindClusters(
-  object = SeuratObject,
-  graph.name = &quot;SNN&quot;,
-  resolution = 0.8,
-  algorithm = 1) #algorithim 1 = Louvain</code></pre>
-<p>The number of clusters can be controlled using the <code>resolution</code> parameter with higher values giving more (smaller) clusters.</p>
-</p>
-</details>
-<details>
-<summary>
-<strong>Leiden</strong>
-</summary>
-<p>
-<p>Leiden algorithm is applied iteratively, it converges to a partition in which all subsets of all communities are locally optimally assigned. Furthermore, by relying on a fast local move approach, the Leiden algorithm runs faster than the Louvain algorithm. The Leiden algorithm consists of three phases: (1) local moving of nodes, (2) refinement of the partition and (3) aggregation of the network based on the refined partition, using the non-refined partition to create an initial partition for the aggregate network.</p>
-<div style="text-align: right">
-<a href="https://www.nature.com/articles/s41598-019-41695-z.pdf">Leiden Paper</a>
-</div>
-<pre class="r"><code>SeuratObject &lt;- FindClusters(
-  object = SeuratObject,
-  graph.name = &quot;SNN&quot;,
-  resolution = 0.8,
-  algorithm = 4)  #algorithim 4 = Louvain</code></pre>
-<p>The number of clusters can be controlled using the <code>resolution</code> parameter with higher values giving more (smaller) clusters.</p>
-</p>
-</details>
-<details>
-<summary>
-<strong>Hierarchical clustering</strong>
-</summary>
-<p>
-<p>Hierarchical clustering (HC) is a method of cluster analysis which <strong>seeks to build a hierarchy of clusters</strong>. Strategies for hierarchical clustering generally fall into two types: Agglomerative or Divisive. […] In general, the merges and splits are determined in a greedy manner. The results of hierarchical clustering are <strong>usually presented in a dendrogram</strong>. […] The standard algorithm for hierarchical agglomerative clustering (HAC) has a time complexity of <span class="math inline">\(O(n^3)\)</span> and requires <span class="math inline">\(O(n^2)\)</span> memory, which makes it <strong>too slow for even medium data sets</strong>. In order to decide which clusters should be combined (for agglomerative), or where a cluster should be split (for divisive), <strong>a measure of dissimilarity between sets of observations</strong> is required. In most methods of hierarchical clustering, this is achieved by use of an appropriate metric (a measure of distance between pairs of observations), and <strong>a linkage criterion</strong> which specifies the dissimilarity of sets as a function of the pairwise distances of observations in the sets.</p>
-<div style="text-align: right">
-<a href="https://en.wikipedia.org/wiki/Hierarchical_clustering">Wikipedia</a>
-</div>
-<p><a href="https://en.wikipedia.org/wiki/Hierarchical_clustering_of_networks">HC for networks</a></p>
-<p>The base R stats package already contains a function <code>dist()</code> that calculates distances between all pairs of samples. The distance methods available in <code>dist()</code> are: <em>euclidean</em>, <em>maximum</em>, <em>manhattan</em>, <em>canberra</em>, <em>binary</em> or <em>minkowski</em>. Additionally, we can also perform hierarchical clustering directly on a graph (KNN or SNN) which already contains information about cell-to-cell distances. However, since the distances in the graph are inverted (<span class="math inline">\(0\)</span>s represent far and <span class="math inline">\(1\)</span>s represent close connections), we need to subtract from the maximum value on the graph (in the case of adjacency SNN, is <span class="math inline">\(1\)</span>), so that <span class="math inline">\(0\)</span>s represent <em>close</em> and <span class="math inline">\(1\)</span>s represent <em>far</em> distance.</p>
-<p>After having calculated the distances between samples calculated, we can now proceed with the hierarchical clustering per-se. We will use the function <code>hclust()</code> for this purpose, in which we can simply run it with the distance objects created above. The methods available are: <em>ward.D</em>, <em>ward.D2</em>, <em>single</em>, <em>complete</em>, <em>average</em>, <em>mcquitty</em>, <em>median</em> or <em>centroid</em>. When clustering on a graph, use <em>ward.D2</em>.</p>
-<pre class="r"><code># Running HC on a PCA
-h &lt;- hclust(
-  d = dist( SeuratObject@reductions[[&quot;pca&quot;]]@cell.embeddings [ , 1:30 ],
-            method = &quot;euclidean&quot;) ,
-  method = &quot;ward.D2&quot;)
-
-# Running HC on a graph
-h &lt;- hclust(
-  d = 1 - as.dist(SeuratObject@graphs$SNN) ,
-  method = &quot;ward.D2&quot;,)</code></pre>
-<p>Once the cluster hierarchy is defined, the next step is to define which samples belong to a particular cluster.</p>
-<pre class="r"><code>plot(h, labels = F)</code></pre>
-<p>After identifying the dendrogram for the cells (above), we can now literally cut the tree at a fixed threshold (with the <code>cutree</code> function) at different levels (a.k.a. resolutions) to define the clusters. The number of clusters can be controlled using the height (<code>h</code>) or directly via the <code>k</code> parameters.</p>
-<pre class="r"><code># Cutting the tree based on a dendrogram height
-SeuratObject$HC_res &lt;- cutree(
-  tree = h,
-  k = 18)
-
-# Cutting the tree based on a number of clusters
-SeuratObject$HC_res &lt;- cutree(
-  tree = h,
-  h = 3)
-
-# To check how many cells are in each cluster
-table(SeuratObject$HC_res)</code></pre>
-<p>The number of clusters can be controlled using the height (<code>h</code>) or directly via the <code>k</code> parameters.</p>
-</p>
-</details>
-<details>
-<summary>
-<strong>K-mean</strong>
-</summary>
-<p>
-<p>k-means clustering is a method of vector quantization, originally from signal processing, that aims to partition <span class="math inline">\(n\)</span> observations into <span class="math inline">\(k\)</span> clusters in which <strong>each observation belongs to the cluster with the nearest mean</strong> (cluster centers or cluster centroid), serving as a prototype of the cluster. […] The algorithm does not guarantee convergence to the global optimum. The result may depend on the initial clusters. As the algorithm is usually fast, <strong>it is common to run it multiple times</strong> with different starting conditions. […] k-means clustering tends to find clusters of <strong>comparable spatial extent (all with same size)</strong>, while the expectation-maximization mechanism allows clusters to have different shapes.</p>
-<p>K-means is a generic clustering algorithm that has been used in many application areas. In R, it can be applied via the kmeans function. Typically, it is applied to a reduced dimension representation of the expression data (most often PCA, because of the interpretability of the low-dimensional distances). We need to define the number of clusters in advance. Since the results depend on the initialization of the cluster centers, it is typically recommended to run K-means with multiple starting configurations (via the <code>nstart</code> argument).</p>
-<pre class="r"><code>set.seed(1)
-SeuratObject$kmeans_12 &lt;- kmeans(
-  x = SeuratObject@reductions[[&quot;pca&quot;]]@cell.embeddings [ , 1:50 ],
-  centers = 12,
-  iter.max = 50,
-  nstart = 10)$cluster</code></pre>
-<p>The number of clusters can be controlled using the <code>centers</code> parameter.</p>
-</p>
-</details>
-<details>
-<summary>
-<strong>What clustering resolution should I use?</strong>
-</summary>
-<p>
-<p>With all of these methods we can obtain any number of clusters by tweaking the settings. One of the hard problems in scRNAseq analysis is to make reasonable decisions on how many clusters is reasonable. Unfortunately, there is no simple solution to this problem, it takes biological knowledge of the sample and some investigation to maker reasonable decisions on the number of clusters.</p>
-<p>Differential gene expression may help in that analysis. If two clusters have the same DEGs and no clear genes that distinguish them, it may not be a good idea to split them into individual clusters. <em>Note!</em> Also examine the cluster you get with regards to the QC metrics (see above) to make sure that some clusters are not only formed due to low quality cells or doublets/multiples.</p>
-</p>
-</details>
-<details>
-<summary>
-<strong>Comparing clusterings and metadata</strong>
-</summary>
-<p>
-<p>A very useful task is to check how your clusters compare to other clustering conditions or metadata.</p>
-<p>How to run it:</p>
-<pre class="r"><code>comparison_table &lt;- table(list(
-  SeuratObject$meta.data[,&quot;METADATA_FACTOR_1&quot;],
-  SeuratObject$meta.data[,&quot;METADATA_FACTOR_2&quot;]
-))</code></pre>
-<p>This will generate a table contating information of how many cells belong to the classes in comparisson. You can visualize it as a barplot, for example:</p>
-<pre class="r"><code>#Transform data to percentages:
-comparison_table &lt;- t(t(comparison_table)/colSums(comparison_table))*100
-
-#Barplot
-barplot(comparison_table,
-        col=scaleshue_pal()(nrow(comparison_table))[1:nrow(comparison_table)],
-        border=NA,
-        las=2)</code></pre>
-</p>
-</details>
-<p><br /></p>
-</div>
-<div id="differential-expression" class="section level1">
-<h1>Differential expression</h1>
-<hr />
-<p>Once clusters have been defined, it is often informative to find the genes that define each cluster. The methods for DE prediction in scRNAseq differs somewhat from bulk RNAseq methods. On one hand, we often have more samples (individual cells) compared to bulk RNA-seq, but on the other hand, the scRNAseq data is noisy and suffer from drop-outs, which complicates things. You can read more about the different methods available in <a href="https://www.nature.com/articles/nmeth.4612">this paper</a>.</p>
-<details>
-<summary>
-<strong>Finding DEGs</strong>
-</summary>
-<p>
-<p>Differentially expressed genes (DEGs) are often referred to as “marker genes”, however, you have to be aware that most DE tests are designed to detect genes that have higher expression in one group of cells compared to another. A DEG is not automatically a unique marker for a celltype.</p>
-<p>The Seurat package has implemented many different tests for DE, some are designed for scRNAseq and others are used also for bulk RNA-seq:</p>
-<ul>
-<li><code>wilcox</code> : Identifies differentially expressed genes between two groups of cells using a Wilcoxon Rank Sum test</li>
-<li><code>bimod</code> : Likelihood-ratio test for single cell gene expression (McDavid et al., Bioinformatics, 2013)</li>
-<li><code>roc</code> : Identifies ‘markers’ of gene expression using ROC analysis. For each gene, evaluates (using AUC) a classifier built on that gene alone, to classify between two groups of cells. An AUC value of 1 means that expression values for this gene alone can perfectly classify the two groupings (<em>i.e.</em> Each of the cells in cells.1 exhibit a higher level than each of the cells in cells.2). An AUC value of 0 also means there is perfect classification, but in the other direction. A value of 0.5 implies that the gene has no predictive power to classify the two groups. Returns a ‘predictive power’ (abs(AUC-0.5) * 2) ranked matrix of putative differentially expressed genes.</li>
-<li><code>t</code> : Identify differentially expressed genes between two groups of cells using the Student’s t-test.</li>
-<li><code>negbinom</code> : Identifies differentially expressed genes between two groups of cells using a negative binomial generalized linear model. Use only for UMI-based datasets</li>
-<li><code>poisson</code> : Identifies differentially expressed genes between two groups of cells using a poisson generalized linear model. Use only for UMI-based datasets</li>
-<li><code>LR</code> : Uses a logistic regression framework to determine differentially expressed genes. Constructs a logistic regression model predicting group membership based on each feature individually and compares this to a null model with a likelihood ratio test.</li>
-<li><code>MAST</code> : Identifies differentially expressed genes between two groups of cells using a hurdle model tailored to scRNA-seq data. Utilizes the MAST package to run the DE testing.</li>
-<li><code>DESeq2</code> : Identifies differentially expressed genes between two groups of cells based on a model using DESeq2 which uses a negative binomial distribution (Love <em>et al</em>, Genome Biology, 2014). This test does not support pre-filtering of genes based on average difference (or percent detection rate) between cell groups. However, genes may be pre-filtered based on their minimum detection rate (min.pct) across both cell groups. To use this method, please install DESeq2, using the instructions at [<a href="https://bioconductor.org/packages/release/bioc/html/DESeq2.html" class="uri">https://bioconductor.org/packages/release/bioc/html/DESeq2.html</a>][]</li>
-</ul>
-<p>To run DE prediction for all clusters in a Seurat object, each cluster vs. all other cells, use the <code>FindAllMarker</code> function:</p>
-<pre class="r"><code>markers &lt;- FindAllMarkers( object = SeuratObject,
-  assay = &quot;RNA&quot;,
-  logfc.threshold = 0.25,
-  test.use = &quot;wilcox&quot;,
-  slot = &quot;data&quot;,
-  min.pct = 0.1,
-  min.diff.pct = -Inf,
-  only.pos = FALSE,
-  max.cells.per.ident = Inf,
-  latent.vars = NULL,
-  min.cells.feature = 3,
-  min.cells.group = 3,
-  pseudocount.use = 1,
-  return.thresh = 0.01 )</code></pre>
-<p>There are multiple cutoffs for including genes, filtering output etc that you can tweak. For instance only testing up-regulated genes may speed up the test:</p>
-<ul>
-<li>Only test up-regulated genes with <code>only.pos = TRUE</code></li>
-<li>Minimum number of cells a gene is expressed in <code>min.cells.feature</code></li>
-<li>Minimum number of cells of a cluster a gene is expressed in <code>min.cells.group</code></li>
-<li>Only test genes with <code>min.pct</code> expression in a cluster</li>
-<li>Only test genes with <code>min.pct.diff</code> difference in percent expression between two groups.</li>
-<li>Return only genes with p.value &lt; <code>return.thresh</code></li>
-<li>Return only genes with logFoldchange &gt; <code>logfc.threshold</code></li>
-</ul>
-<p>Some other key features to think about:</p>
-<ul>
-<li>If you have multiple assays in your object, make sure to run DE on the correct assay. For instance, if you have integrated data, you still want to do DE on the “RNA” assay.</li>
-<li>If you have very uneven cluster sizes, it may bias the p-values of the genes so that clusters with many cells have more significant genes. It may be a good idea to set <code>max.cells.per.ident</code> to the size of your smallest cluster, and all clusters will be down-sampled to the same size.</li>
-<li>Some of the tests allow you to include confounding factors in <code>latent.vars</code>, those are <code>LR</code>, <code>negbinom</code>, <code>poisson</code>, or <code>MAST</code>.</li>
-</ul>
-</p>
-</details>
-<details>
-<summary>
-<strong>Comparing a cluster across experimental conditions</strong>
-</summary>
-<p>
-<p>The second way of computing differential expression is to answer which genes are differentially expressed within a cluster. For example, we may have libraries coming from 2 different library preparation methods (batches) and we would like to know which genes are influenced the most in a particular cell type. The same concept applies if you have instead two or more biological groups (control vs treated, time#0 vs time#1 vs time#2, <em>etc.</em>).</p>
-<p>For this end, we will first subset our data for the desired cell cluster, then change the cell identities to the variable of comparison (which now in our case is the “Batch”).</p>
-<pre class="r"><code>cell_selection &lt;- SeuratObject[,SeuratObject$seurat_clusters == 4]
-cell_selection &lt;- SetIdent(cell_selection, value = &quot;Batch&quot;)
-
-# Compute differentiall expression
-DGE_cell_selection &lt;- FindAllMarkers(
-  object = cell_selection,
-  logfc.threshold = 0.2,
-  test.use = &quot;wilcox&quot;,
-  min.pct = 0.1,
-  min.diff.pct = -Inf,
-  only.pos = FALSE,
-  max.cells.per.ident = Inf,
-  latent.vars = NULL,
-  min.cells.feature = 3,
-  min.cells.group = 3,
-  pseudocount.use = 1,
-  return.thresh = 0.01 )</code></pre>
-<p>We can also test any two set of cells using the function <code>FindMarkers</code> and specify the cell names for two groups as <code>cells.1</code> and <code>cells.2</code>.</p>
-</p>
-</details>
-<details>
-<summary>
-<strong>Plotting DEG results</strong>
-</summary>
-<p>
-<p>Once we have ran a DE test, we may want to visualize the genes in different ways. But first, we need to get the top DEGs from each cluster. How to select top 5 genes per cluster:</p>
-<pre class="r"><code>top5 &lt;- markers %&gt;% group_by(cluster) %&gt;% top_n(-5, p_val_adj)</code></pre>
-<p>These can be visualized in a heatmap:</p>
-<pre class="r"><code>DoHeatmap(object = SeuratObject,
-          features = as.character(unique(top5$gene)),
-          group.by = &quot;seurat_clusters&quot;,
-          assay = &quot;RNA&quot;)</code></pre>
-<p>Or with a dot-plot, where each cluster is represented with color by average expression, and size by proportion cells that have the gene expressed.</p>
-<pre class="r"><code>DotPlot(object = SeuratObject,
-        features = as.character(unique(top5$gene)),
-        group.by = &quot;seurat_clusters&quot;,
-        assay = &quot;RNA&quot;) + coord_flip()</code></pre>
-<p>We can also plot a violin plot for each gene.</p>
-<pre class="r"><code>VlnPlot(object = SeuratObject,
-        features = as.character(unique(top5$gene)),
-        ncol = 5,
-        group.by = &quot;seurat_clusters&quot;,
-        assay = &quot;RNA&quot;)</code></pre>
-<p>The violin plot can also be split into batches, so if you have two batches with meta data column “Batch”, these can be plotted separately within each cluster for each gene. This may be very useful to check that the DEGs you have detected are not just driven by a single batch.</p>
-<pre class="r"><code>VlnPlot(object = SeuratObject,
-        features = as.character(unique(top5$gene)),
-        ncol = 5,
-        group.by = &quot;seurat_clusters&quot;,
-        assay = &quot;RNA&quot;,
-        split.by = &quot;Batch&quot;)</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>Functional enrichment analysis</strong>
-</summary>
-<p>
-<p>Having a defined list of enriched terms, you can now look for their combined function using enrichR:</p>
-<pre class="r"><code>library(enrichR)
-
-# Check available databases to perform enrichment (then choose one)
-enrichR::listEnrichrDbs()
-
-# perform enrichment
-enrich_results &lt;- enrichr(
-  genes = top5$gene[ top5$cluster == &quot;CLUSTER_OF_INTEREST&quot; ],
-  databases = &quot;DATABASE_OF_INTEREST&quot; )[[1]]</code></pre>
-<p>Some databases of interest:</p>
-<ul>
-<li><code>GO_Biological_Process_2017b</code></li>
-<li><code>KEGG_2019_Human</code></li>
-<li><code>KEGG_2019_Mouse</code></li>
-<li><code>WikiPathways_2019_Human</code></li>
-<li><code>WikiPathways_2019_Mouse</code></li>
-</ul>
-<p>You visualize your results using a simple barplot, for example:</p>
-<pre class="r"><code>mypar(1,1,mar=c(3,20,2,1))
-barplot( height = -log10(en$P.value)[20:1],
-         names.arg = en$Term[20:1],
-         horiz = T,
-         las=2,
-         border=F,
-         cex.names = .6 )
-abline( v=c( -log10(0.05) ),lty=2 )
-abline( v=0,lty=1 )</code></pre>
-</p>
-</details>
-<p><br /></p>
-</div>
-<div id="trajectory-inference" class="section level1">
-<h1>Trajectory inference</h1>
-<hr />
-<p>Below you can find a summary of data processing required for trajectory inference:</p>
-<ul>
-<li>A reduction where to perform the trajectory ( PCA &gt; MDS &gt; DM &gt; UMAP &gt; tSNE )</li>
-<li>The cell clustering information</li>
-</ul>
-<p>Choosing the “best” method for trajectory inference is, like for most of the other scRNA-seq analyses non-trivial. For a comparison, please check <a href="https://www.nature.com/articles/s41587-019-0071-9">this paper</a>.</p>
-<details>
-<summary>
-<strong>Trajectory inference with Slingshot</strong>
-</summary>
-<p>
-<p>Slingshot is one of the most prototypical TI methods, as it contains many popular components that can also be found in other TI methods (Cannoodt, Saelens and Saeys 2016): dimensionality reduction, clustering and principal curves.</p>
-<p>As many other TI methods, Slingshot is not restricted to a particular dimensionality reduction method. So which one should you use? There are three important points to take into account:</p>
-<p>You should use enough dimensions to capture the whole complexity of the data. This is especially important for linear dimensionality reductions such as PCA and MDS, and if the trajectory topology is more complex than a bifurcation. Note that even when the trajectory is not clearly visible in two dimensions, the TI method may still see it in multiple dimensions. TI methods can see in a lot more dimensions compared to us silly earthlings!</p>
-<ul>
-<li>Some dimensionality reduction methods may enlarge (or blow up) the distance in high-density regions. Both t-SNE and UMAP (to a lesser extent) have this problem. The dataset that we have here doesn’t really have this problem, but it is quite common if you do an unbiased sampling of your biological populations.</li>
-<li>Some dimensionality reduction methods try to enforce a grouping of the cells, and remove continuities. Both t-SNE and UMAP (to a lesser extent) have this problem. These same methods may also put cells together that actually do not</li>
-<li>For these reasons, MDS and diffusion maps are often the preferred choice, although t-SNE and UMAP may work if you have a balanced and simple sample.</li>
-</ul>
-<pre class="r"><code>dimred &lt;- SeuratObject@reductions[[&#39;embedding_to_be_used&#39;]]@cell.embeddings</code></pre>
-<p>We want to find continuities in our data, why then do so many TI methods use methods that split up the data in distinct groups using clustering?</p>
-<p>The answer is simple: clustering simplifies the problem by finding groups of cells that are at approximately the same location in the trajectory. These groups can then be connected to find the different paths that cells take, and where they branch off. Ideally, the clustering method for TI should therefore not group cells based on a density, such as DBSCAN A trajectory is by definition a group of cells that are all connected through high-density regions, but still differ in their expression.</p>
-<p>We’ll use standard Seurat clustering here (louvain clustering), but alternative methods may be appropriate as well. Sometimes, it may be useful to “overcluster” to make sure that all sub-branches are captured. We’ll increase the resolution a bit, so that we find more granular clusters. As an exercise, you might tweak this resolution a bit and see how it affects downstream analyses.</p>
-<pre class="r"><code>clustering &lt;- factor(SeuratObject@meta.data[,&quot;clustering_to_be_used&quot;])</code></pre>
-<p>Until up to this point, the steps above have been covered in the previous lectures. From now on, we will start using that clustering and data reduction techniques for trajectory inference. The whole process can be done using a single function named <code>slingshot</code>, which is simply a wrapper for the 2 main steps for trajectory inference. The first step of the process is to define the lineages and then fit a curve through the data that defines a trajectory. These steps are break down below for clarity.</p>
-<p><strong>Defining cell lineages with Slingshot</strong></p>
-<pre class="r"><code>library(slingshot)
-
-# Run default Slingshot lineage identification
-set.seed(1)
-lineages &lt;- getLineages(
-  data = dimred,
-  clusterLabels = clustering,
- #end.clus = c(&quot;11&quot;,&quot;7&quot;,&quot;10&quot;,&quot;9&quot;,&quot;5&quot;), #define how many branches/lineages to consider
- #start.clus = &quot;5&quot; #define where to start the trajectories
- )
-lineages
-
-# Plot the lineages
-par(mfrow=c(1,2))
-plot(dimred[,1:2], col = pal[clustering],  cex=.5,pch = 16)
-for(i in levels(clustering)){
-  text( mean(dimred[clustering==i,1]),
-        mean(dimred[clustering==i,2]), labels = i,font = 2) }
-plot(dimred[,1:2], col = pal[clustering],cex=.5, pch = 16)
-lines(lineages, lwd = 3, col = &#39;black&#39;)</code></pre>
-<p>Here we see one central issue with trajectory analysis: where does the trajectory begin? Without any extra information, this is nearly an impossible task for a TI method. We need prior biological information to be able to define where the trajectory starts and where it should end.</p>
-<pre class="r"><code># Run default Slingshot
-set.seed(1)
-lineages &lt;- getLineages(data = dimred,
-                        clusterLabels = clustering,
-                        #end.clus = c(&quot;11&quot;,&quot;7&quot;,&quot;10&quot;,&quot;9&quot;,&quot;5&quot;), #define how many branches/lineages to consider
-                        start.clus = &quot;5&quot;) #define where to start the trajectories
-lineages
-
-# Plot the lineages
-par(mfrow=c(1,2))
-plot(dimred[,1:2], col = clustering, cex=.5, pch = 16)
-for(i in levels(clustering)){
-  text( mean(dimred[clustering==i, 1]),
-        mean(dimred[clustering==i, 2]), labels = i, font = 2) }
-plot(dimred, col = clustering, pch = 16)
-lines(lineages, lwd = 3, col = &#39;black&#39;)</code></pre>
-<p><strong>Defining Principal Curves</strong></p>
-<p>Once the clusters are connected, Slingshot allows you to transform them to a smooth trajectory using principal curves. This is an algorithm that iteratively changes an initial curve to better match the data points. It was developed for linear data. To apply it to single-cell data, slingshot adds two enhancements:</p>
-<ul>
-<li>It will run principal curves for each “lineage”, which is a set of clusters that go from a defined start cluster to some end cluster</li>
-<li>Lineages with a same set of clusters will be constrained so that their principal curves remain bundled around the overlapping clusters</li>
-</ul>
-<p>Since the function <code>getCurves()</code> takes some time to run, we can speed up the convergence of the curve fitting process by reducing the amount of cells to use in each lineage. Ideally you could use all cells, but here we had set <code>approx_points</code> to 300 to speed up; feel free to adjust for your particular dataset.</p>
-<pre class="r"><code>curves &lt;- getCurves(lineages, approx_points = 300, thresh = 0.01, stretch = .8, allow.breaks = FALSE, shrink = .99)
-curves
-
-plot(dimred, col = clustering, asp = 1, pch = 16)
-lines(curves, lwd = 3, col = &#39;black&#39;)</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>Differential expression along trajectories</strong>
-</summary>
-<p>
-<p>The main way to interpret a trajectory is to find genes that change along the trajectory. There are many ways to define differential expression along a trajectory:</p>
-<ul>
-<li>Expression changes along a particular path (i.e. change with pseudotime)</li>
-<li>Expression differences between branches</li>
-<li>Expression changes at branch points</li>
-<li>Expression changes somewhere along the trajectory</li>
-<li>…</li>
-</ul>
-<p><code>tradeSeq</code> is a recently proposed algorithm to find trajectory differentially expressed genes. It works by smoothing the gene expression along the trajectory by fitting a smoother using generalized additive models (GAMs), and testing whether certain coefficients are statistically different between points in the trajectory.</p>
-<p>The fitting of GAMs can take quite a while, so for demonstration purposes we first do a very stringent filtering of the genes. In an ideal experiment, you would use all the genes, or at least those defined as being variable.</p>
-<pre class="r"><code>BiocParallel::register(BiocParallel::SerialParam())
-
-library(tradeSeq)
-counts &lt;- as.matrix( SeuratObject@assays$RNA@counts[ SeuratObject@assays$RNA@var.features , ] )
-
-# Removing some genes to speed up the computations for this tutorial
-filt_counts &lt;- counts [ rowSums(counts &gt; 5) &gt; ncol(counts)/100, ]
-dim(filt_counts)
-
-# Fitting a Gamma distribution
-sce &lt;- fitGAM( counts = as.matrix(filt_counts),
-               sds = curves )
-plotGeneCount(curve = curves,
-              counts = filt_counts,
-              clusters = clustering,
-              models = sce)</code></pre>
-<p><strong>Genes that change with pseudotime</strong></p>
-<pre class="r"><code>pseudotime_association &lt;- associationTest(sce)
-pseudotime_association$fdr &lt;- p.adjust(pseudotime_association$pvalue, method = &quot;fdr&quot;)
-pseudotime_association &lt;- pseudotime_association[ order(pseudotime_association$pvalue), ]
-pseudotime_association$feature_id &lt;- rownames(pseudotime_association)</code></pre>
-<pre class="r"><code># Define function to plot
-library(dplyr)
-plot_differential_expression &lt;- function(feature_id) {
-
-    cowplot::plot_grid(
-      plotGeneCount(curve = curves,
-                    counts = filt_counts,
-                    gene=feature_id[1],
-                    clusters = clustering,
-                    models = sce) +
-        ggplot2::theme(legend.position = &quot;none&quot;),
-
-      plotSmoothers(models = sce,
-                    counts=as.matrix(counts),
-                    gene = feature_id[1])
-)}
-
-# Get genes and plot
-feature_id &lt;- pseudotime_association %&gt;%
-  filter(pvalue &lt; 0.05) %&gt;%
-  top_n(1, -waldStat) %&gt;%
-  pull(feature_id)
-plot_differential_expression(feature_id)</code></pre>
-<p><strong>Genes that change between two pseudotime points</strong></p>
-<p>We can define custom pseudotime values of interest if we’re interested in genes that change between particular point in pseudotime (for example, the progenitor cell markers). By default, we can look at differences between start and end:</p>
-<pre class="r"><code>pseudotime_start_end_association &lt;- startVsEndTest(sce, pseudotimeValues = c(0, 1))
-pseudotime_start_end_association$feature_id &lt;- rownames(pseudotime_start_end_association)
-
-feature_id &lt;- pseudotime_start_end_association %&gt;%
-  filter(pvalue &lt; 0.05) %&gt;%
-  top_n(1, waldStat) %&gt;%
-  pull(feature_id)
-plot_differential_expression(feature_id)</code></pre>
-<p><strong>Genes that are different between lineages</strong></p>
-<p>More interesting are genes that are different between two branches. We may have seen some of these genes already pop up in previous analyses of pseudotime. There are several ways to define “different between branches”, and each have their own functions:</p>
-<ul>
-<li>Different at the end points between lineages, using <code>diffEndTest</code></li>
-<li>Different at the branching point between lineages, using <code>earlyDETest</code></li>
-<li>Different somewhere in pseudotime the branching point, using <code>patternTest</code></li>
-</ul>
-<p>Note that the last function requires that the pseudotimes between two lineages are aligned.</p>
-<pre class="r"><code>different_end_association &lt;- diffEndTest(sce)
-different_end_association$feature_id &lt;- rownames(different_end_association)
-feature_id &lt;- different_end_association %&gt;%
-  filter(pvalue &lt; 0.05) %&gt;%
-  arrange(desc(waldStat)) %&gt;%
-  dplyr::slice(1) %&gt;%
-  pull(feature_id)
-plot_differential_expression(feature_id)</code></pre>
-<pre class="r"><code>branch_point_association &lt;- earlyDETest(sce)
-branch_point_association$feature_id &lt;- rownames(branch_point_association)
-feature_id &lt;- branch_point_association %&gt;%
-  filter(pvalue &lt; 0.05) %&gt;%
-  arrange(desc(waldStat)) %&gt;%
-  dplyr::slice(1) %&gt;%
-  pull(feature_id)
-plot_differential_expression(feature_id)</code></pre>
-<p>Check out this <a href="https://statomics.github.io/tradeSeq/articles/tradeSeq.html">vignette</a> for a more in-depth overview of tradeSeq</p>
-<p><strong>References</strong></p>
-<p>Cannoodt, Robrecht, Wouter Saelens, and Yvan Saeys. 2016. “Computational Methods for Trajectory Inference from Single-Cell Transcriptomics.” <em>European Journal of Immunology</em> 46 (11): 2496–2506. <a href="https://doi.org/10.1002/eji.201646347">doi</a>.</p>
-<p>Saelens, Wouter, Robrecht Cannoodt, Helena Todorov, and Yvan Saeys. 2019. “A Comparison of Single-Cell Trajectory Inference Methods.” <em>Nature Biotechnology</em> 37 (5): 547–54. <a href="https://doi.org/10.1038/s41587-019-0071-9">doi</a>.</p>
-</p>
-</details>
-<p><br /></p>
-<p><br /></p>
-</div>
-<div id="additional-material" class="section level1">
-<h1>Additional material</h1>
-<p>The field of scRNA-seq is both large and continuously evolving - there is thus a slew of available methods, tools and software to do both varied and similar things with. Here you we list some additional materials that you might find useful to explore to get an even deeper understanding.</p>
-<details>
-<summary>
-<strong>Online courses</strong>
-</summary>
-<p>
-<ul>
-<li><a href="https://nbisweden.github.io/workshop-scRNAseq/exercises.html">Exercises for the NBIS scRNA-seq course</a></li>
-<li><a href="https://github.com/NBISweden/workshop-scRNAseq">The GitHub repository for the NBIS scRNA-seq course</a></li>
-<li><a href="https://scrnaseq-course.cog.sanger.ac.uk/website/index.html">Single cell RNA-seq course at from Hemberg lab</a></li>
-<li><a href="https://chanzuckerberg.github.io/scRNA-python-workshop/intro/about">Single cell RNA-seq course in Python</a></li>
-<li><a href="https://broadinstitute.github.io/2019_scWorkshop/">Single cell RNA-seq course at Broad</a></li>
-</ul>
-</p>
-</details>
-<details>
-<summary>
-<strong>Presentations and lectures</strong>
-</summary>
-<p>
-<ul>
-<li><a href="https://nbisweden.github.io/workshop-scRNAseq/lectures/single_cell_methodologies_Karolina_Wallenborg_2020.pdf">Single-cell methodologies</a></li>
-<li><a href="https://nbisweden.github.io/workshop-scRNAseq/lectures/scRNAseq_QC_Asa_Bjorklund_2020.pdf">Quaility controls</a></li>
-<li><a href="https://nbisweden.github.io/workshop-scRNAseq/lectures/scRNAseq_normalization_Asa_Bjorklund_2020.pdf">Normalisation</a></li>
-<li><a href="https://nbisweden.github.io/workshop-scRNAseq/lectures/dimensionality_reduction_paulo_czarnewski.pdf">Dimensionality reduction</a></li>
-<li><a href="https://nbisweden.github.io/workshop-scRNAseq/lectures/data_integration_paulo_czarnewski_2020.pdf">Batch correction and data integration</a></li>
-<li><a href="https://nbisweden.github.io/workshop-scRNAseq/lectures/scRNAseq_clustering_Asa_Bjorklund_2020.pdf">Clustering techniques</a></li>
-<li><a href="https://nbisweden.github.io/workshop-scRNAseq/lectures/differenatial_expression_olga_dethlefsen_2020.pdf">Differential expression analysis</a></li>
-<li><a href="https://nbisweden.github.io/workshop-scRNAseq/lectures/trajectory_inference_analysis_paulo_czarnewski.pdf">Trajectory inference analyses</a></li>
-<li><a href="https://www.youtube.com/playlist?list=PLjiXAZO27elC_xnk7gVNM85I2IQl5BEJN">All of the above in a YouTube playlist</a></li>
-</ul>
-</p>
-</details>
-<details>
-<summary>
-<strong>Tools and pipelines</strong>
-</summary>
-<p>
-<ul>
-<li><a href="https://github.com/seandavi/awesome-single-cell">Repository listing many scRNA-seq tools</a></li>
-<li><a href="https://bitbucket.org/asbj/qc-summary_scrnaseq">Bitbucket repository for QC report scripts</a></li>
-<li><a href="https://bitbucket.org/scilifelab-lts/lts-workflows-sm-scrnaseq">Bitbucket repository for an NBIS scRNA-seq pipeline</a></li>
-<li><a href="https://www.scrna-tools.org/">A catalogue of many scRNA-seq tools</a></li>
-</ul>
-</p>
-</details>
-<details>
-<summary>
-<strong>Websites</strong>
-</summary>
-<p>
-<ul>
-<li><a href="https://hemberg-lab.github.io/scRNA.seq.datasets/">SingleCellExperiment objects for many datasets</a></li>
-<li><a href="http://imlspenticton.uzh.ch:3838/conquer/">Conquer datasets - many different datasets based on a salmon pipeline</a></li>
-<li><a href="https://www.humancellatlas.org/">The Human Cell Atlas project</a></li>
-<li><a href="https://www.ebi.ac.uk/gxa/sc">The EBI Single-cell expression atlas</a></li>
-</ul>
-</p>
-</details>
-<details>
-<summary>
-<strong>Additional papers</strong>
-</summary>
-<p>
-<ul>
-<li><a href="https://pubmed.ncbi.nlm.nih.gov/26000846/">The technology and biology of single-cell RNA sequencing</a></li>
-<li><a href="https://www.nature.com/articles/s41467-019-12266-7">A systematic evaluation of single cell RNA-seq analysis pipelines</a></li>
-</ul>
-</p>
-</details>
-<p><br /></p>
-<p><br /></p>
-<p><a href="https://sib-swiss.github.io/SchoolRNA2020/"><strong>Back to main</strong></a></p>
 </div>
 
 
