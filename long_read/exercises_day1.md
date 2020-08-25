@@ -118,6 +118,7 @@ minimap2 \
 -a \
 -x [PARAMETER] \
 -G [PARAMETER] \
+-t 2 \
 /data/references/GRCh38.p13.chr12.fa \
 /data/reads/lrrnaseq/parietal_cortex-5238-batch1.fastq.gz \
 | samtools sort \
