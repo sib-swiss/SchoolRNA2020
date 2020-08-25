@@ -16,19 +16,24 @@ output:
 
 ## Milestone 1
 
-### Find and download suitable datasets to work
-- Consult the Glossary or additional sources for help
-- Go to PanglaoDB and look for an appropriate dataset
-- Which species should it be?
-- For this tutorial, please use 10X Chromium datasets only
-- For this tutorial, please limit the amount of cells to about 10000 cells
-- Describe in form of text the rationale for this step in your markdown report
+### Download the data
+The data for this project is available at the course GitHub repository, which
+can be downloaded like so:
+
+1. Run `git clone https://github.com/sib-swiss/SchoolRNA2020.git`
+2. A new directory will be created named `SchoolRNA2020`; the data is residing
+   in the `single_cell/data/` directory
+
+You can either read the data from there (check the glossary for details) or
+copy the data to some other location, if you prefer. You can run the above
+command either on the command line interface or from within RStudio (more
+details in the glossary).
 
 
 ### Load and merge datasets
 - Consult the Glossary or additional sources for help
 - Which file format do we have the data in?
-- Why do we need to create a seurat object?
+- Why do we need to create a Seurat object?
 - Where in the Seurat object is your counts stored?
 - Describe in form of text the rational for this step in your markdown report.
 
@@ -55,11 +60,11 @@ output:
 - Consult the Glossary or additional sources for help
 - Why do we need to normalize the data? What exactly are we normalizing?
 - Where in the Seurat object is your normalized data stored?
-- Which data covariates could potentially influence the interpreteation of the results?
+- Which data covariates could potentially influence the interpretation of the results?
 - Following the question above, are there any covariates that need to be regressed out?
 - Are all genes equally important for your analysis? Justify.
 - Where in the Seurat object is your scaled data stored?
-- Describe in form of text the rational for this step in your markdown report.
+- Describe in form of text the rational for this step in your markdown report
 
 
 ### Data Visualization
@@ -70,7 +75,7 @@ output:
 - Following the question above, how the parameters in this method influence your visual representation?
 - How some of your QC parameters and datasets influence the separation of your cells?
 - Where in the Seurat object is your reductions stored?
-- Describe in form of text the rational for this step in your markdown report.
+- Describe in form of text the rational for this step in your markdown report
 
 <br/>
 
@@ -85,7 +90,7 @@ output:
 - Which method for batch effect would you choose?
 - How could you tell the batch correction procedure worked?
 - Where in the Seurat object is your integrated data stored ()?
-- Describe in form of text the rational for this step in your markdown report.
+- Describe in form of text the rational for this step in your markdown report
 
 <br/>
 
