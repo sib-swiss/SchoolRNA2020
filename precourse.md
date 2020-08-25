@@ -52,6 +52,14 @@ CONDA_BUILD_SYSROOT='/opt/MacOSX10.9.sdk'
 CONDA_BUILD_SYSROOT='/Library/Developer/CommandLineTools/SDKs/MacOSX10.9.sdk'
 ```
 
+On Ubuntu, you might need to do this AFTER starting `rstudio`. The `Seurat` package will fail 
+
+```r
+install.packages('stringi')
+library(Seurat)
+```
+
+
 </details>
 
 <br/>

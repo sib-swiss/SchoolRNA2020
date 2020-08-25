@@ -30,8 +30,9 @@ In this manner, each group is required to gather information from the **glossary
 1. Reading the instructions for a certain task
 2. Searching the **glossary** for guidance
 3. Discussing with your colleges which step needs to be done or included
-4. Replacing the instructions with a text explaining the rationale for this step and
-5. Adding and running code from that step
+4. Dividing tasks among your group colleagues (each one can test parts of the code and then send the result to the one responsible for the report)
+5. Replacing the instructions with a text explaining the rationale for this step and
+6. Adding and running code from that step
 
 You are encouraged to use any other additional website / article in your report. That also includes addition of other previous experiences and/or additional code steps from other sources, as long as the rationale for the inclusion is also discussed in the report text. You can also add any other plots and visualisations in your report to illustrate your results.
 
