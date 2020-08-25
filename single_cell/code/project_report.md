@@ -1,20 +1,42 @@
 ---
-title: "Project report template"
+title: <img border="0" src="https://static.thenounproject.com/png/67360-200.png" width="40" height="40"> Project report (single cell)
 output:
   html_document:
     keep_md: true
     toc: true
-    toc_depth: 3
+    toc_depth: 2
+    toc_float:
+        collapsed: false
     code_folding: show
   pdf_document: default
 ---
-# <img border="0" src="https://static.thenounproject.com/png/67360-200.png" width="40" height="40"> Project report (single cell)
+
 ***
 
 <br/>
-# Research Analysis Tasks:
+
+# Research Analysis Tasks
+
+The following milestones and tasks are what you will need to perform in order
+to complete the project-based learning outcomes for this course. Go through
+them in order and refer to the glossary for more detailed information on each
+individual step.
 
 ## Milestone 1
+
+### Download the data
+The data for this project is available at the course GitHub repository, which
+can be downloaded like so:
+
+1. Run `git clone https://github.com/sib-swiss/SchoolRNA2020.git`
+2. A new directory will be created named `SchoolRNA2020`; the data is residing
+   in the `single_cell/data/` directory
+
+You can either read the data from there (check the glossary for details) or
+copy the data to some other location, if you prefer. You can run the above
+command either on the command line interface or from within RStudio (more
+details in the glossary).
+
 
 ### Load and merge datasets
 - Consult the Glossary or additional sources for help
