@@ -809,7 +809,7 @@ metadata_use &lt;- metadata_use[colSums(SeuratObject@meta.data[, metadata_use] !
 <div id="normalization-and-regression" class="section level1">
 <h1>Normalization and Regression</h1>
 <hr />
-<p>Before doing any other analyses, the data needs to be normalized to account for varying sequencing depths and logtransformed (in most cases). Furhter, it may be useful to regress out confounding factors, for example cell cycle or quality metrics, such as percent mitochondria or number of detected genes.</p>
+<p>Before doing any other analyses, the data needs to be normalized to account for varying sequencing depths and logtransformed (in most cases). Furthermore, it may be useful to regress out confounding factors, for example cell cycle or quality metrics, such as percent mitochondria or number of detected genes.</p>
 <details>
 <summary>
 <strong>Normalization</strong>
@@ -831,6 +831,28 @@ SeuratObject &lt;- NormalizeData(
 </details>
 <details>
 <summary>
+<strong>Feature selection</strong>
+</summary>
+<p>
+<p>An important step in many big-data analysis tasks is to identify features (genes, transcripts, proteins, metabolites, etc) that are actually very variable between the samples being looked at.</p>
+<p>For example. Imagine that you have a dataset known to contain different types of epithelial cells, and you use either 1) only genes that are expressed and shared across all epithelial cells at about the same level, 2) only genes that are not detected in epithelial cells, 3) only genes which expression differ greatly across epithelial cells or 4) using all genes. Which of these 4 gene lists can best distinguish the epithelial subtypes in this dataset?</p>
+<p>As you could now imagine, using only genes which expression differ greatly across epithelial cells is the best case scenario, followed by using all genes. Therefore, using only genes that are expressed and shared across all epithelial cells at about the same level or only genes that are not detected in epithelial cells do not contain sufficient information to distinguish the epithelial subtypes.</p>
+<p>However, since in single-cell we usually do not know the epithelial subtypes the cells before hand (since this is what we want to discover), we need another method to accomplish this task. In general terms, a common approach is to order genes by their overall variance across samples. This is because genes with higher variance will also likely be the ones that can separate the cells the best.</p>
+<p>Since genes with higher expression level usually also have naturally higher variation, the gene variation is then normalized by the log mean expression of each gene (see plot).</p>
+<p>How to run it:</p>
+<pre class="r"><code>SeuratObject &lt;- FindVariableFeatures(
+  object = SeuratObject,
+  nfeatures = 3000,
+  selection.method = &quot;vst&quot;,
+  verbose = FALSE,
+  assay = &quot;RNA&quot;)</code></pre>
+<p>Variable gene plot:</p>
+<pre class="r"><code>top20 &lt;- head(VariableFeatures(SeuratObject), 20)
+LabelPoints(plot = VariableFeaturePlot(SeuratObject), points = top20, repel = TRUE)</code></pre>
+</p>
+</details>
+<details>
+<summary>
 <strong>Scaling and Centering (linear)</strong>
 </summary>
 <p>
@@ -841,8 +863,10 @@ SeuratObject &lt;- NormalizeData(
   object = SeuratObject,
   vars.to.regress = c(&quot;nCount_RNA&quot;,&quot;mito.percent&quot;,&quot;nFeatures_RNA&quot;),
   model.use = &quot;linear&quot;,
-  do.scale = T,
-  do.center = T)</code></pre>
+  assay = &quot;RNA&quot;,
+  do.scale = TRUE,
+  do.center = TRUE)</code></pre>
+<p>Seurat will be default run scaling on any variable features in a Seurat object, if they exists. This can greatly speed up the performance of scaling step while the results of downstream analyses (such as dimensionality reduction or clustering) remain unchanged, as those are based on the variable genes themselves. If you’d rather scale the data on the full number of genes even after you’ve used <code>FindVariableFeatures</code>, you can specify this in the function call: <code>ScaleData(..., features = rownames(SeuratObject))</code>.</p>
 </p>
 </details>
 <details>
@@ -856,8 +880,9 @@ SeuratObject &lt;- NormalizeData(
   object = SeuratObject,
   vars.to.regress = c(&quot;nCount_RNA&quot;,&quot;mito.percent&quot;,&quot;nFeatures_RNA&quot;),
   model.use = &quot;poisson&quot;,
-  do.scale = T,
-  do.center = T)</code></pre>
+  assay = &quot;RNA&quot;,
+  do.scale = TRUE,
+  do.center = TRUE)</code></pre>
 </p>
 </details>
 <details>
@@ -873,81 +898,6 @@ SeuratObject &lt;- NormalizeData(
   vars.to.regress =  c(&quot;nCount_RNA&quot;,&quot;mito.percent&quot;,&quot;nFeatures_RNA&quot;),
   new.assay.name = &quot;sctransform&quot;,
   do.center=T )</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>Feature selection</strong>
-</summary>
-<p>
-<p>An important step in many big-data analysis tasks is to identify features (genes, transcripts, proteins, metabolites, etc) that are actually very variable between the samples being looked at.</p>
-<p>For example. Imagine that you have a dataset known to contain different types of epithelial cells, and you use either 1) only genes that are expressed and shared across all epithelial cells at about the same level, 2) only genes that are not detected in epithelial cells, 3) only genes which expression differ greatly across epithelial cells or 4) using all genes. Which of these 4 gene lists can best distinguish the epithelial subtypes in this dataset?</p>
-<p>As you could now imagine, using only genes which expression differ greatly across epithelial cells is the best case scenario, followed by using all genes. Therefore, using only genes that are expressed and shared across all epithelial cells at about the same level or only genes that are not detected in epithelial cells do not contain sufficient information to distinguish the epithelial subtypes.</p>
-<p>However, since in single-cell we usually do not know the epithelial suptypes the cells before hand (since this is what we want to discover), we need another method to accomplish this task. In general terms, a common approach is to order genes by their overall variance across samples. This is because genes with higher variance will also likely be the ones that can separate the cells the best.</p>
-<p>Since genes with higher expression level usually also have naturally higher variation, the gene variation is then normalized by the log mean expression of each gene (see plot).</p>
-<p>How to run it:</p>
-<pre class="r"><code>SeuratObject &lt;- FindVariableFeatures(
-  object = SeuratObject,
-  nfeatures = 3000,
-  selection.method = &quot;vst&quot;,
-  verbose = FALSE,
-  assay = &quot;RNA&quot;)</code></pre>
-<p>Variable gene plot:</p>
-<pre class="r"><code>top20 &lt;- head(VariableFeatures(SeuratObject), 20)
-LabelPoints(plot = VariableFeaturePlot(SeuratObject), points = top20, repel = TRUE)</code></pre>
-</p>
-</details>
-<p><br /></p>
-</div>
-<div id="intro-to-graphs" class="section level1">
-<h1>Intro to Graphs</h1>
-<hr />
-<p>Instead of doing clustering of scRNAseq data on the full expression matrix or in PCA space (which gives linear distances), it has proven quite powerful to use graphs to create a non-linear representation of cell-to-cell similarities.</p>
-<p>Graphs is simply a representation of all cells (as nodes/vertices) with edges drawn between them based on some similarity criteria. For instance, a graph can be constructed with edges between all cells that are less than X distance from each other in PCA space with 50 principal components.</p>
-<details>
-<summary>
-<strong>KNN</strong>
-</summary>
-<p>
-<p>KNN refers to “K Nearest Neighbors”, which is a basic and popular topic in data mining and machine learning areas. The KNN graph is a graph in which two vertices p and q are connected by an edge, if the distance between p and q is among the K-th smallest distances.[2] Given different similarity measure of these vectors, the pairwise distance can be Hamming distance, Cosine distance, Euclidean distance and so on. We take Euclidean distance as the way to measure similarity between vectors in this paper. The KNN Graph data structure has many advantages in data mining. For example, for a billion-level dataset, prebuilding a KNN graph offline as an index is much better than doing KNN search online many times.</p>
-<div style="text-align: right">
-Adapted from <a href="https://github.com/lengyyy/KNN-Graph">Github</a>
-</div>
-<pre class="r"><code>SeuratObject &lt;- FindNeighbors(SeuratObject,
-                              assay = &quot;RNA&quot;,
-                              compute.SNN = F,
-                              reduction = &quot;pca&quot;,
-                              dims = 1:50,
-                              graph.name=&quot;SNN&quot;,
-                              prune.SNN = 1/15,
-                              k.param = 20,
-                              force.recalc = T)</code></pre>
-<p>Setting <code>compute.SNN</code> to <code>FALSE</code> will only compute the k-NN graph.</p>
-<p>We can take a look at the kNN graph. It is a matrix where every connection between cells is represented as 1s. This is called a unweighted graph (default in Seurat). Some cell connections can however have more importance than others, in that case the scale of the graph from 0 to a maximum distance. Usually, the smaller the distance, the closer two points are, and stronger is their connection. This is called a weighted graph. Both weighted and unweighted graphs are suitable for clustering, but clustering on unweighted graphs is faster for large datasets (&gt; 100k cells).</p>
-<pre class="r"><code>library(pheatmap)
-pheatmap(SeuratObject@graphs$CCA_nn[1:200,1:200],
-         col=c(&quot;white&quot;,&quot;black&quot;),border_color = &quot;grey90&quot;,
-         legend = F,cluster_rows = F,cluster_cols = F,fontsize = 2)</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>SNN</strong>
-</summary>
-<p>
-<p>In addition to the k-NN graph, if we then determine the number of nearest neighbors shared by any two points. In graph terminology, we form what we call the “shared nearest neighbor” graph. We do this by replacing the weight of each link between two points (in the nearest neighbor graph) by the number of neighbors that the points share. In other words, this is the number of length 2 paths between any two points in the nearest neighbor graph.</p>
-<p>After, this shared nearest neighbor graph is created, all pairs of points are compared and if any two points share more than T neighbors, i.e., have a link in the shared nearest neighbor graph with a weight more than our threshold value, T( TS:. n), then the two points and any cluster they are part of are merged. In other words, clusters are connected components in our shared nearest neighbor graph after we sparsify using a threshold.</p>
-<p>How to run it:</p>
-<pre class="r"><code>SeuratObject &lt;- FindNeighbors(SeuratObject,
-                              assay = &quot;RNA&quot;,
-                              compute.SNN = T,
-                              reduction = &quot;pca&quot; ,
-                              dims = 1:50,
-                              graph.name=&quot;SNN&quot;,
-                              prune.SNN = 1/15,
-                              k.param = 20,
-                              force.recalc = T)</code></pre>
-<p>Setting <code>compute.SNN</code> to <code>TRUE</code> will compute both the k-NN and SNN graphs.</p>
 </p>
 </details>
 <p><br /></p>
@@ -1080,6 +1030,59 @@ SeuratObject@reductions[[&quot;dm&quot;]] &lt;- CreateDimReducObject(embeddings 
 </details>
 <p><br /></p>
 </div>
+<div id="creating-graphs" class="section level1">
+<h1>Creating graphs</h1>
+<hr />
+<p>Instead of doing clustering of scRNAseq data on the full expression matrix or in PCA space (which gives linear distances), it has proven quite powerful to use graphs to create a non-linear representation of cell-to-cell similarities.</p>
+<p>Graphs is simply a representation of all cells (as nodes/vertices) with edges drawn between them based on some similarity criteria. For instance, a graph can be constructed with edges between all cells that are less than X distance from each other in PCA space with 50 principal components.</p>
+<details>
+<summary>
+<strong>KNN</strong>
+</summary>
+<p>
+<p>KNN refers to “K Nearest Neighbors”, which is a basic and popular topic in data mining and machine learning areas. The KNN graph is a graph in which two vertices p and q are connected by an edge, if the distance between p and q is among the K-th smallest distances.[2] Given different similarity measure of these vectors, the pairwise distance can be Hamming distance, Cosine distance, Euclidean distance and so on. We take Euclidean distance as the way to measure similarity between vectors in this paper. The KNN Graph data structure has many advantages in data mining. For example, for a billion-level dataset, pre-building a KNN graph offline as an index is much better than doing KNN search online many times.</p>
+<div style="text-align: right">
+Adapted from <a href="https://github.com/lengyyy/KNN-Graph">Github</a>
+</div>
+<pre class="r"><code>SeuratObject &lt;- FindNeighbors(SeuratObject,
+                              assay = &quot;RNA&quot;,
+                              compute.SNN = F,
+                              reduction = &quot;pca&quot;,
+                              dims = 1:50,
+                              graph.name=&quot;SNN&quot;,
+                              prune.SNN = 1/15,
+                              k.param = 20,
+                              force.recalc = T)</code></pre>
+<p>Setting <code>compute.SNN</code> to <code>FALSE</code> will only compute the KNN graph.</p>
+<p>We can take a look at the KNN graph. It is a matrix where every connection between cells is represented as 1s. This is called a unweighted graph (default in Seurat). Some cell connections can however have more importance than others, in that case the scale of the graph from 0 to a maximum distance. Usually, the smaller the distance, the closer two points are, and stronger is their connection. This is called a weighted graph. Both weighted and unweighted graphs are suitable for clustering, but clustering on unweighted graphs is faster for large datasets (&gt; 100k cells).</p>
+<pre class="r"><code>library(pheatmap)
+pheatmap(SeuratObject@graphs$CCA_nn[1:200,1:200],
+         col=c(&quot;white&quot;,&quot;black&quot;),border_color = &quot;grey90&quot;,
+         legend = F,cluster_rows = F,cluster_cols = F,fontsize = 2)</code></pre>
+</p>
+</details>
+<details>
+<summary>
+<strong>SNN</strong>
+</summary>
+<p>
+<p>In addition to the KNN graph, if we then determine the number of nearest neighbors shared by any two points. In graph terminology, we form what we call the “shared nearest neighbor” graph. We do this by replacing the weight of each link between two points (in the nearest neighbor graph) by the number of neighbors that the points share. In other words, this is the number of length 2 paths between any two points in the nearest neighbor graph.</p>
+<p>After, this shared nearest neighbor graph is created, all pairs of points are compared and if any two points share more than T neighbors, i.e., have a link in the shared nearest neighbor graph with a weight more than our threshold value, T( TS:. n), then the two points and any cluster they are part of are merged. In other words, clusters are connected components in our shared nearest neighbor graph after we sparsify using a threshold.</p>
+<p>How to run it:</p>
+<pre class="r"><code>SeuratObject &lt;- FindNeighbors(SeuratObject,
+                              assay = &quot;RNA&quot;,
+                              compute.SNN = T,
+                              reduction = &quot;pca&quot; ,
+                              dims = 1:50,
+                              graph.name=&quot;SNN&quot;,
+                              prune.SNN = 1/15,
+                              k.param = 20,
+                              force.recalc = T)</code></pre>
+<p>Setting <code>compute.SNN</code> to <code>TRUE</code> will compute both the KNN and SNN graphs.</p>
+</p>
+</details>
+<p><br /></p>
+</div>
 <div id="dataset-integration" class="section level1">
 <h1>Dataset integration</h1>
 <hr />
@@ -1155,9 +1158,9 @@ SeuratObject.list &lt;- SplitObject(
 
 assaylist &lt;- list()
 genelist &lt;- list()
-for(i in 1:length(seuratobjetclist))
-{ assaylist[[i]] &lt;- t(as.matrix(GetAssayData(seuratobjectlist[[i]], &quot;data&quot;)))
-   genelist[[i]] &lt;- rownames(seuratobjetclist[[i]]) }</code></pre>
+for(i in 1:length(SeuratObject.list))
+{ assaylist[[i]] &lt;- t(as.matrix(GetAssayData(SeuratObject.list[[i]], &quot;data&quot;)))
+   genelist[[i]] &lt;- rownames(SeuratObject.list[[i]]) }</code></pre>
 <pre class="r"><code>library(reticulate)
 scanorama &lt;- import(&quot;scanorama&quot;)
 
