@@ -513,7 +513,7 @@ metadata_use <- metadata_use[colSums(SeuratObject@meta.data[, metadata_use] != 0
 # Normalization and Regression
 ***
 
-Before doing any other analyses, the data needs to be normalized to account for varying sequencing depths and logtransformed (in most cases). Furhter, it may be useful to regress out confounding factors, for example cell cycle or quality metrics, such as percent mitochondria or number of detected genes.
+Before doing any other analyses, the data needs to be normalized to account for varying sequencing depths and logtransformed (in most cases). Furthermore, it may be useful to regress out confounding factors, for example cell cycle or quality metrics, such as percent mitochondria or number of detected genes.
 
 <details>
 <summary>**Normalization**</summary>
@@ -655,83 +655,6 @@ SeuratObject <- SCTransform(
   new.assay.name = "sctransform",
   do.center=T )
 ```
-
-
-</p>
-</details>
-
-<br/>
-
-# Intro to Graphs
-***
-
-Instead of doing clustering of scRNAseq data on the full expression matrix or in PCA space (which gives linear distances), it has proven quite powerful to use graphs to create a non-linear representation of cell-to-cell similarities.
-
-Graphs is simply a representation of all cells (as nodes/vertices) with edges drawn between them based on some similarity criteria. For instance, a graph can be constructed with edges between all cells that are less than X distance from each other in PCA space with 50 principal components.
-
-
-<details>
-<summary>**KNN**</summary>
-<p>
-
-KNN refers to “K Nearest Neighbors”, which is a basic and popular topic in data mining and machine learning areas. The KNN graph is a graph in which two vertices p and q are connected by an edge, if the distance between p and q is among the K-th smallest distances.[2] Given different similarity measure of these vectors, the pairwise distance can be Hamming distance, Cosine distance, Euclidean distance and so on. We take Euclidean distance as the way to measure similarity between vectors in this paper. The KNN Graph data structure has many advantages in data mining. For example, for a billion-level dataset, prebuilding a KNN graph offline as an index is much better than doing KNN search online many times.
-
-<div style="text-align: right"> Adapted from [Github](https://github.com/lengyyy/KNN-Graph) </div>
-
-
-```r
-SeuratObject <- FindNeighbors(SeuratObject,
-                              assay = "RNA",
-                              compute.SNN = F,
-                              reduction = "pca",
-                              dims = 1:50,
-                              graph.name="SNN",
-                              prune.SNN = 1/15,
-                              k.param = 20,
-                              force.recalc = T)
-```
-
-Setting `compute.SNN` to `FALSE` will only compute the k-NN graph.
-
-We can take a look at the kNN graph. It is a matrix where every connection between cells is represented as 1s. This is called a unweighted graph (default in Seurat). Some cell connections can however have more importance than others, in that case the scale of the graph from 0
- to a maximum distance. Usually, the smaller the distance, the closer two points are, and stronger is their connection. This is called a weighted graph. Both weighted and unweighted graphs are suitable for clustering, but clustering on unweighted graphs is faster for large datasets (> 100k cells).
-
-
-```r
-library(pheatmap)
-pheatmap(SeuratObject@graphs$CCA_nn[1:200,1:200],
-         col=c("white","black"),border_color = "grey90",
-         legend = F,cluster_rows = F,cluster_cols = F,fontsize = 2)
-```
-
-
-</p>
-</details>
-
-<details>
-<summary>**SNN**</summary>
-<p>
-
-In addition to the k-NN graph, if we then determine the number of nearest neighbors shared by any two points. In graph terminology, we form what we call the "shared nearest neighbor" graph. We do this by replacing the weight of each link between two points (in the nearest neighbor graph) by the number of neighbors that the points share. In other words, this is the number of length 2 paths between any two points in the nearest neighbor graph.
-
-After, this shared nearest neighbor graph is created, all pairs of points are compared and if any two points share more than T neighbors, i.e., have a link in the shared nearest neighbor graph with a weight more than our threshold value, T( TS:. n), then the two points and any cluster they are part of are merged. In other words, clusters are connected components in our shared nearest neighbor graph after we sparsify using a threshold.
-
-How to run it:
-
-
-```r
-SeuratObject <- FindNeighbors(SeuratObject,
-                              assay = "RNA",
-                              compute.SNN = T,
-                              reduction = "pca" ,
-                              dims = 1:50,
-                              graph.name="SNN",
-                              prune.SNN = 1/15,
-                              k.param = 20,
-                              force.recalc = T)
-```
-
-Setting `compute.SNN` to `TRUE` will compute both the k-NN and SNN graphs.
 
 
 </p>
@@ -896,6 +819,82 @@ SeuratObject <- RunICA(object = SeuratObject,
                        nics = 20,
                        reduction.name = "ica")
 ```
+
+
+</p>
+</details>
+
+<br/>
+
+# Creating graphs
+***
+
+Instead of doing clustering of scRNAseq data on the full expression matrix or in PCA space (which gives linear distances), it has proven quite powerful to use graphs to create a non-linear representation of cell-to-cell similarities.
+
+Graphs is simply a representation of all cells (as nodes/vertices) with edges drawn between them based on some similarity criteria. For instance, a graph can be constructed with edges between all cells that are less than X distance from each other in PCA space with 50 principal components.
+
+
+<details>
+<summary>**KNN**</summary>
+<p>
+
+KNN refers to “K Nearest Neighbors”, which is a basic and popular topic in data mining and machine learning areas. The KNN graph is a graph in which two vertices p and q are connected by an edge, if the distance between p and q is among the K-th smallest distances.[2] Given different similarity measure of these vectors, the pairwise distance can be Hamming distance, Cosine distance, Euclidean distance and so on. We take Euclidean distance as the way to measure similarity between vectors in this paper. The KNN Graph data structure has many advantages in data mining. For example, for a billion-level dataset, pre-building a KNN graph offline as an index is much better than doing KNN search online many times.
+
+<div style="text-align: right"> Adapted from [Github](https://github.com/lengyyy/KNN-Graph) </div>
+
+
+```r
+SeuratObject <- FindNeighbors(SeuratObject,
+                              assay = "RNA",
+                              compute.SNN = F,
+                              reduction = "pca",
+                              dims = 1:50,
+                              graph.name="SNN",
+                              prune.SNN = 1/15,
+                              k.param = 20,
+                              force.recalc = T)
+```
+
+Setting `compute.SNN` to `FALSE` will only compute the KNN graph.
+
+We can take a look at the KNN graph. It is a matrix where every connection between cells is represented as 1s. This is called a unweighted graph (default in Seurat). Some cell connections can however have more importance than others, in that case the scale of the graph from 0 to a maximum distance. Usually, the smaller the distance, the closer two points are, and stronger is their connection. This is called a weighted graph. Both weighted and unweighted graphs are suitable for clustering, but clustering on unweighted graphs is faster for large datasets (> 100k cells).
+
+
+```r
+library(pheatmap)
+pheatmap(SeuratObject@graphs$CCA_nn[1:200,1:200],
+         col=c("white","black"),border_color = "grey90",
+         legend = F,cluster_rows = F,cluster_cols = F,fontsize = 2)
+```
+
+
+</p>
+</details>
+
+<details>
+<summary>**SNN**</summary>
+<p>
+
+In addition to the KNN graph, if we then determine the number of nearest neighbors shared by any two points. In graph terminology, we form what we call the "shared nearest neighbor" graph. We do this by replacing the weight of each link between two points (in the nearest neighbor graph) by the number of neighbors that the points share. In other words, this is the number of length 2 paths between any two points in the nearest neighbor graph.
+
+After, this shared nearest neighbor graph is created, all pairs of points are compared and if any two points share more than T neighbors, i.e., have a link in the shared nearest neighbor graph with a weight more than our threshold value, T( TS:. n), then the two points and any cluster they are part of are merged. In other words, clusters are connected components in our shared nearest neighbor graph after we sparsify using a threshold.
+
+How to run it:
+
+
+```r
+SeuratObject <- FindNeighbors(SeuratObject,
+                              assay = "RNA",
+                              compute.SNN = T,
+                              reduction = "pca" ,
+                              dims = 1:50,
+                              graph.name="SNN",
+                              prune.SNN = 1/15,
+                              k.param = 20,
+                              force.recalc = T)
+```
+
+Setting `compute.SNN` to `TRUE` will compute both the KNN and SNN graphs.
 
 
 </p>
