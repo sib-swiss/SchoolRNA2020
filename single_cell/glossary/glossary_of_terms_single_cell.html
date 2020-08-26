@@ -829,6 +829,28 @@ SeuratObject &lt;- NormalizeData(
 </details>
 <details>
 <summary>
+<strong>Feature selection</strong>
+</summary>
+<p>
+<p>An important step in many big-data analysis tasks is to identify features (genes, transcripts, proteins, metabolites, etc) that are actually very variable between the samples being looked at.</p>
+<p>For example. Imagine that you have a dataset known to contain different types of epithelial cells, and you use either 1) only genes that are expressed and shared across all epithelial cells at about the same level, 2) only genes that are not detected in epithelial cells, 3) only genes which expression differ greatly across epithelial cells or 4) using all genes. Which of these 4 gene lists can best distinguish the epithelial subtypes in this dataset?</p>
+<p>As you could now imagine, using only genes which expression differ greatly across epithelial cells is the best case scenario, followed by using all genes. Therefore, using only genes that are expressed and shared across all epithelial cells at about the same level or only genes that are not detected in epithelial cells do not contain sufficient information to distinguish the epithelial subtypes.</p>
+<p>However, since in single-cell we usually do not know the epithelial subtypes the cells before hand (since this is what we want to discover), we need another method to accomplish this task. In general terms, a common approach is to order genes by their overall variance across samples. This is because genes with higher variance will also likely be the ones that can separate the cells the best.</p>
+<p>Since genes with higher expression level usually also have naturally higher variation, the gene variation is then normalized by the log mean expression of each gene (see plot).</p>
+<p>How to run it:</p>
+<pre class="r"><code>SeuratObject &lt;- FindVariableFeatures(
+  object = SeuratObject,
+  nfeatures = 3000,
+  selection.method = &quot;vst&quot;,
+  verbose = FALSE,
+  assay = &quot;RNA&quot;)</code></pre>
+<p>Variable gene plot:</p>
+<pre class="r"><code>top20 &lt;- head(VariableFeatures(SeuratObject), 20)
+LabelPoints(plot = VariableFeaturePlot(SeuratObject), points = top20, repel = TRUE)</code></pre>
+</p>
+</details>
+<details>
+<summary>
 <strong>Scaling and Centering (linear)</strong>
 </summary>
 <p>
@@ -839,8 +861,10 @@ SeuratObject &lt;- NormalizeData(
   object = SeuratObject,
   vars.to.regress = c(&quot;nCount_RNA&quot;,&quot;mito.percent&quot;,&quot;nFeatures_RNA&quot;),
   model.use = &quot;linear&quot;,
-  do.scale = T,
-  do.center = T)</code></pre>
+  assay = &quot;RNA&quot;,
+  do.scale = TRUE,
+  do.center = TRUE)</code></pre>
+<p>Seurat will be default run scaling on any variable features in a Seurat object, if they exists. This can greatly speed up the performance of scaling step while the results of downstream analyses (such as dimensionality reduction or clustering) remain unchanged, as those are based on the variable genes themselves. If you’d rather scale the data on the full number of genes even after you’ve used <code>FindVariableFeatures</code>, you can specify this in the function call: <code>ScaleData(..., features = rownames(SeuratObject))</code>.</p>
 </p>
 </details>
 <details>
@@ -854,8 +878,9 @@ SeuratObject &lt;- NormalizeData(
   object = SeuratObject,
   vars.to.regress = c(&quot;nCount_RNA&quot;,&quot;mito.percent&quot;,&quot;nFeatures_RNA&quot;),
   model.use = &quot;poisson&quot;,
-  do.scale = T,
-  do.center = T)</code></pre>
+  assay = &quot;RNA&quot;,
+  do.scale = TRUE,
+  do.center = TRUE)</code></pre>
 </p>
 </details>
 <details>
@@ -871,28 +896,6 @@ SeuratObject &lt;- NormalizeData(
   vars.to.regress =  c(&quot;nCount_RNA&quot;,&quot;mito.percent&quot;,&quot;nFeatures_RNA&quot;),
   new.assay.name = &quot;sctransform&quot;,
   do.center=T )</code></pre>
-</p>
-</details>
-<details>
-<summary>
-<strong>Feature selection</strong>
-</summary>
-<p>
-<p>An important step in many big-data analysis tasks is to identify features (genes, transcripts, proteins, metabolites, etc) that are actually very variable between the samples being looked at.</p>
-<p>For example. Imagine that you have a dataset known to contain different types of epithelial cells, and you use either 1) only genes that are expressed and shared across all epithelial cells at about the same level, 2) only genes that are not detected in epithelial cells, 3) only genes which expression differ greatly across epithelial cells or 4) using all genes. Which of these 4 gene lists can best distinguish the epithelial subtypes in this dataset?</p>
-<p>As you could now imagine, using only genes which expression differ greatly across epithelial cells is the best case scenario, followed by using all genes. Therefore, using only genes that are expressed and shared across all epithelial cells at about the same level or only genes that are not detected in epithelial cells do not contain sufficient information to distinguish the epithelial subtypes.</p>
-<p>However, since in single-cell we usually do not know the epithelial suptypes the cells before hand (since this is what we want to discover), we need another method to accomplish this task. In general terms, a common approach is to order genes by their overall variance across samples. This is because genes with higher variance will also likely be the ones that can separate the cells the best.</p>
-<p>Since genes with higher expression level usually also have naturally higher variation, the gene variation is then normalized by the log mean expression of each gene (see plot).</p>
-<p>How to run it:</p>
-<pre class="r"><code>SeuratObject &lt;- FindVariableFeatures(
-  object = SeuratObject,
-  nfeatures = 3000,
-  selection.method = &quot;vst&quot;,
-  verbose = FALSE,
-  assay = &quot;RNA&quot;)</code></pre>
-<p>Variable gene plot:</p>
-<pre class="r"><code>top20 &lt;- head(VariableFeatures(SeuratObject), 20)
-LabelPoints(plot = VariableFeaturePlot(SeuratObject), points = top20, repel = TRUE)</code></pre>
 </p>
 </details>
 <p><br /></p>
@@ -1153,9 +1156,9 @@ SeuratObject.list &lt;- SplitObject(
 
 assaylist &lt;- list()
 genelist &lt;- list()
-for(i in 1:length(seuratobjetclist))
-{ assaylist[[i]] &lt;- t(as.matrix(GetAssayData(seuratobjectlist[[i]], &quot;data&quot;)))
-   genelist[[i]] &lt;- rownames(seuratobjetclist[[i]]) }</code></pre>
+for(i in 1:length(SeuratObject.list))
+{ assaylist[[i]] &lt;- t(as.matrix(GetAssayData(SeuratObject.list[[i]], &quot;data&quot;)))
+   genelist[[i]] &lt;- rownames(SeuratObject.list[[i]]) }</code></pre>
 <pre class="r"><code>library(reticulate)
 scanorama &lt;- import(&quot;scanorama&quot;)
 

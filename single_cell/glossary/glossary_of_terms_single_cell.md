@@ -544,6 +544,43 @@ SeuratObject <- NormalizeData(
 </details>
 
 <details>
+<summary>**Feature selection**</summary>
+<p>
+
+An important step in many big-data analysis tasks is to identify features (genes, transcripts, proteins, metabolites, etc) that are actually very variable between the samples being looked at.
+
+For example. Imagine that you have a dataset known to contain different types of epithelial cells, and you use either 1) only genes that are expressed and shared across all epithelial cells at about the same level, 2) only genes that are not detected in epithelial cells, 3) only genes which expression differ greatly across epithelial cells or 4) using all genes. Which of these 4 gene lists can best distinguish the epithelial subtypes in this dataset?
+
+As you could now imagine, using only genes which expression differ greatly across epithelial cells is the best case scenario, followed by using all genes. Therefore, using only genes that are expressed and shared across all epithelial cells at about the same level or only genes that are not detected in epithelial cells do not contain sufficient information to distinguish the epithelial subtypes.
+
+However, since in single-cell we usually do not know the epithelial subtypes the cells before hand (since this is what we want to discover), we need another method to accomplish this task. In general terms, a common approach is to order genes by their overall variance across samples. This is because genes with higher variance will also likely be the ones that can separate the cells the best.
+
+Since genes with higher expression level usually also have naturally higher variation, the gene variation is then normalized by the log  mean expression of each gene (see plot).
+
+How to run it:
+
+
+```r
+SeuratObject <- FindVariableFeatures(
+  object = SeuratObject,
+  nfeatures = 3000,
+  selection.method = "vst",
+  verbose = FALSE,
+  assay = "RNA")
+```
+
+Variable gene plot:
+
+
+```r
+top20 <- head(VariableFeatures(SeuratObject), 20)
+LabelPoints(plot = VariableFeaturePlot(SeuratObject), points = top20, repel = TRUE)
+```
+
+</p>
+</details>
+
+<details>
 <summary>**Scaling and Centering (linear)**</summary>
 <p>
 
@@ -559,9 +596,18 @@ SeuratObject <- ScaleData(
   object = SeuratObject,
   vars.to.regress = c("nCount_RNA","mito.percent","nFeatures_RNA"),
   model.use = "linear",
-  do.scale = T,
-  do.center = T)
+  assay = "RNA",
+  do.scale = TRUE,
+  do.center = TRUE)
 ```
+
+Seurat will be default run scaling on any variable features in a Seurat object,
+if they exists. This can greatly speed up the performance of scaling step while
+the results of downstream analyses (such as dimensionality reduction or
+clustering) remain unchanged, as those are based on the variable genes
+themselves. If you'd rather scale the data on the full number of genes even
+after you've used `FindVariableFeatures`, you can specify this in the
+function call: `ScaleData(..., features = rownames(SeuratObject))`.
 
 
 </p>
@@ -582,8 +628,9 @@ SeuratObject <- ScaleData(
   object = SeuratObject,
   vars.to.regress = c("nCount_RNA","mito.percent","nFeatures_RNA"),
   model.use = "poisson",
-  do.scale = T,
-  do.center = T)
+  assay = "RNA",
+  do.scale = TRUE,
+  do.center = TRUE)
 ```
 
 
@@ -609,43 +656,6 @@ SeuratObject <- SCTransform(
   do.center=T )
 ```
 
-
-</p>
-</details>
-
-<details>
-<summary>**Feature selection**</summary>
-<p>
-
-An important step in many big-data analysis tasks is to identify features (genes, transcripts, proteins, metabolites, etc) that are actually very variable between the samples being looked at.
-
-For example. Imagine that you have a dataset known to contain different types of epithelial cells, and you use either 1) only genes that are expressed and shared across all epithelial cells at about the same level, 2) only genes that are not detected in epithelial cells, 3) only genes which expression differ greatly across epithelial cells or 4) using all genes. Which of these 4 gene lists can best distinguish the epithelial subtypes in this dataset?
-
-As you could now imagine, using only genes which expression differ greatly across epithelial cells is the best case scenario, followed by using all genes. Therefore, using only genes that are expressed and shared across all epithelial cells at about the same level or only genes that are not detected in epithelial cells do not contain sufficient information to distinguish the epithelial subtypes.
-
-However, since in single-cell we usually do not know the epithelial suptypes the cells before hand (since this is what we want to discover), we need another method to accomplish this task. In general terms, a common approach is to order genes by their overall variance across samples. This is because genes with higher variance will also likely be the ones that can separate the cells the best.
-
-Since genes with higher expression level usually also have naturally higher variation, the gene variation is then normalized by the log  mean expression of each gene (see plot).
-
-How to run it:
-
-
-```r
-SeuratObject <- FindVariableFeatures(
-  object = SeuratObject,
-  nfeatures = 3000,
-  selection.method = "vst",
-  verbose = FALSE,
-  assay = "RNA")
-```
-
-Variable gene plot:
-
-
-```r
-top20 <- head(VariableFeatures(SeuratObject), 20)
-LabelPoints(plot = VariableFeaturePlot(SeuratObject), points = top20, repel = TRUE)
-```
 
 </p>
 </details>
@@ -987,9 +997,9 @@ SeuratObject.list <- SplitObject(
 
 assaylist <- list()
 genelist <- list()
-for(i in 1:length(seuratobjetclist))
-{ assaylist[[i]] <- t(as.matrix(GetAssayData(seuratobjectlist[[i]], "data")))
-   genelist[[i]] <- rownames(seuratobjetclist[[i]]) }
+for(i in 1:length(SeuratObject.list))
+{ assaylist[[i]] <- t(as.matrix(GetAssayData(SeuratObject.list[[i]], "data")))
+   genelist[[i]] <- rownames(SeuratObject.list[[i]]) }
 ```
 
 
