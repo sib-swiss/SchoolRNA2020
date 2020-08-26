@@ -4,12 +4,7 @@ In the below exercises we will analyse the differential isoform expression. To d
 
 In this markdown file, we'll showcase a basic analysis as can be done by DESeq2. However, if there's time left, try to go a bit deeper and try for example different ways of visualisation, normalisation or experimental design.
 
-## 3.1 Getting started with `ggplot`
-><img border="0" src="https://www.svgrepo.com/show/14756/person-silhouette.svg" width="30" height="30"> 90 minutes
-
-Getting started with `ggplot` (in preparation)
-
-## 3.2 Run DESeq2
+## 3.1 Run DESeq2
 ><img border="0" src="https://www.svgrepo.com/show/14756/person-silhouette.svg" width="30" height="30"> 1 hour
 
 Load the data into R and modify it to fit DESeq2:
@@ -94,7 +89,7 @@ And visualise the difference between the tissues in expression:
 DESeq2::plotCounts(dds2, gene=most_significant_isoform, intgroup="tissue")
 ```
 
-## 3.3 Biological meaning
+## 3.2 Biological meaning
 ><img border="0" src="https://www.svgrepo.com/show/220819/group-team.svg" width="30" height="30"> 2 hours
 
 Try to answer one or more of the following questions:
