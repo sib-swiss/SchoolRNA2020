@@ -14,6 +14,11 @@ editor_options:
 
 <br/>
 
+![](single-cell-analysis-workflow.png)
+
+<br/>
+
+
 # Downloading data
 ***
 
