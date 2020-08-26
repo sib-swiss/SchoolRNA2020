@@ -960,9 +960,9 @@ SeuratObject.list <- SplitObject(
 
 assaylist <- list()
 genelist <- list()
-for(i in 1:length(seuratobjetclist))
-{ assaylist[[i]] <- t(as.matrix(GetAssayData(seuratobjectlist[[i]], "data")))
-   genelist[[i]] <- rownames(seuratobjetclist[[i]]) }
+for(i in 1:length(SeuratObject.list))
+{ assaylist[[i]] <- t(as.matrix(GetAssayData(SeuratObject.list[[i]], "data")))
+   genelist[[i]] <- rownames(SeuratObject.list[[i]]) }
 ```
 
 
