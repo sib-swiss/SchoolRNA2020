@@ -358,12 +358,12 @@ SeuratObject <- PercentageFeatureSet(
 </details>
 
 <details>
-<summary>**% Gene biotype and chromossome location**</summary>
+<summary>**% Gene biotype and chromosome location**</summary>
 <p>
 
-In RNA-sequencing, genes can be categorized into different groups depending on their RNA biotype. For example, "coding", "non-coding", "VDJ region genes" are "small interefering RNA" common gene biotypes. Besides, having information about chromossomal location might be usefull to identify bacth effects driven by sex chromossomes.
+In RNA-sequencing, genes can be categorized into different groups depending on their RNA biotype. For example, "coding", "non-coding", "VDJ region genes" are "small interfering RNA" common gene biotypes. Besides, having information about chromosomal location might be useful to identify batch effects driven by sex chromosomes
 
-Depending on the desired type of analysis, some gene categories can be filtered out if not of interest. For single cell specifically, cell libraries are usually constructed using poly-A enrichment and therefore enriching for "protein-coding proteins", which usually contitutes around 80-90% of all available genes.
+Depending on the desired type of analysis, some gene categories can be filtered out if not of interest. For single cell specifically, cell libraries are usually constructed using poly-A enrichment and therefore enriching for "protein-coding proteins", which usually constitutes around 80-90% of all available genes.
 
 ```{r, eval = FALSE}
 # Retrieve mouse gene annotation from ENSEMBL
@@ -379,7 +379,7 @@ annot <- biomaRt::getBM(
   attributes = c("external_gene_name", "gene_biotype", "chromosome_name"))
 ```
 
-Make sure you are using the right species for your dataset. A list of all species available on can be found using `biomaRt::listDatasets(mart)[,"dataset"]`. All species names are formated in the same way, such as `mmusculus_gene_ensembl` and `hsapiens_gene_ensembl`. For reproducibility reasons, it is also advised to specifically choose a biomart release version, since some genes will be renamed, inserted or deleted from the database. You can do so by running `biomaRt::listEnsemblArchives()`.
+Make sure you are using the right species for your dataset. A list of all species available on can be found using `biomaRt::listDatasets(mart)[,"dataset"]`. All species names are formatted in the same way, such as `mmusculus_gene_ensembl` and `hsapiens_gene_ensembl`. For reproducibility reasons, it is also advised to specifically choose a biomart release version, since some genes will be renamed, inserted or deleted from the database. You can do so by running `biomaRt::listEnsemblArchives()`.
 
 ```{r, eval = FALSE}
 # Match the gene names with theit respective gene biotype
@@ -605,7 +605,7 @@ function call: `ScaleData(..., features = rownames(SeuratObject))`.
 <summary>**Scaling and Centering (poisson)**</summary>
 <p>
 
-Since the procedure above assumes a log-linear data distribution, it may be the case that it does not regress the variation correctly, as RNA-seq data (including single cell) relates more closely to a negative bionomial distribution. An alternative variation of the procedure above can also be run on the raw UMI count data but using a "poisson" or "negative binomial" distribution instead. This is performing a gene-wise GLM regression using a poisson model.
+Since the procedure above assumes a log-linear data distribution, it may be the case that it does not regress the variation correctly, as RNA-seq data (including single cell) relates more closely to a negative binomial distribution. An alternative variation of the procedure above can also be run on the raw UMI count data but using a "poisson" or "negative binomial" distribution instead. This is performing a gene-wise GLM regression using a poisson model.
 
 ```{r, eval = FALSE}
 SeuratObject <- ScaleData(
@@ -675,7 +675,7 @@ SeuratObject <- RunPCA(
 
 <div style="text-align: right"> [Maaten, Hilton (2008) J of Machine Learning Research](http://jmlr.org/papers/volume9/vandermaaten08a/vandermaaten08a.pdf) </div>
 
-t-distributed stochastic neighborhood embedding (tSNE) is a **nonlinear** dimensionality reduction technique well-suited for embedding high-dimensional data for **visualization** in a low-dimensional space of two or three dimensions. Specifically, it models each high-dimensional object by a two- or three-dimensional point in such a way that **similar objects are modeled by nearby points** and dissimilar objects are modeled by distant points with high probability. […] t-SNE has been used for visualization in a wide range of applications, including […] bioinformatics […]. While t-SNE plots often seem to display clusters, the **visual clusters can be influenced strongly by the chosen parameterization** and therefore a good understanding of the parameters for t-SNE is necessary.
+t-distributed stochastic neighborhood embedding (tSNE) is a **nonlinear** dimensionality reduction technique well-suited for embedding high-dimensional data for **visualization** in a low-dimensional space of two or three dimensions. Specifically, it models each high-dimensional object by a two- or three-dimensional point in such a way that **similar objects are modeled by nearby points** and dissimilar objects are modeled by distant points with high probability. t-SNE has been used for visualization in a wide range of applications, including […] bioinformatics […]. While t-SNE plots often seem to display clusters, the **visual clusters can be influenced strongly by the chosen parameterization** and therefore a good understanding of the parameters for t-SNE is necessary.
 
 <div style="text-align: right"> Adapted from [Wikipedia](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding) </div>
 
@@ -703,7 +703,7 @@ SeuratObject <- RunTSNE(object              = SeuratObject,
 <summary>**UMAP**</summary>
 <p>
 
-Uniform Manifold Approximation and Projection (UMAP) is a dimension reduction technique that can be used for visualization similarly to t-SNE, but also for general **non-linear** dimension reduction […].
+Uniform Manifold Approximation and Projection (UMAP) is a dimension reduction technique that can be used for visualization similarly to t-SNE, but also for general **non-linear** dimension reduction.
 
 <div style="text-align: right"> [umap-learn documentation](https://umap-learn.readthedocs.io/en/latest/) </div>
 
@@ -929,7 +929,7 @@ SeuratObject <- IntegrateData(
 
 Scanorama's approach generalizes mutual nearest-neighbors matching, a technique that finds similar elements between two datasets, to instead find similar elements among many datasets.
 
-While recent approaches have shown that it is possible to integrate scRNA-seq studies across multiple experiments, these approaches automatically assume that all datasets share at least one cell type in common or that the gene expression profiles share largely the same correlation structure across all datasets. These methods are therefore prone to overcor- rection, especially when integrating collections of datasets with considerable differences in cellular composition.
+While recent approaches have shown that it is possible to integrate scRNA-seq studies across multiple experiments, these approaches automatically assume that all datasets share at least one cell type in common or that the gene expression profiles share largely the same correlation structure across all datasets. These methods are therefore prone to overcorrection, especially when integrating collections of datasets with considerable differences in cellular composition.
 
 Scanorama is a strategy for efficiently integrating multiple scRNA-seq datasets, even when they are composed of heterogeneous transcriptional phenotypes. Its approach is analogous to computer vision algorithms for panorama stitching that identify images with overlapping content and merge these into a larger panorama. Likewise, Scanorama automatically identifies scRNA-seq datasets containing cells with similar transcriptional profiles and can leverage those matches for batch correction and integration, without also merging datasets that do not overlap. Scanorama is robust to different dataset sizes and sources, preserves dataset-specific populations and does not require that all datasets share at least one cell population.
 
@@ -993,9 +993,9 @@ SeuratObject[["pca_scanorama"]] <- CreateDimReducObject(
 <summary>**Harmony**</summary>
 <p>
 
-Harmony begins with a low-dimensional embedding of cells, such as principal components analysis (PCA), (Supplementary Note 1 and Methods). Using this embedding, Harmony first groups cells into multi-dataset clusters. We use soft clustering to assign cells to potentially multiple clusters, to account for smooth transi- tions between cell states. These clusters serve as surrogate variables, rather than to identify discrete cell types
+Harmony begins with a low-dimensional embedding of cells, such as principal components analysis (PCA), (Supplementary Note 1 and Methods). Using this embedding, Harmony first groups cells into multi-dataset clusters. We use soft clustering to assign cells to potentially multiple clusters, to account for smooth transitions between cell states. These clusters serve as surrogate variables, rather than to identify discrete cell types
 
-After clustering, each dataset has cluster-specific centroids that are used to compute cluster-specific linear correction factors. Since clusters correspond to cell types and states, cluster-specific correction factors correspond to individual cell-type and cell-state specific correction factors. In this way, Harmony learns a simple linear adjustment function that is sensitive to intrinsic cel- lular phenotypes. Finally, each cell is assigned a cluster-weighted average of these terms and corrected by its cell-specific linear factor. Since each cell may be in multiple clusters, each cell has a potentially unique correction factor. Harmony iterates these four steps until cell cluster assignments are stable.
+After clustering, each dataset has cluster-specific centroids that are used to compute cluster-specific linear correction factors. Since clusters correspond to cell types and states, cluster-specific correction factors correspond to individual cell-type and cell-state specific correction factors. In this way, Harmony learns a simple linear adjustment function that is sensitive to intrinsic cellular phenotypes. Finally, each cell is assigned a cluster-weighted average of these terms and corrected by its cell-specific linear factor. Since each cell may be in multiple clusters, each cell has a potentially unique correction factor. Harmony iterates these four steps until cell cluster assignments are stable.
 
 Harmony is an algorithm for robust, scalable and flexible multi-dataset integration to meet four key challenges of unsupervised scRNA-seq joint embedding: scaling to large datasets, identification of both broad populations and fine-grained subpopulations, flexibility to accommodate complex experimental design, and the power to integrate across modalities.
 
