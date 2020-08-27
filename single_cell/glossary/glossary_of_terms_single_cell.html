@@ -1107,8 +1107,8 @@ pheatmap(SeuratObject@graphs$CCA_nn[1:200, 1:200],
 </details>
 <p><br /></p>
 </div>
-<div id="dataset-integration" class="section level1">
-<h1>Dataset integration</h1>
+<div id="dataset-integration-and-batch-correction" class="section level1">
+<h1>Dataset integration and batch correction</h1>
 <hr />
 <p>Existing batch correction methods were specifically designed for bulk RNA-seq. Thus, their applications to scRNA-seq data assume that the composition of the cell population within each batch is identical. Any systematic differences in the mean gene expression between batches are attributed to technical differences that can be regressed out. However, in practice, population composition is usually not identical across batches in scRNA-seq studies. Even assuming that the same cell types are present in each batch, the abundance of each cell type in the data set can change depending upon subtle differences in cell culture or tissue extraction, dissociation and sorting, <em>etc.</em> Consequently, the estimated coefficients for the batch blocking factors are not purely technical, but contain a non-zero biological component due to differences in composition. Batch correction based on these coefficients will thus yield inaccurate representations of the cellular expression proles, potentially yielding worse results than if no correction was performed.</p>
 <div style="text-align: right">
