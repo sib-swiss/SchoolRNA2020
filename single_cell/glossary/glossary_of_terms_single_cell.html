@@ -459,19 +459,17 @@ summary {
 <hr />
 <details>
 <summary>
-<strong>Running bash code in Rstudio</strong>
+<strong>Running bash code in RStudio</strong>
 </summary>
-<p>It is possible to download data from within Rstudio by using the bash code chunk. It is usually a standard to have a folder with all your raw data stored in a separate place from your code or analysis results.</p>
-<p>How to run it:</p>
-<pre class="bash"><code># RMarkdown allows the use of languages other than R, such as bash or Python.
-# To use bash, use ```{bash} instead of ```{r}.
-# ```{bash}
-
-# make a data directory
+<p>It is possible to download data from within RStudio by using the bash code chunk. It is usually a standard to have a folder with all your raw data stored in a separate place from your code or analysis results.</p>
+<p>RMarkdown also allows the use of languages other than R, such as bash or Python. To use bash, start the code chunk with <code>{bash}</code> instead of <code>{r}</code>:</p>
+<pre class="bash"><code>```{bash}
+# Make a data directory
 mkdir data
 
-# use curl to download the data
-curl -o data/FILENAME.h5 -O http://FILE_PATH.h5</code></pre>
+# Use curl to download the data
+curl -o data/FILENAME.h5 -O http://FILE_PATH.h5
+```</code></pre>
 </details>
 <p><br /></p>
 <p><br /></p>
@@ -479,7 +477,7 @@ curl -o data/FILENAME.h5 -O http://FILE_PATH.h5</code></pre>
 <div id="seurat-objects" class="section level1">
 <h1>Seurat Objects</h1>
 <hr />
-<p><a href="https://satijalab.org/seurat/">Seurat</a> is one of the most commonly used pipelines for scRNAseq analysis. For additional information on Seurat objects and commands, please look at this <a href="https://satijalab.org/seurat/essential_commands.html">page</a>. Many different tutorials are also available from their website.</p>
+<p><a href="https://satijalab.org/seurat/">Seurat</a> is one of the most commonly used pipelines for scRNA-seq analysis. For additional information on Seurat objects and commands, please look at this <a href="https://satijalab.org/seurat/essential_commands.html">page</a>. Many different tutorials are also available from their website.</p>
 <details>
 <summary>
 <strong>Reading files</strong>
@@ -488,35 +486,33 @@ curl -o data/FILENAME.h5 -O http://FILE_PATH.h5</code></pre>
 <p>There are many formats available in which one can store single cell information, many of which cannot all be listed here. The most common formats are:</p>
 <ol style="list-style-type: decimal">
 <li>Using tab-delimited matrices saved as <code>.csv</code>, <code>.tsv</code> or <code>.txt</code> and with and additional matrix containing the sample metadata, which is common for SMARTseq2 and related methods</li>
-<li>Using a compressed <strong>sparce matrix</strong> file <code>.mtx</code> with annotations for genes and cells saved as <code>.tsv</code>, which was one of the defaults for 10X Chromium data</li>
-<li>Using HDF5 compressed file for in-file read-write access, which is now becoming the default method for storing single cell dataset (is the current default for 10X Chromium data). HDF5 in particular is fast, scalable and can load parts of the data that will be used at a time, and also can store the metadata in the same file, making it portable. It stores the data as binary compressed <strong>sparce matrix</strong> format</li>
+<li>Using a compressed <strong>sparse matrix</strong> file <code>.mtx</code> with annotations for genes and cells saved as <code>.tsv</code>, which was one of the defaults for 10X Chromium data</li>
+<li>Using HDF5 compressed file for in-file read-write access, which is now becoming the default method for storing single cell dataset (is the current default for 10X Chromium data). HDF5 in particular is fast, scalable and can load parts of the data that will be used at a time, and also can store the metadata in the same file, making it portable. It stores the data as binary compressed <strong>sparse matrix</strong> format</li>
 </ol>
-<p>How to run it:</p>
-<pre class="r"><code># From .csv .tsv .txt format (and then convert to sparse matrix)
+<pre class="r"><code># Read .csv, .tsv, or .txt formats
 raw_matrix &lt;- read.delim(
-  file = &quot;data/folder_sample1.csv&quot;,
+  file      = &quot;data/folder_sample1.csv&quot;,
   row.names = 1 )
 
+# Convert to sparse matrix
 sparse_matrix &lt;- Matrix::Matrix(
-  data = raw_matrix,
+  data   = raw_matrix,
   sparse = T)
 rm(raw_matrix)
 
-
-# From .mtx format (it loads the files in the folder)
+# Read and convert from the .mtx format (it reads the files in the folder)
 sparse_matrix &lt;- Seurat::Read10X(
   data.dir = &quot;data/folder_sample1&quot;)
 
-
-# From .h5 format
+# Read and convert from the .h5 format
 sparse_matrix &lt;- Seurat::Read10X_h5(
-  filename = &quot;data/matrix_file.h5&quot;,
+  filename  = &quot;data/matrix_file.h5&quot;,
   use.names = T)</code></pre>
 <p>Additionally, one should also import any associated metadata file as a <code>data.frame</code>, which opposed to a <code>matrix</code> can store both numbers, characters, booleans and factors.</p>
-<pre class="r"><code># From .csv .tsv format (and then convert to sparse matrix)
+<pre class="r"><code># From .csv or .tsv formats
 metadata &lt;- read.delim(
-  file = &quot;data/metadata.csv&quot;,
-  sep = &quot;,&quot;,
+  file      = &quot;data/metadata.csv&quot;,
+  sep       = &quot;,&quot;,
   row.names = 1 )</code></pre>
 </p>
 </details>
@@ -528,9 +524,9 @@ metadata &lt;- read.delim(
 <p>In order to make the data analysis process a bit simpler, several single cell developers have implemented their own way of storing the data in a concise format in R and python (called <strong>objects</strong>).</p>
 <p>We can now load the expression matrices into objects and then later merge them into a single merged object. Each analysis workflow (Seurat, Scater, Scranpy, etc) has its own way of storing data and here is how you can create a Seurat Object:</p>
 <pre class="r"><code>SeuratObject &lt;- CreateSeuratObject(
-  counts = sparse_matrix,
-  assay = &quot;RNA&quot;,
-  project = &quot;SAMPLE1&quot;,
+  counts    = sparse_matrix,
+  assay     = &quot;RNA&quot;,
+  project   = &quot;SAMPLE1&quot;,
   meta.data = metadata)</code></pre>
 <p>The <code>CreateSeuratObject</code> function can take as input a sparse matrix or a regular matrix with counts.</p>
 </p>
@@ -540,10 +536,15 @@ metadata &lt;- read.delim(
 <strong>Understanding Seurat objects</strong>
 </summary>
 <p>
-<p>For a very detailed explanation of all slots in the Seurat objects, please refer to the Seurat <a href="https://github.com/satijalab/seurat/wiki">wiki</a>.</p>
-<p>One can check the dimensions and subset Seurat Objects as a data.frame:</p>
 <p>Seurat objects have a easy way to access their contents using the <code>@</code> or the <code>$</code> characters after the object name: * The <code>@</code> attribute allows you to access to all analysis slots including: <code>assays</code>, <code>meta.data</code>, <code>graphs</code> and <code>reduction</code> slots. * The <code>$</code> sign allows you to access the columns of the metadata (just like you normally would do in a data.frame) in your Seurat object directly so that <code>SeuratObject$column1</code> is equal to <code>SeuratObject@meta.data$column1</code>.</p>
 <p>By default, the data is loaded into an <code>assay</code> slot named <code>RNA</code>, but you can change the names of the slots when creating them (<em>e.g.</em>, when creating the seurat object, or computing the reductions). Therefore, check the options in each of the Seurat functions to know where you are storing the data. Each <code>assay</code> contains information about the raw counts (<code>counts</code>), the normalized counts (<code>data</code>), the scaled/regressed data (<code>scale.data</code>) as well as information about the dispersion of genes (<code>var</code>). Additional assays will be created when doing data analysis, for example when performing data integration, you might store the data as new <code>assay</code> or as a new <code>reduction</code> slot (depending on the integration method used).</p>
+<pre class="r"><code>SeuratObject@   # Type this and press TAB in RStudio
+
+SeuratObject@assays$   # Type this and press TAB in RStudio
+
+SeuratObject@assays$RNA@   # Type this and press TAB in RStudio</code></pre>
+<p>One can check the dimensions and subset Seurat Objects as a dataframe using <code>dim(SeuratObject)</code>.</p>
+<p>For a very detailed explanation of all slots in the Seurat objects, please refer to the Seurat <a href="https://github.com/satijalab/seurat/wiki">wiki</a>.</p>
 </p>
 </details>
 <details>
@@ -553,13 +554,13 @@ metadata &lt;- read.delim(
 <p>
 <p>You can simply add a column by using the <code>$</code> sign to allocate a vector to a metadata column.</p>
 <pre class="r"><code>SeuratObject$NEW_COLUMN_NAME &lt;- setNames(
-  colnames(SeuratObject) ,
-  c(&quot;VECTOR_CONTAINING_DATA_FOR_EACH_CELL&quot;) )</code></pre>
+  colnames(SeuratObject),
+  vector_NEW_DATA)</code></pre>
 <p>Or use the function <code>AddMetaData</code> to add one or multiple columns:</p>
 <pre class="r"><code>SeuratObject &lt;- AddMetaData(
-  object=SeuratObject,
-  NEW_COLUMN,
-  col.name=NEW_COLUMN_NAME)</code></pre>
+  object   = SeuratObject,
+  metadata = vector_NEW_DATA,
+  col.name = &quot;NEW_COLUMN_NAME&quot;)</code></pre>
 </p>
 </details>
 <details>
@@ -567,12 +568,12 @@ metadata &lt;- read.delim(
 <strong>Subsetting Seurat objects</strong>
 </summary>
 <p>
-<p>To subset a Seurat object, you can do it as if was a data.frame:</p>
+<p>To subset a Seurat object, you can do it as if was a dataframe:</p>
 <pre class="r"><code># Subsetting Features
-SeuratObject &lt;- SeuratObject[ vector_FEATURES_TO_USE , ]
+SeuratObject &lt;- SeuratObject[vector_FEATURES_TO_USE, ]
 
 # Subsetting Cells
-SeuratObject &lt;- SeuratObject[ , vector_CELLS_TO_USE ]</code></pre>
+SeuratObject &lt;- SeuratObject[, vector_CELLS_TO_USE ]</code></pre>
 </p>
 </details>
 <details>
@@ -582,28 +583,29 @@ SeuratObject &lt;- SeuratObject[ , vector_CELLS_TO_USE ]</code></pre>
 <p>
 <p>The most common functions to use for plotting are the violin plot and the scatter plots for the dimensionality reduction calculated (you need to calculate it before using the function!).</p>
 <p>To plot <strong>continuous</strong> variables as <strong>violin</strong> (press TAB inside the functions for more options):</p>
-<pre class="r"><code>VlnPlot(object = SeuratObject,
-        group.by= &quot;orig.ident&quot;,
+<pre class="r"><code>VlnPlot(object   = SeuratObject,
+        group.by = &quot;orig.ident&quot;,
         features = c(&quot;percent_mito&quot;),
-        pt.size = 0.1,
-        ncol = 4,
-        y.max = 100) + NoLegend()</code></pre>
+        pt.size  = 0.1,
+        ncol     = 4,
+        y.max    = 100) +
+  NoLegend()</code></pre>
 <p>To plot <strong>continuous</strong> variables as <strong>scatter plot</strong> using the <code>umap</code> reduction slot (press TAB inside the functions for more options):</p>
-<pre class="r"><code>FeaturePlot(object = SeuratObject,
-            features = c(&quot;FEATURE_1&quot;,&quot;FEATURE_2&quot;,&quot;FEATURE_3&quot;),
+<pre class="r"><code>FeaturePlot(object    = SeuratObject,
+            features  = c(&quot;FEATURE_1&quot;,&quot;FEATURE_2&quot;,&quot;FEATURE_3&quot;),
             reduction = &quot;umap&quot;,
-            dims = c(1,2),
-            order = T,
-            pt.size = .1,
-            ncol = 3)</code></pre>
+            dims      = c(1,2),
+            order     = TRUE,
+            pt.size   = .1,
+            ncol      = 3)</code></pre>
 <p>To plot <strong>CATEGORICAL</strong> variables as <strong>scatter plot</strong> using the <code>umap</code> reduction slot (press TAB inside the functions for more options):</p>
-<pre class="r"><code>DimPlot(object = SeuratObject,
-        group.by = c(&quot;DATASET&quot;),
+<pre class="r"><code>DimPlot(object    = SeuratObject,
+        group.by  = c(&quot;DATASET&quot;),
         reduction = &quot;umap&quot;,
-        dims = c(1,2),
-        pt.size = .1,
-        label = T,
-        ncol = 3)</code></pre>
+        dims      = c(1, 2),
+        pt.size   = .1,
+        label     = TRUE,
+        ncol      = 3)</code></pre>
 <p>Many other plotting functions are available, check <code>Seurat::</code> (then press tab and look for the functions with “Plot” in the name).</p>
 </p>
 </details>
@@ -613,14 +615,9 @@ SeuratObject &lt;- SeuratObject[ , vector_CELLS_TO_USE ]</code></pre>
 </summary>
 <p>
 <pre class="r"><code>CombinedSeuratObject &lt;- merge(
-  x = SeuratObject1,
-  y = c( SeuratObject2 ,
-         SeuratObject3,
-         SeuratObject4),
-  add.cell.ids=c(&quot;Dataset1&quot;,
-                 &quot;Dataset2&quot;,
-                 &quot;Dataset3&quot;,
-                 &quot;Dataset4&quot;))</code></pre>
+  x            = SeuratObject1,
+  y            = c(SeuratObject2, SeuratObject3, SeuratObject4),
+  add.cell.ids = c(&quot;Dataset1&quot;, &quot;Dataset2&quot;, &quot;Dataset3&quot;, &quot;Dataset4&quot;))</code></pre>
 </p>
 </details>
 <p><br /></p>
@@ -628,7 +625,7 @@ SeuratObject &lt;- SeuratObject[ , vector_CELLS_TO_USE ]</code></pre>
 <div id="quality-control" class="section level1">
 <h1>Quality control</h1>
 <hr />
-<p>A very crucial step in scRNAseq analysis is Quality control (QC). There will always be some failed libraries, low quality cells and doublets in an scRNAseq dataset, hence the quelity of the cells need to be examined and possibly some cells need to be removed.</p>
+<p>A very crucial step in scRNA-seq analysis is Quality control (QC). There will always be some failed libraries, low quality cells and doublets in an scRNA-seq dataset, hence the quality of the cells need to be examined and possibly some cells need to be removed.</p>
 <details>
 <summary>
 <strong>Total number of features</strong>
@@ -636,10 +633,11 @@ SeuratObject &lt;- SeuratObject[ , vector_CELLS_TO_USE ]</code></pre>
 <p>
 <p>A standard approach is to filter cells with low amount of reads as well as genes that are present in at least a certain amount of cells. Here we will only consider cells with at least 200 detected genes and genes need to be expressed in at least 3 cells. Please note that those values are highly dependent on the library preparation method used. Extremely high number of detected genes could indicate doublets. However, depending on the cell type composition in your sample, you may have cells with higher number of genes (and also higher counts) from one cell type.</p>
 <pre class="r"><code>VlnPlot(SeuratObject,
-        group.by= &quot;orig.ident&quot;,
-        features = c(&quot;nFeature_RNA&quot;,&quot;nCount_RNA&quot;),
-        pt.size = 0.1,
-        ncol = 4) + NoLegend()</code></pre>
+        group.by = &quot;orig.ident&quot;,
+        features = c(&quot;nFeature_RNA&quot;, &quot;nCount_RNA&quot;),
+        pt.size  = 0.1,
+        ncol     = 4) +
+  NoLegend()</code></pre>
 </p>
 </details>
 <details>
@@ -647,16 +645,38 @@ SeuratObject &lt;- SeuratObject[ , vector_CELLS_TO_USE ]</code></pre>
 <strong>Gene QC</strong>
 </summary>
 <p>
-<p>In single cell, the most detected genes usually belong to housekeeping gene families, such as mitochondrial (MT-), ribossomal (RPL and RPS) and other structural proteins (i.e., ACTB, TMSB4X, B2M, EEF1A1).</p>
-<pre class="r"><code>#Compute the relative expression of each gene per cell
-rel_expression &lt;- Matrix::t( Matrix::t(SeuratObject@assays$RNA@counts) / Matrix::colSums(SeuratObject@assays$RNA@counts)) * 100
-most_expressed &lt;- sort(Matrix::rowSums( rel_expression ),T) / ncol(SeuratObject)
+<p>In single cell, the most detected genes usually belong to housekeeping gene families, such as mitochondrial (MT-), ribosomal (RPL and RPS) and other structural proteins (i.e., ACTB, TMSB4X, B2M, EEF1A1).</p>
+<pre class="r"><code># Compute the relative expression of each gene per cell
+rel_expression &lt;-
+  Matrix::t(Matrix::t(SeuratObject@assays$RNA@counts) /
+            Matrix::colSums(SeuratObject@assays$RNA@counts)) * 100
+most_expressed &lt;-
+  sort(Matrix::rowSums(rel_expression), TRUE) / ncol(SeuratObject)
 
-#Plot the relative expression of each gene per cell
-par(mfrow=c(1,3),mar=c(4,6,1,1))
-boxplot( as.matrix(Matrix::t(rel_expression[names(most_expressed[30:1]),])),cex=.1, las=1, xlab=&quot;% total count per cell&quot;,col=scales::hue_pal()(90)[30:1],horizontal=TRUE,ylim=c(0,8))
-boxplot( as.matrix(Matrix::t(rel_expression[names(most_expressed[60:31]),])),cex=.1, las=1, xlab=&quot;% total count per cell&quot;,col=scales::hue_pal()(90)[60:31],horizontal=TRUE,ylim=c(0,8))
-boxplot( as.matrix(Matrix::t(rel_expression[names(most_expressed[90:61]),])),cex=.1, las=1, xlab=&quot;% total count per cell&quot;,col=scales::hue_pal()(90)[90:61],horizontal=TRUE,ylim=c(0,8))</code></pre>
+# Plot the relative expression of each gene per cell
+par(mfrow = c(1, 3),
+    mar   = c(4, 6, 1, 1))
+boxplot(as.matrix(Matrix::t(rel_expression[names(most_expressed[30:1]), ])),
+        cex        = .1,
+        las        = 1,
+        xlab       = &quot;% total count per cell&quot;,
+        col        = scales::hue_pal()(90)[30:1],
+        horizontal = TRUE,
+        ylim       = c(0, 8))
+boxplot(as.matrix(Matrix::t(rel_expression[names(most_expressed[60:31]), ])),
+        cex        = .1,
+        las        = 1,
+        xlab       = &quot;% total count per cell&quot;,
+        col        = scales::hue_pal()(90)[60:31],
+        horizontal = TRUE,
+        ylim       = c(0, 8))
+boxplot(as.matrix(Matrix::t(rel_expression[names(most_expressed[90:61]), ])),
+        cex        = .1,
+        las        = 1,
+        xlab       = &quot;% total count per cell&quot;,
+        col        = scales::hue_pal()(90)[90:61],
+        horizontal = TRUE,
+        ylim       = c(0, 8))</code></pre>
 <p>You might see that some genes constitute up to 10-30% of the counts from a single cell and the other top genes are mitochondrial and ribosomal genes. It is quite common that nuclear lincRNAs have correlation with quality and mitochondrial reads. Let us assemble some information about such genes, which are important for quality control and downstream filtering.</p>
 These genes can serve several purposes in single-cell data analysis, such as computing cell quality metrics (see below), normalize data (see below) and even help account for batch effects (
 <div style="text-align: right">
@@ -675,9 +695,9 @@ These genes can serve several purposes in single-cell data analysis, such as com
 <p>(PS: non-linear relationship)</p>
 <pre class="r"><code># Calculating % mitochondrial genes
 SeuratObject &lt;- PercentageFeatureSet(
-  object = SeuratObject,
-  pattern = &quot;^RP[SL]&quot;,
-  assay = &quot;RNA&quot;,
+  object   = SeuratObject,
+  pattern  = &quot;^RP[SL]&quot;,
+  assay    = &quot;RNA&quot;,
   col.name = &quot;percent_mito&quot;)</code></pre>
 <p>Note that you might need to change the patterns if you are using an organism other than human, <em>e.g.</em> <code>&quot;^Mt-&quot;</code> for mouse.</p>
 </p>
@@ -691,7 +711,7 @@ SeuratObject &lt;- PercentageFeatureSet(
 <pre class="r"><code># Calculating % ribosomal genes
 SeuratObject &lt;- PercentageFeatureSet(
   SeuratObject,
-  pattern = &quot;^RP[SL]&quot;,
+  pattern  = &quot;^RP[SL]&quot;,
   col.name = &quot;percent_ribo&quot;)</code></pre>
 </p>
 </details>
@@ -702,55 +722,58 @@ SeuratObject &lt;- PercentageFeatureSet(
 <p>
 <p>In RNA-sequencing, genes can be categorized into different groups depending on their RNA biotype. For example, “coding”, “non-coding”, “VDJ region genes” are “small interefering RNA” common gene biotypes. Besides, having information about chromossomal location might be usefull to identify bacth effects driven by sex chromossomes.</p>
 <p>Depending on the desired type of analysis, some gene categories can be filtered out if not of interest. For single cell specifically, cell libraries are usually constructed using poly-A enrichment and therefore enriching for “protein-coding proteins”, which usually contitutes around 80-90% of all available genes.</p>
-<p>How to run it:</p>
-<pre class="r"><code>library(biomaRt)
-
-# Retrieve mouse gene annotation from ENSEMBL
+<pre class="r"><code># Retrieve mouse gene annotation from ENSEMBL
+library(biomaRt)
 mart = biomaRt::useMart(
   biomart = &quot;ensembl&quot;,
   dataset = &quot;mmusculus_gene_ensembl&quot;,
-  host = &quot;apr2020.archive.ensembl.org&quot;)
+  host    = &quot;apr2020.archive.ensembl.org&quot;)
 
 # Retrieve the selected attributes mouse gene annotation
 annot &lt;- biomaRt::getBM(
-  attributes = c(
-    &quot;external_gene_name&quot;,
-    &quot;gene_biotype&quot;,
-    &quot;chromosome_name&quot;),
-  mart = mart)</code></pre>
+  mart       = mart,
+  attributes = c(&quot;external_gene_name&quot;, &quot;gene_biotype&quot;, &quot;chromosome_name&quot;))</code></pre>
 <p>Make sure you are using the right species for your dataset. A list of all species available on can be found using <code>biomaRt::listDatasets(mart)[,&quot;dataset&quot;]</code>. All species names are formated in the same way, such as <code>mmusculus_gene_ensembl</code> and <code>hsapiens_gene_ensembl</code>. For reproducibility reasons, it is also advised to specifically choose a biomart release version, since some genes will be renamed, inserted or deleted from the database. You can do so by running <code>biomaRt::listEnsemblArchives()</code>.</p>
 <pre class="r"><code># Match the gene names with theit respective gene biotype
-item &lt;- annot[match(rownames(SeuratObject@assays$RNA@counts) , annot[,1]),&quot;gene_biotype&quot;]
+item &lt;- annot[match(rownames(SeuratObject@assays$RNA@counts), annot[, 1]), &quot;gene_biotype&quot;]
 item[is.na(item)] &lt;- &quot;unknown&quot;
 
 # Calculate the percentage of each gene biotype
-perc &lt;- rowsum(as.matrix(SeuratObject@assays$RNA@counts) , group=item)
-perc &lt;- (t(perc)/Matrix::colSums(SeuratObject@assays$RNA@counts))
-o &lt;- order(apply(perc,2,median),decreasing = F)
-perc &lt;- perc[,o]
+perc &lt;- rowsum(as.matrix(SeuratObject@assays$RNA@counts), group = item)
+perc &lt;- (t(perc) / Matrix::colSums(SeuratObject@assays$RNA@counts))
+o &lt;- order(apply(perc, 2, median), decreasing = FALSE)
+perc &lt;- perc[, o]
 
 # Plot percentage of each gene biotype
-boxplot( perc*100,outline=F,las=2,main=&quot;% reads per cell&quot;,col=scales::hue_pal()(100),horizontal=T)
+boxplot(perc * 100,
+        outline    = FALSE,
+        las        = 2,
+        main       = &quot;% reads per cell&quot;,
+        col        = scales::hue_pal()(100),
+        horizontal = TRUE)
 
 # Add table to the object
-gene_biotype_table &lt;- setNames(as.data.frame((perc*100)[,names(sort(table(item),decreasing = T))]),paste0(&quot;percent_&quot;,names(sort(table(item),decreasing = T))))
-SeuratObject@meta.data &lt;- SeuratObject@meta.data[,!(colnames(SeuratObject@meta.data) %in% colnames(gene_biotype_table))]
+gene_biotype_table &lt;-
+  setNames(as.data.frame((perc*100)[, names(sort(table(item), decreasing = TRUE))]),
+           paste0(&quot;percent_&quot;, names(sort(table(item), decreasing = TRUE))))
+SeuratObject@meta.data &lt;-
+  SeuratObject@meta.data[, !(colnames(SeuratObject@meta.data) %in% colnames(gene_biotype_table))]
 
 SeuratObject@meta.data &lt;- cbind(
   SeuratObject@meta.data,
   gene_biotype_table)</code></pre>
 <p>The code above can also be done again by replacing the string <code>&quot;gene_biotype&quot;</code> by <code>&quot;chromosome_name&quot;</code>:</p>
 <pre class="r"><code># Match the gene names with their respective chromosome location
-item &lt;- annot[match(rownames(SeuratObject@assays$RNA@counts) , annot[,1]),&quot;chromosome_name&quot;]
+item &lt;- annot[match(rownames(SeuratObject@assays$RNA@counts), annot[, 1]),
+              &quot;chromosome_name&quot;]
 item[is.na(item)] &lt;- &quot;unknown&quot;
-item[! item %in% as.character(c(1:23,&quot;X&quot;,&quot;Y&quot;,&quot;MT&quot;)) ] &lt;- &quot;other&quot;</code></pre>
+item[!item %in% as.character(c(1:23, &quot;X&quot;, &quot;Y&quot;, &quot;MT&quot;))] &lt;- &quot;other&quot;</code></pre>
 <p>If you want to focus the analysis on only protein-coding genes, for example, you can do it like so:</p>
 <pre class="r"><code>dim(SeuratObject)
-sel &lt;- annot[match(rownames(SeuratObject) ,
-                   annot[,1]),2] == &quot;protein_coding&quot;
+sel &lt;- annot[match(rownames(SeuratObject), annot[, 1]), 2] == &quot;protein_coding&quot;
 genes_use &lt;- rownames(SeuratObject)[sel]
 genes_use &lt;- as.character(na.omit(genes_use))
-SeuratObject &lt;- SeuratObject[genes_use,]
+SeuratObject &lt;- SeuratObject[genes_use, ]
 dim(SeuratObject)</code></pre>
 </p>
 </details>
@@ -776,26 +799,28 @@ SeuratObject$G1.Score &lt;- 1 - SeuratObject$S.Score - SeuratObject$G2M.Score</c
 <p>
 <p>Having many metadata parameters to analyse individually makes it a bit hard to visualize the real differences between datasets, batches and experimental conditions. One way to try to combine all this information into one plot is by running dimensionality reduction via principal component analysis (PCA) on the continuous variables in the metadata. Thus visualizing on the top principal components (1st and 2nd) reflects how different the datasets are.</p>
 <pre class="r"><code># Calculate PCA using selected metadata parameters
-metadata_use &lt;- grep(&quot;perc&quot;,colnames(SeuratObject@meta.data),value = T)
-metadata_use &lt;- c(&quot;nCount_RNA&quot;,&quot;nFeature_RNA&quot;,&quot;S.Score&quot;,&quot;G2M.Score&quot;,metadata_use)
+metadata_use &lt;- grep(&quot;perc&quot;, colnames(SeuratObject@meta.data), value = TRUE)
+metadata_use &lt;- c(&quot;nCount_RNA&quot;, &quot;nFeature_RNA&quot;, &quot;S.Score&quot;, &quot;G2M.Score&quot;, metadata_use)
 
-#remove columns in the metadata that are all 0s
-metadata_use &lt;- metadata_use [ colSums( SeuratObject@meta.data[,metadata_use] != 0 ) &gt; 0 ]
+# Remove columns in the metadata that are all 0s
+metadata_use &lt;- metadata_use[colSums(SeuratObject@meta.data[, metadata_use] != 0 ) &gt; 0 ]
 
-#Run PCA
-PC &lt;- prcomp( SeuratObject@meta.data[,metadata_use] ,center = T, scale. = T)
+# Run PCA
+PC &lt;- prcomp(SeuratObject@meta.data[, metadata_use],
+             center = TRUE,
+             scale. = TRUE)
 
 # Add the PCA (ran on the METADATA) in the object
 SeuratObject@reductions[[&quot;pca_metadata&quot;]] &lt;- CreateDimReducObject(
   embeddings = PC$x,
-  key = &quot;metadataPC_&quot;,
-  assay = &quot;RNA&quot;)
+  key        = &quot;metadataPC_&quot;,
+  assay      = &quot;RNA&quot;)
 
 # Plot the PCA ran on the METADATA
 DimPlot(SeuratObject,
         reduction = &quot;pca_metadata&quot;,
-        dims = c(1,2),
-        group.by = &quot;orig.ident&quot; )</code></pre>
+        dims      = c(1, 2),
+        group.by  = &quot;orig.ident&quot; )</code></pre>
 <p><strong>N.B.</strong> Zero-count genes and identical/all-zero metadata columns (<em>i.e.</em> any value that does that have any variation) will interfere with analyses such as PCA. You will thus have to either remove those zero-count genes and/or exclude some metadata columns:</p>
 <pre class="r"><code># Remove zero-count genes
 SeuratObject &lt;- SeuratObject[Matrix::rowSums(SeuratObject) &gt; 0, ]
@@ -816,13 +841,13 @@ metadata_use &lt;- metadata_use[colSums(SeuratObject@meta.data[, metadata_use] !
 </summary>
 <p>
 <p>The most common normalization for RNA-seq and also single-cell RNA-seq is log-normalization. This is done by dividing the gene counts of each gene by the sum of all gene counts (a.k.a., library size) to compensate for library size differences. Then the result is multiplied by a constant number, so all cell have the same sequencing depth. For bulk RNA-seq, the constant is usually <span class="math inline">\(1e6\)</span>, resulting in CPM (counts per million), but since single-cells library sizes are way lower than that, the number ranges from <span class="math inline">\(1e3\)</span> to <span class="math inline">\(1e4\)</span> (counts per 10000).</p>
-<p><span class="math display">\[NormCounts = \frac{GeneCounts * 10000}{LibrarySize}\]</span> The library size-corrected values are then log-transformed to achieve a log-normal data distribution.</p>
+<p><span class="math display">\[NormCounts = \frac{GeneCounts * 10000}{LibrarySize}\]</span></p>
+<p>The library size-corrected values are then log-transformed to achieve a log-normal data distribution.</p>
 <p><span class="math display">\[logNormCounts = ln(NormCounts+1)\]</span></p>
-<p>How to run it:</p>
-<pre class="r"><code>#remove genes with zero variance
+<pre class="r"><code># Remove genes with zero variance
 SeuratObject &lt;- SeuratObject[ Matrix::rowSums(SeuratObject) &gt; 0, ]
 
-#remove genes with zero variance
+# Remove genes with zero variance
 SeuratObject &lt;- NormalizeData(
   object = SeuratObject,
   scale.factor = 10000,
@@ -839,16 +864,19 @@ SeuratObject &lt;- NormalizeData(
 <p>As you could now imagine, using only genes which expression differ greatly across epithelial cells is the best case scenario, followed by using all genes. Therefore, using only genes that are expressed and shared across all epithelial cells at about the same level or only genes that are not detected in epithelial cells do not contain sufficient information to distinguish the epithelial subtypes.</p>
 <p>However, since in single-cell we usually do not know the epithelial subtypes the cells before hand (since this is what we want to discover), we need another method to accomplish this task. In general terms, a common approach is to order genes by their overall variance across samples. This is because genes with higher variance will also likely be the ones that can separate the cells the best.</p>
 <p>Since genes with higher expression level usually also have naturally higher variation, the gene variation is then normalized by the log mean expression of each gene (see plot).</p>
-<p>How to run it:</p>
-<pre class="r"><code>SeuratObject &lt;- FindVariableFeatures(
-  object = SeuratObject,
-  nfeatures = 3000,
+<pre class="r"><code># Find the variable features
+SeuratObject &lt;- FindVariableFeatures(
+  object           = SeuratObject,
+  nfeatures        = 3000,
   selection.method = &quot;vst&quot;,
-  verbose = FALSE,
-  assay = &quot;RNA&quot;)</code></pre>
-<p>Variable gene plot:</p>
-<pre class="r"><code>top20 &lt;- head(VariableFeatures(SeuratObject), 20)
-LabelPoints(plot = VariableFeaturePlot(SeuratObject), points = top20, repel = TRUE)</code></pre>
+  verbose          = FALSE,
+  assay            = &quot;RNA&quot;)
+
+# Plot the top 20 variable features
+top20 &lt;- head(VariableFeatures(SeuratObject), 20)
+LabelPoints(plot   = VariableFeaturePlot(SeuratObject),
+            points = top20,
+            repel  = TRUE)</code></pre>
 </p>
 </details>
 <details>
@@ -858,14 +886,13 @@ LabelPoints(plot = VariableFeaturePlot(SeuratObject), points = top20, repel = TR
 <p>
 <p>Since each gene has a different expression level, it means that genes with higher expression values will naturally have higher variation that will be captured by downstream methods. This means that we need to somehow give each gene a similar weight beforehand (see below). A common practice is to center and scale each gene before performing PCA. This exact scaling is called Z-score normalization it is very useful for PCA, clustering and plotting heatmaps.</p>
 <p>Additionally, we can use regression to remove any unwanted sources of variation from the dataset, such as cell cycle, sequencing depth, percent mitochondria. This is achieved by doing a generalized linear regression (GLM) using these parameters as covariates in the model. Then the residuals of the model are taken as the “regressed data”. Although perhaps not in the best way, batch effect regression can also be done here.</p>
-<p>How to run it:</p>
 <pre class="r"><code>SeuratObject &lt;- ScaleData(
-  object = SeuratObject,
-  vars.to.regress = c(&quot;nCount_RNA&quot;,&quot;mito.percent&quot;,&quot;nFeatures_RNA&quot;),
-  model.use = &quot;linear&quot;,
-  assay = &quot;RNA&quot;,
-  do.scale = TRUE,
-  do.center = TRUE)</code></pre>
+  object          = SeuratObject,
+  vars.to.regress = c(&quot;nCount_RNA&quot;, &quot;mito.percent&quot;, &quot;nFeatures_RNA&quot;),
+  model.use       = &quot;linear&quot;,
+  assay           = &quot;RNA&quot;,
+  do.scale        = TRUE,
+  do.center       = TRUE)</code></pre>
 <p>Seurat will be default run scaling on any variable features in a Seurat object, if they exists. This can greatly speed up the performance of scaling step while the results of downstream analyses (such as dimensionality reduction or clustering) remain unchanged, as those are based on the variable genes themselves. If you’d rather scale the data on the full number of genes even after you’ve used <code>FindVariableFeatures</code>, you can specify this in the function call: <code>ScaleData(..., features = rownames(SeuratObject))</code>.</p>
 </p>
 </details>
@@ -875,14 +902,13 @@ LabelPoints(plot = VariableFeaturePlot(SeuratObject), points = top20, repel = TR
 </summary>
 <p>
 <p>Since the procedure above assumes a log-linear data distribution, it may be the case that it does not regress the variation correctly, as RNA-seq data (including single cell) relates more closely to a negative bionomial distribution. An alternative variation of the procedure above can also be run on the raw UMI count data but using a “poisson” or “negative binomial” distribution instead. This is performing a gene-wise GLM regression using a poisson model.</p>
-<p>How to run it:</p>
 <pre class="r"><code>SeuratObject &lt;- ScaleData(
-  object = SeuratObject,
-  vars.to.regress = c(&quot;nCount_RNA&quot;,&quot;mito.percent&quot;,&quot;nFeatures_RNA&quot;),
-  model.use = &quot;poisson&quot;,
-  assay = &quot;RNA&quot;,
-  do.scale = TRUE,
-  do.center = TRUE)</code></pre>
+  object          = SeuratObject,
+  vars.to.regress = c(&quot;nCount_RNA&quot;, &quot;mito.percent&quot;, &quot;nFeatures_RNA&quot;),
+  model.use       = &quot;poisson&quot;,
+  assay           = &quot;RNA&quot;,
+  do.scale        = TRUE,
+  do.center       = TRUE)</code></pre>
 </p>
 </details>
 <details>
@@ -891,13 +917,12 @@ LabelPoints(plot = VariableFeaturePlot(SeuratObject), points = top20, repel = TR
 </summary>
 <p>
 <p>Scaling and centering assuming a poisson distribution might in some cases overfit the data, see above. One can overcome this by pooling information across genes with similar abundances in order to obtain more stable parameter estimates to be used as gene weights in the regression model. This is called “scTransform” and, in simple terms, is performing a gene-wise GLM regression using a constrained negative binomial model.</p>
-<p>How to run it:</p>
 <pre class="r"><code>SeuratObject &lt;- SCTransform(
-  object = SeuratObject,
-  assay=&quot;RNA&quot;,
-  vars.to.regress =  c(&quot;nCount_RNA&quot;,&quot;mito.percent&quot;,&quot;nFeatures_RNA&quot;),
-  new.assay.name = &quot;sctransform&quot;,
-  do.center=T )</code></pre>
+  object          = SeuratObject,
+  assay           = &quot;RNA&quot;,
+  vars.to.regress = c(&quot;nCount_RNA&quot;, &quot;mito.percent&quot;, &quot;nFeatures_RNA&quot;),
+  new.assay.name  = &quot;sctransform&quot;,
+  do.center       = TRUE)</code></pre>
 </p>
 </details>
 <p><br /></p>
@@ -905,8 +930,8 @@ LabelPoints(plot = VariableFeaturePlot(SeuratObject), points = top20, repel = TR
 <div id="dimensionality-reduction" class="section level1">
 <h1>Dimensionality reduction</h1>
 <hr />
-<p>The full gene expression space, with thousands of genes, contains quite a lot of noise in scRNAseq data and is hard to visualize. Hence, most scRNA-seq analyses starts with a step of PCA (or similar method, <em>e.g.</em> ICA) to remove some of the variation of the data.</p>
-<p>For a simple scRNAseq dataset with only a few cell types, PCA may be sufficient to visualize the complexity of the data in 2 or 3 dimensions. However, with increasing complexity we need to run non-linear dimensionality reduction to be able to project the data down to 2 dimensions for visualization, such methods are tSNE, UMAP and diffusion maps.</p>
+<p>The full gene expression space, with thousands of genes, contains quite a lot of noise in scRNA-seq data and is hard to visualize. Hence, most scRNA-seq analyses starts with a step of PCA (or similar method, <em>e.g.</em> ICA) to remove some of the variation of the data.</p>
+<p>For a simple scRNA-seq dataset with only a few cell types, PCA may be sufficient to visualize the complexity of the data in 2 or 3 dimensions. However, with increasing complexity we need to run non-linear dimensionality reduction to be able to project the data down to 2 dimensions for visualization, such methods are tSNE, UMAP and diffusion maps.</p>
 <p>Deciding which dimensionality reduction method to use is a non-trivial question, one that may have several good answers. Here is <a href="https://www.biorxiv.org/content/10.1101/120378v4">a paper</a> comparing many of the methods available, if you want to read more details.</p>
 <details>
 <summary>
@@ -917,12 +942,12 @@ LabelPoints(plot = VariableFeaturePlot(SeuratObject), points = top20, repel = TR
 <div style="text-align: right">
 Adapted from <a href="https://en.wikipedia.org/wiki/Principal_component_analysis">Wikipedia</a>
 </div>
-<p>How to run it:</p>
-<pre class="r"><code>#run pca
-SeuratObject &lt;- RunPCA(object = SeuratObject,
-                       assay = &quot;RNA&quot;,
-                       npcs = 100,
-                       verbose = FALSE )</code></pre>
+<pre class="r"><code># Run pca
+SeuratObject &lt;- RunPCA(
+  object  = SeuratObject,
+  assay   = &quot;RNA&quot;,
+  npcs    = 100,
+  verbose = FALSE )</code></pre>
 </p>
 </details>
 <details>
@@ -941,17 +966,16 @@ Adapted from <a href="https://en.wikipedia.org/wiki/T-distributed_stochastic_nei
 <ul>
 <li><a href="https://distill.pub/2016/misread-tsne/">How to Use t-SNE Effectively</a></li>
 </ul>
-<p>How to run it:</p>
-<pre class="r"><code>SeuratObject &lt;- RunTSNE(object = SeuratObject,
-                        reduction = &quot;pca&quot;,
-                        perplexity=30,
-                        max_iter=1000,
-                        theta=0.5,
-                        eta=200,
-                        exaggeration_factor=12,
-                        dims.use = 1:50,
-                        verbose = T,
-                        num_threads=0)</code></pre>
+<pre class="r"><code>SeuratObject &lt;- RunTSNE(object              = SeuratObject,
+                        reduction           = &quot;pca&quot;,
+                        perplexity          = 30,
+                        max_iter            = 1000,
+                        theta               = 0.5,
+                        eta                 = 200,
+                        exaggeration_factor = 12,
+                        dims.use            = 1:50,
+                        verbose             = TRUE,
+                        num_threads         = 0)</code></pre>
 </p>
 </details>
 <details>
@@ -967,21 +991,20 @@ Adapted from <a href="https://en.wikipedia.org/wiki/T-distributed_stochastic_nei
 <div style="text-align: right">
 <a href="https://arxiv.org/pdf/1802.03426.pdf">UMAP Arxiv paper</a>
 </div>
-<p>How to run it:</p>
-<pre class="r"><code>SeuratObject &lt;- RunUMAP(object = SeuratObject,
-                        reduction = &quot;pca&quot;,
-                        dims = 1:top_PCs,
-                        n.components = 2,
-                        n.neighbors = 20,
-                        spread = .3,
+<pre class="r"><code>SeuratObject &lt;- RunUMAP(object             = SeuratObject,
+                        reduction          = &quot;pca&quot;,
+                        dims               = 1:top_PCs,
+                        n.components       = 2,
+                        n.neighbors        = 20,
+                        spread             = .3,
                         repulsion.strength = 1,
-                        min.dist= .001,
-                        verbose = T,
-                        num_threads=0,
-                        n.epochs = 200,
-                        metric = &quot;euclidean&quot;,
-                        seed.use = 42,
-                        reduction.name=&quot;umap&quot;)</code></pre>
+                        min.dist           = .001,
+                        verbose            = TRUE,
+                        num_threads        = 0,
+                        n.epochs           = 200,
+                        metric             = &quot;euclidean&quot;,
+                        seed.use           = 42,
+                        reduction.name     = &quot;umap&quot;)</code></pre>
 </p>
 </details>
 <details>
@@ -994,22 +1017,21 @@ Adapted from <a href="https://en.wikipedia.org/wiki/T-distributed_stochastic_nei
 <a href="https://en.wikipedia.org/wiki/Diffusion_map">Wikipedia</a>
 </div>
 <p><a href="https://www.pnas.org/content/pnas/102/21/7426.full.pdf">Diffusion Maps paper</a></p>
-<p>How to run it:</p>
 <pre class="r"><code># Load additional libraries
 library(destiny)
 
 # Run diffusion maps using the destiny package
-dm &lt;- DiffusionMap( data = SeuratObject@reductions[[&quot;pca&quot;]]@cell.embeddings[ , 1:50],
-                    k = 20,
-                    n_eigs = 20)
+dm &lt;- DiffusionMap(data   = SeuratObject@reductions[[&quot;pca&quot;]]@cell.embeddings[, 1:50],
+                   k      = 20,
+                   n_eigs = 20)
 
 # Fix the cell names in the DM embedding
 rownames(dm@eigenvectors) &lt;- colnames(SeuratObject)
 
 # Add the DM embbedding to the SeuratObject
 SeuratObject@reductions[[&quot;dm&quot;]] &lt;- CreateDimReducObject(embeddings = dm@eigenvectors,
-                                                        key = &quot;DC_&quot;,
-                                                        assay = &quot;RNA&quot;)</code></pre>
+                                                        key        = &quot;DC_&quot;,
+                                                        assay      = &quot;RNA&quot;)</code></pre>
 </p>
 </details>
 <details>
@@ -1021,10 +1043,9 @@ SeuratObject@reductions[[&quot;dm&quot;]] &lt;- CreateDimReducObject(embeddings 
 <div style="text-align: right">
 <a href="https://en.wikipedia.org/wiki/Independent_component_analysis">Wikipedia</a>
 </div>
-<p>How to run it:</p>
-<pre class="r"><code>SeuratObject &lt;- RunICA(object = SeuratObject,
-                       assay = &quot;pca&quot;,
-                       nics = 20,
+<pre class="r"><code>SeuratObject &lt;- RunICA(object         = SeuratObject,
+                       assay          = &quot;pca&quot;,
+                       nics           = 20,
                        reduction.name = &quot;ica&quot;)</code></pre>
 </p>
 </details>
@@ -1033,7 +1054,7 @@ SeuratObject@reductions[[&quot;dm&quot;]] &lt;- CreateDimReducObject(embeddings 
 <div id="creating-graphs" class="section level1">
 <h1>Creating graphs</h1>
 <hr />
-<p>Instead of doing clustering of scRNAseq data on the full expression matrix or in PCA space (which gives linear distances), it has proven quite powerful to use graphs to create a non-linear representation of cell-to-cell similarities.</p>
+<p>Instead of doing clustering of scRNA-seq data on the full expression matrix or in PCA space (which gives linear distances), it has proven quite powerful to use graphs to create a non-linear representation of cell-to-cell similarities.</p>
 <p>Graphs is simply a representation of all cells (as nodes/vertices) with edges drawn between them based on some similarity criteria. For instance, a graph can be constructed with edges between all cells that are less than X distance from each other in PCA space with 50 principal components.</p>
 <details>
 <summary>
@@ -1045,20 +1066,24 @@ SeuratObject@reductions[[&quot;dm&quot;]] &lt;- CreateDimReducObject(embeddings 
 Adapted from <a href="https://github.com/lengyyy/KNN-Graph">Github</a>
 </div>
 <pre class="r"><code>SeuratObject &lt;- FindNeighbors(SeuratObject,
-                              assay = &quot;RNA&quot;,
-                              compute.SNN = F,
-                              reduction = &quot;pca&quot;,
-                              dims = 1:50,
-                              graph.name=&quot;SNN&quot;,
-                              prune.SNN = 1/15,
-                              k.param = 20,
-                              force.recalc = T)</code></pre>
+                              assay        = &quot;RNA&quot;,
+                              compute.SNN  = FALSE,
+                              reduction    = &quot;pca&quot;,
+                              dims         = 1:50,
+                              graph.name   = &quot;SNN&quot;,
+                              prune.SNN    = 1/15,
+                              k.param      = 20,
+                              force.recalc = TRUE)</code></pre>
 <p>Setting <code>compute.SNN</code> to <code>FALSE</code> will only compute the KNN graph.</p>
 <p>We can take a look at the KNN graph. It is a matrix where every connection between cells is represented as 1s. This is called a unweighted graph (default in Seurat). Some cell connections can however have more importance than others, in that case the scale of the graph from 0 to a maximum distance. Usually, the smaller the distance, the closer two points are, and stronger is their connection. This is called a weighted graph. Both weighted and unweighted graphs are suitable for clustering, but clustering on unweighted graphs is faster for large datasets (&gt; 100k cells).</p>
 <pre class="r"><code>library(pheatmap)
-pheatmap(SeuratObject@graphs$CCA_nn[1:200,1:200],
-         col=c(&quot;white&quot;,&quot;black&quot;),border_color = &quot;grey90&quot;,
-         legend = F,cluster_rows = F,cluster_cols = F,fontsize = 2)</code></pre>
+pheatmap(SeuratObject@graphs$CCA_nn[1:200, 1:200],
+         col          = c(&quot;white&quot;, &quot;black&quot;),
+         border_color = &quot;grey90&quot;,
+         legend       = FALSE,
+         cluster_rows = FALSE,
+         cluster_cols = FALSE,
+         fontsize     = 2)</code></pre>
 </p>
 </details>
 <details>
@@ -1068,16 +1093,15 @@ pheatmap(SeuratObject@graphs$CCA_nn[1:200,1:200],
 <p>
 <p>In addition to the KNN graph, if we then determine the number of nearest neighbors shared by any two points. In graph terminology, we form what we call the “shared nearest neighbor” graph. We do this by replacing the weight of each link between two points (in the nearest neighbor graph) by the number of neighbors that the points share. In other words, this is the number of length 2 paths between any two points in the nearest neighbor graph.</p>
 <p>After, this shared nearest neighbor graph is created, all pairs of points are compared and if any two points share more than T neighbors, i.e., have a link in the shared nearest neighbor graph with a weight more than our threshold value, T( TS:. n), then the two points and any cluster they are part of are merged. In other words, clusters are connected components in our shared nearest neighbor graph after we sparsify using a threshold.</p>
-<p>How to run it:</p>
 <pre class="r"><code>SeuratObject &lt;- FindNeighbors(SeuratObject,
-                              assay = &quot;RNA&quot;,
-                              compute.SNN = T,
-                              reduction = &quot;pca&quot; ,
-                              dims = 1:50,
-                              graph.name=&quot;SNN&quot;,
-                              prune.SNN = 1/15,
-                              k.param = 20,
-                              force.recalc = T)</code></pre>
+                              assay        = &quot;RNA&quot;,
+                              compute.SNN  = T,
+                              reduction    = &quot;pca&quot; ,
+                              dims         = 1:50,
+                              graph.name   = &quot;SNN&quot;,
+                              prune.SNN    = 1/15,
+                              k.param      = 20,
+                              force.recalc = TRUE)</code></pre>
 <p>Setting <code>compute.SNN</code> to <code>TRUE</code> will compute both the KNN and SNN graphs.</p>
 </p>
 </details>
@@ -1105,14 +1129,15 @@ pheatmap(SeuratObject@graphs$CCA_nn[1:200,1:200],
 <pre class="r"><code># Load additional libraries
 library(SeuratWrappers)
 
+# Run MNN
 SeuratObject.list &lt;- SplitObject(SeuratObject, split.by = &quot;BATCH&quot;)
-SeuratObject &lt;- RunFastMNN(object.list = SeuratObject.list,
-                           assay = &quot;RNA&quot;,
-                           features = 2000,
+SeuratObject &lt;- RunFastMNN(object.list    = SeuratObject.list,
+                           assay          = &quot;RNA&quot;,
+                           features       = 2000,
                            reduction.name = &quot;mnn&quot;)
 
 # Free memory from working environment
-rm( c( SeuratObject.list ) )
+rm(c(SeuratObject.list))
 gc(verbose = FALSE)</code></pre>
 </p>
 </details>
@@ -1127,16 +1152,16 @@ gc(verbose = FALSE)</code></pre>
 <a href="https://www.cell.com/cell/fulltext/S0092-8674(19)30559-8">Stuart et al (2019) <em>Cell</em></a>
 </div>
 <pre class="r"><code>SeuratObject.list &lt;- SplitObject(
-  object = SeuratObject,
+  object   = SeuratObject,
   split.by = &quot;BATCH&quot;)
 
 SeuratObject.anchors &lt;- FindIntegrationAnchors(
   object.list = SeuratObject.list,
-  dims = 1:30)
+  dims        = 1:30)
 
 SeuratObject &lt;- IntegrateData(
-  anchorset = SeuratObject.anchors,
-  dims = 1:30,
+  anchorset      = SeuratObject.anchors,
+  dims           = 1:30,
   new.assay.name = &quot;cca&quot;)</code></pre>
 </p>
 </details>
@@ -1151,22 +1176,28 @@ SeuratObject &lt;- IntegrateData(
 <div style="text-align: right">
 edited from <a href="https://www.nature.com/articles/s41587-019-0113-3">Welch et al (2019) <em>Cell</em></a>
 </div>
-<pre class="r"><code>#Split the object
+<pre class="r"><code># Split the object by batch
 SeuratObject.list &lt;- SplitObject(
-  object = SeuratObject,
+  object   = SeuratObject,
   split.by = &quot;BATCH&quot;)
 
 assaylist &lt;- list()
 genelist &lt;- list()
-for(i in 1:length(SeuratObject.list))
-{ assaylist[[i]] &lt;- t(as.matrix(GetAssayData(SeuratObject.list[[i]], &quot;data&quot;)))
-   genelist[[i]] &lt;- rownames(SeuratObject.list[[i]]) }</code></pre>
+for(i in 1:length(SeuratObject.list)) {
+  assaylist[[i]] &lt;- t(as.matrix(GetAssayData(SeuratObject.list[[i]], &quot;data&quot;)))
+  genelist[[i]] &lt;- rownames(SeuratObject.list[[i]])
+}</code></pre>
 <pre class="r"><code>library(reticulate)
 scanorama &lt;- import(&quot;scanorama&quot;)
 
 integrated.data &lt;- scanorama$integrate(assaylist, genelist)
-corrected.data &lt;- scanorama$correct(assaylist, genelist, return_dense=TRUE)
-integrated.corrected.data &lt;- scanorama$correct(assaylist, genelist, return_dimred=TRUE, return_dense=TRUE)</code></pre>
+corrected.data &lt;- scanorama$correct(assaylist,
+                                    genelist,
+                                    return_dense = TRUE)
+integrated.corrected.data &lt;- scanorama$correct(assaylist,
+                                               genelist,
+                                               return_dimred = TRUE,
+                                               return_dense  = TRUE)</code></pre>
 <pre class="r"><code>intdata &lt;- lapply(integrated.corrected.data[[2]], t)
 panorama &lt;- do.call(cbind, intdata)
 rownames(panorama) &lt;- as.character(integrated.corrected.data[[3]])
@@ -1175,20 +1206,18 @@ colnames(panorama) &lt;- unlist(sapply(assaylist, rownames))
 intdimred &lt;- do.call(rbind, integrated.corrected.data[[1]])
 colnames(intdimred) &lt;- paste0(&quot;PC_&quot;, 1:100)
 
-   #We also add standard deviations in order to draw Elbow Plots in Seurat
-
+# Add standard deviations in order to draw Elbow Plots in Seurat
 stdevs &lt;- apply(intdimred, MARGIN = 2, FUN = sd)
 
 SeuratObject@assays[[&quot;pano&quot;]] &lt;- CreateAssayObject(data = panorama,
-                                           min.cells = 0,
+                                           min.cells    = 0,
                                            min.features = 0)
-
 
 SeuratObject[[&quot;pca_scanorama&quot;]] &lt;- CreateDimReducObject(
   embeddings = intdimred,
-  stdev = stdevs,
-  key = &quot;PC_&quot;,
-  assay = &quot;pano&quot;)</code></pre>
+  stdev      = stdevs,
+  key        = &quot;PC_&quot;,
+  assay      = &quot;pano&quot;)</code></pre>
 </p>
 </details>
 <details>
@@ -1198,7 +1227,7 @@ SeuratObject[[&quot;pca_scanorama&quot;]] &lt;- CreateDimReducObject(
 <p>
 <p>Harmony begins with a low-dimensional embedding of cells, such as principal components analysis (PCA), (Supplementary Note 1 and Methods). Using this embedding, Harmony first groups cells into multi-dataset clusters. We use soft clustering to assign cells to potentially multiple clusters, to account for smooth transi- tions between cell states. These clusters serve as surrogate variables, rather than to identify discrete cell types</p>
 <p>After clustering, each dataset has cluster-specific centroids that are used to compute cluster-specific linear correction factors. Since clusters correspond to cell types and states, cluster-specific correction factors correspond to individual cell-type and cell-state specific correction factors. In this way, Harmony learns a simple linear adjustment function that is sensitive to intrinsic cel- lular phenotypes. Finally, each cell is assigned a cluster-weighted average of these terms and corrected by its cell-specific linear factor. Since each cell may be in multiple clusters, each cell has a potentially unique correction factor. Harmony iterates these four steps until cell cluster assignments are stable.</p>
-<p>Harmony is an algorithm for robust, scalable and flexible multi-dataset integration to meet four key challenges of unsupervised scRNAseq joint embedding: scaling to large datasets, identification of both broad populations and fine-grained subpopulations, flexibility to accommodate complex experimental design, and the power to integrate across modalities.</p>
+<p>Harmony is an algorithm for robust, scalable and flexible multi-dataset integration to meet four key challenges of unsupervised scRNA-seq joint embedding: scaling to large datasets, identification of both broad populations and fine-grained subpopulations, flexibility to accommodate complex experimental design, and the power to integrate across modalities.</p>
 <div style="text-align: right">
 adapted from <a href="https://www.nature.com/articles/s41592-019-0619-0">Korsunsky et al (2019) <em>Nat Mathods</em></a>
 </div>
@@ -1216,7 +1245,7 @@ SeuratObject &lt;- RunHarmony(
 <div id="clustering" class="section level1">
 <h1>Clustering</h1>
 <hr />
-<p>One of the main goals of scRNAseq studies is often to group cells into clusters of similar cells. There are many different ways of defining clusters. There are traditional clustering approaches like <em>K-mean</em>, <em>hierarchical clustering</em> and <em>affinity propagation</em>, but recently most pipelines make use of graphs (see section above) to define clusters as groups of interconnected cells.</p>
+<p>One of the main goals of scRNA-seq studies is often to group cells into clusters of similar cells. There are many different ways of defining clusters. There are traditional clustering approaches like <em>K-mean</em>, <em>hierarchical clustering</em> and <em>affinity propagation</em>, but recently most pipelines make use of graphs (see section above) to define clusters as groups of interconnected cells.</p>
 <p>To define clusters in a graph we make use of different community detection algorithms like <em>Louvain</em>, <em>Leiden</em> and <em>Infomap</em>. The main idea behind all of them is to find groups of cells that have more edges (connections of high similarity) between them than they have to other cells in the dataset.</p>
 <p>Still, all clustering methods begin with defining pairwise distances between cells. Commonly this is done by taking euclidean distances between cells in PCA space, after selecting a subset of variables and scaling the data. Hence, your clustering results will be strongly dependent on choices you made in preprocessing of the data, especially the variable gene selection and how many principal components you include from the PCA.</p>
 <p>In graph based methods, the distances from PCA space are used to create a graph with edges between neighboring cells. Also here, there are multiple parameters, like number of neighbors in the KNN graph and pruning settings for the SNN construction that will impact the clustering results. If you want to read more about clustering and comparisons between methods, have a look at <a href="https://f1000research.com/articles/7-1141">this paper</a>.</p>
@@ -1230,12 +1259,11 @@ SeuratObject &lt;- RunHarmony(
 <a href="https://en.wikipedia.org/wiki/Independent_component_analysis">Wikipedia</a>
 </div>
 <p><a href="https://iopscience.iop.org/article/10.1088/1742-5468/2008/10/P10008/pdf">Louvain Paper</a></p>
-<p>How to run it:</p>
 <pre class="r"><code>SeuratObject &lt;- FindClusters(
-  object = SeuratObject,
+  object     = SeuratObject,
   graph.name = &quot;SNN&quot;,
   resolution = 0.8,
-  algorithm = 1) #algorithim 1 = Louvain</code></pre>
+  algorithm  = 1) # Setting `algorithm = 1` signifies Louvain</code></pre>
 <p>The number of clusters can be controlled using the <code>resolution</code> parameter with higher values giving more (smaller) clusters.</p>
 </p>
 </details>
@@ -1249,10 +1277,10 @@ SeuratObject &lt;- RunHarmony(
 <a href="https://www.nature.com/articles/s41598-019-41695-z.pdf">Leiden Paper</a>
 </div>
 <pre class="r"><code>SeuratObject &lt;- FindClusters(
-  object = SeuratObject,
+  object     = SeuratObject,
   graph.name = &quot;SNN&quot;,
   resolution = 0.8,
-  algorithm = 4)  #algorithim 4 = Louvain</code></pre>
+  algorithm  = 4) # Setting `algorithm = 4` signifies Leiden</code></pre>
 <p>The number of clusters can be controlled using the <code>resolution</code> parameter with higher values giving more (smaller) clusters.</p>
 </p>
 </details>
@@ -1270,26 +1298,26 @@ SeuratObject &lt;- RunHarmony(
 <p>After having calculated the distances between samples calculated, we can now proceed with the hierarchical clustering per-se. We will use the function <code>hclust()</code> for this purpose, in which we can simply run it with the distance objects created above. The methods available are: <em>ward.D</em>, <em>ward.D2</em>, <em>single</em>, <em>complete</em>, <em>average</em>, <em>mcquitty</em>, <em>median</em> or <em>centroid</em>. When clustering on a graph, use <em>ward.D2</em>.</p>
 <pre class="r"><code># Running HC on a PCA
 h &lt;- hclust(
-  d = dist( SeuratObject@reductions[[&quot;pca&quot;]]@cell.embeddings [ , 1:30 ],
-            method = &quot;euclidean&quot;) ,
+  d = dist(SeuratObject@reductions[[&quot;pca&quot;]]@cell.embeddings[, 1:30 ],
+           method = &quot;euclidean&quot;),
   method = &quot;ward.D2&quot;)
 
 # Running HC on a graph
 h &lt;- hclust(
-  d = 1 - as.dist(SeuratObject@graphs$SNN) ,
+  d      = 1 - as.dist(SeuratObject@graphs$SNN),
   method = &quot;ward.D2&quot;,)</code></pre>
 <p>Once the cluster hierarchy is defined, the next step is to define which samples belong to a particular cluster.</p>
-<pre class="r"><code>plot(h, labels = F)</code></pre>
+<pre class="r"><code>plot(h, labels = FALSE)</code></pre>
 <p>After identifying the dendrogram for the cells (above), we can now literally cut the tree at a fixed threshold (with the <code>cutree</code> function) at different levels (a.k.a. resolutions) to define the clusters. The number of clusters can be controlled using the height (<code>h</code>) or directly via the <code>k</code> parameters.</p>
 <pre class="r"><code># Cutting the tree based on a dendrogram height
 SeuratObject$HC_res &lt;- cutree(
   tree = h,
-  k = 18)
+  k    = 18)
 
 # Cutting the tree based on a number of clusters
 SeuratObject$HC_res &lt;- cutree(
   tree = h,
-  h = 3)
+  h    = 3)
 
 # To check how many cells are in each cluster
 table(SeuratObject$HC_res)</code></pre>
@@ -1305,10 +1333,10 @@ table(SeuratObject$HC_res)</code></pre>
 <p>K-means is a generic clustering algorithm that has been used in many application areas. In R, it can be applied via the kmeans function. Typically, it is applied to a reduced dimension representation of the expression data (most often PCA, because of the interpretability of the low-dimensional distances). We need to define the number of clusters in advance. Since the results depend on the initialization of the cluster centers, it is typically recommended to run K-means with multiple starting configurations (via the <code>nstart</code> argument).</p>
 <pre class="r"><code>set.seed(1)
 SeuratObject$kmeans_12 &lt;- kmeans(
-  x = SeuratObject@reductions[[&quot;pca&quot;]]@cell.embeddings [ , 1:50 ],
-  centers = 12,
+  x        = SeuratObject@reductions[[&quot;pca&quot;]]@cell.embeddings[, 1:50 ],
+  centers  = 12,
   iter.max = 50,
-  nstart = 10)$cluster</code></pre>
+  nstart   = 10)$cluster</code></pre>
 <p>The number of clusters can be controlled using the <code>centers</code> parameter.</p>
 </p>
 </details>
@@ -1317,7 +1345,7 @@ SeuratObject$kmeans_12 &lt;- kmeans(
 <strong>What clustering resolution should I use?</strong>
 </summary>
 <p>
-<p>With all of these methods we can obtain any number of clusters by tweaking the settings. One of the hard problems in scRNAseq analysis is to make reasonable decisions on how many clusters is reasonable. Unfortunately, there is no simple solution to this problem, it takes biological knowledge of the sample and some investigation to maker reasonable decisions on the number of clusters.</p>
+<p>With all of these methods we can obtain any number of clusters by tweaking the settings. One of the hard problems in scRNA-seq analysis is to make reasonable decisions on how many clusters is reasonable. Unfortunately, there is no simple solution to this problem, it takes biological knowledge of the sample and some investigation to maker reasonable decisions on the number of clusters.</p>
 <p>Differential gene expression may help in that analysis. If two clusters have the same DEGs and no clear genes that distinguish them, it may not be a good idea to split them into individual clusters. <em>Note!</em> Also examine the cluster you get with regards to the QC metrics (see above) to make sure that some clusters are not only formed due to low quality cells or doublets/multiples.</p>
 </p>
 </details>
@@ -1326,21 +1354,20 @@ SeuratObject$kmeans_12 &lt;- kmeans(
 <strong>Comparing clusterings and metadata</strong>
 </summary>
 <p>
-<p>A very useful task is to check how your clusters compare to other clustering conditions or metadata.</p>
-<p>How to run it:</p>
+<p>A very useful task is to check how your clusters compare to other clustering conditions or metadata:</p>
 <pre class="r"><code>comparison_table &lt;- table(list(
   SeuratObject$meta.data[,&quot;METADATA_FACTOR_1&quot;],
   SeuratObject$meta.data[,&quot;METADATA_FACTOR_2&quot;]
 ))</code></pre>
-<p>This will generate a table contating information of how many cells belong to the classes in comparisson. You can visualize it as a barplot, for example:</p>
-<pre class="r"><code>#Transform data to percentages:
-comparison_table &lt;- t(t(comparison_table)/colSums(comparison_table))*100
+<p>This will generate a table concatenating information of how many cells belong to the classes in comparison You can visualize it as a barplot, for example:</p>
+<pre class="r"><code># Transform data to percentages:
+comparison_table &lt;- t(t(comparison_table) / colSums(comparison_table)) * 100
 
-#Barplot
+# Barplot
 barplot(comparison_table,
-        col=scaleshue_pal()(nrow(comparison_table))[1:nrow(comparison_table)],
-        border=NA,
-        las=2)</code></pre>
+        col    = scaleshue_pal()(nrow(comparison_table))[1:nrow(comparison_table)],
+        border = NA,
+        las    = 2)</code></pre>
 </p>
 </details>
 <p><br /></p>
@@ -1348,14 +1375,14 @@ barplot(comparison_table,
 <div id="differential-expression" class="section level1">
 <h1>Differential expression</h1>
 <hr />
-<p>Once clusters have been defined, it is often informative to find the genes that define each cluster. The methods for DE prediction in scRNAseq differs somewhat from bulk RNAseq methods. On one hand, we often have more samples (individual cells) compared to bulk RNA-seq, but on the other hand, the scRNAseq data is noisy and suffer from drop-outs, which complicates things. You can read more about the different methods available in <a href="https://www.nature.com/articles/nmeth.4612">this paper</a>.</p>
+<p>Once clusters have been defined, it is often informative to find the genes that define each cluster. The methods for DE prediction in scRNA-seq differs somewhat from bulk RNAseq methods. On one hand, we often have more samples (individual cells) compared to bulk RNA-seq, but on the other hand, the scRNA-seq data is noisy and suffer from drop-outs, which complicates things. You can read more about the different methods available in <a href="https://www.nature.com/articles/nmeth.4612">this paper</a>.</p>
 <details>
 <summary>
 <strong>Finding DEGs</strong>
 </summary>
 <p>
 <p>Differentially expressed genes (DEGs) are often referred to as “marker genes”, however, you have to be aware that most DE tests are designed to detect genes that have higher expression in one group of cells compared to another. A DEG is not automatically a unique marker for a celltype.</p>
-<p>The Seurat package has implemented many different tests for DE, some are designed for scRNAseq and others are used also for bulk RNA-seq:</p>
+<p>The Seurat package has implemented many different tests for DE, some are designed for scRNA-seq and others are used also for bulk RNA-seq:</p>
 <ul>
 <li><code>wilcox</code> : Identifies differentially expressed genes between two groups of cells using a Wilcoxon Rank Sum test</li>
 <li><code>bimod</code> : Likelihood-ratio test for single cell gene expression (McDavid et al., Bioinformatics, 2013)</li>
@@ -1368,20 +1395,21 @@ barplot(comparison_table,
 <li><code>DESeq2</code> : Identifies differentially expressed genes between two groups of cells based on a model using DESeq2 which uses a negative binomial distribution (Love <em>et al</em>, Genome Biology, 2014). This test does not support pre-filtering of genes based on average difference (or percent detection rate) between cell groups. However, genes may be pre-filtered based on their minimum detection rate (min.pct) across both cell groups. To use this method, please install DESeq2, using the instructions at [<a href="https://bioconductor.org/packages/release/bioc/html/DESeq2.html" class="uri">https://bioconductor.org/packages/release/bioc/html/DESeq2.html</a>][]</li>
 </ul>
 <p>To run DE prediction for all clusters in a Seurat object, each cluster vs. all other cells, use the <code>FindAllMarker</code> function:</p>
-<pre class="r"><code>markers &lt;- FindAllMarkers( object = SeuratObject,
-  assay = &quot;RNA&quot;,
-  logfc.threshold = 0.25,
-  test.use = &quot;wilcox&quot;,
-  slot = &quot;data&quot;,
-  min.pct = 0.1,
-  min.diff.pct = -Inf,
-  only.pos = FALSE,
+<pre class="r"><code>markers &lt;- FindAllMarkers(
+  object              = SeuratObject,
+  assay               = &quot;RNA&quot;,
+  logfc.threshold     = 0.25,
+  test.use            = &quot;wilcox&quot;,
+  slot                = &quot;data&quot;,
+  min.pct             = 0.1,
+  min.diff.pct        = -Inf,
+  only.pos            = FALSE,
   max.cells.per.ident = Inf,
-  latent.vars = NULL,
-  min.cells.feature = 3,
-  min.cells.group = 3,
-  pseudocount.use = 1,
-  return.thresh = 0.01 )</code></pre>
+  latent.vars         = NULL,
+  min.cells.feature   = 3,
+  min.cells.group     = 3,
+  pseudocount.use     = 1,
+  return.thresh       = 0.01)</code></pre>
 <p>There are multiple cutoffs for including genes, filtering output etc that you can tweak. For instance only testing up-regulated genes may speed up the test:</p>
 <ul>
 <li>Only test up-regulated genes with <code>only.pos = TRUE</code></li>
@@ -1407,23 +1435,23 @@ barplot(comparison_table,
 <p>
 <p>The second way of computing differential expression is to answer which genes are differentially expressed within a cluster. For example, we may have libraries coming from 2 different library preparation methods (batches) and we would like to know which genes are influenced the most in a particular cell type. The same concept applies if you have instead two or more biological groups (control vs treated, time#0 vs time#1 vs time#2, <em>etc.</em>).</p>
 <p>For this end, we will first subset our data for the desired cell cluster, then change the cell identities to the variable of comparison (which now in our case is the “Batch”).</p>
-<pre class="r"><code>cell_selection &lt;- SeuratObject[,SeuratObject$seurat_clusters == 4]
+<pre class="r"><code>cell_selection &lt;- SeuratObject[, SeuratObject$seurat_clusters == 4]
 cell_selection &lt;- SetIdent(cell_selection, value = &quot;Batch&quot;)
 
 # Compute differentiall expression
 DGE_cell_selection &lt;- FindAllMarkers(
-  object = cell_selection,
-  logfc.threshold = 0.2,
-  test.use = &quot;wilcox&quot;,
-  min.pct = 0.1,
-  min.diff.pct = -Inf,
-  only.pos = FALSE,
+  object              = cell_selection,
+  logfc.threshold     = 0.2,
+  test.use            = &quot;wilcox&quot;,
+  min.pct             = 0.1,
+  min.diff.pct        = -Inf,
+  only.pos            = FALSE,
   max.cells.per.ident = Inf,
-  latent.vars = NULL,
-  min.cells.feature = 3,
-  min.cells.group = 3,
-  pseudocount.use = 1,
-  return.thresh = 0.01 )</code></pre>
+  latent.vars         = NULL,
+  min.cells.feature   = 3,
+  min.cells.group     = 3,
+  pseudocount.use     = 1,
+  return.thresh       = 0.01 )</code></pre>
 <p>We can also test any two set of cells using the function <code>FindMarkers</code> and specify the cell names for two groups as <code>cells.1</code> and <code>cells.2</code>.</p>
 </p>
 </details>
@@ -1435,27 +1463,28 @@ DGE_cell_selection &lt;- FindAllMarkers(
 <p>Once we have ran a DE test, we may want to visualize the genes in different ways. But first, we need to get the top DEGs from each cluster. How to select top 5 genes per cluster:</p>
 <pre class="r"><code>top5 &lt;- markers %&gt;% group_by(cluster) %&gt;% top_n(-5, p_val_adj)</code></pre>
 <p>These can be visualized in a heatmap:</p>
-<pre class="r"><code>DoHeatmap(object = SeuratObject,
+<pre class="r"><code>DoHeatmap(object   = SeuratObject,
           features = as.character(unique(top5$gene)),
           group.by = &quot;seurat_clusters&quot;,
-          assay = &quot;RNA&quot;)</code></pre>
-<p>Or with a dot-plot, where each cluster is represented with color by average expression, and size by proportion cells that have the gene expressed.</p>
-<pre class="r"><code>DotPlot(object = SeuratObject,
+          assay    = &quot;RNA&quot;)</code></pre>
+<p>Or with a dot-plot, where each cluster is represented with color by average expression, and size by proportion cells that have the gene expressed:</p>
+<pre class="r"><code>DotPlot(object   = SeuratObject,
         features = as.character(unique(top5$gene)),
         group.by = &quot;seurat_clusters&quot;,
-        assay = &quot;RNA&quot;) + coord_flip()</code></pre>
-<p>We can also plot a violin plot for each gene.</p>
-<pre class="r"><code>VlnPlot(object = SeuratObject,
+        assay    = &quot;RNA&quot;) +
+  coord_flip()</code></pre>
+<p>We can also plot a violin plot for each gene:</p>
+<pre class="r"><code>VlnPlot(object   = SeuratObject,
         features = as.character(unique(top5$gene)),
-        ncol = 5,
+        ncol     = 5,
         group.by = &quot;seurat_clusters&quot;,
-        assay = &quot;RNA&quot;)</code></pre>
+        assay    = &quot;RNA&quot;)</code></pre>
 <p>The violin plot can also be split into batches, so if you have two batches with meta data column “Batch”, these can be plotted separately within each cluster for each gene. This may be very useful to check that the DEGs you have detected are not just driven by a single batch.</p>
-<pre class="r"><code>VlnPlot(object = SeuratObject,
+<pre class="r"><code>VlnPlot(object   = SeuratObject,
         features = as.character(unique(top5$gene)),
-        ncol = 5,
+        ncol     = 5,
         group.by = &quot;seurat_clusters&quot;,
-        assay = &quot;RNA&quot;,
+        assay    = &quot;RNA&quot;,
         split.by = &quot;Batch&quot;)</code></pre>
 </p>
 </details>
@@ -1465,14 +1494,15 @@ DGE_cell_selection &lt;- FindAllMarkers(
 </summary>
 <p>
 <p>Having a defined list of enriched terms, you can now look for their combined function using enrichR:</p>
-<pre class="r"><code>library(enrichR)
+<pre class="r"><code># LOad additional packages
+library(enrichR)
 
 # Check available databases to perform enrichment (then choose one)
 enrichR::listEnrichrDbs()
 
-# perform enrichment
+# Perform enrichment
 enrich_results &lt;- enrichr(
-  genes = top5$gene[ top5$cluster == &quot;CLUSTER_OF_INTEREST&quot; ],
+  genes     = top5$gene[top5$cluster == &quot;CLUSTER_OF_INTEREST&quot;],
   databases = &quot;DATABASE_OF_INTEREST&quot; )[[1]]</code></pre>
 <p>Some databases of interest:</p>
 <ul>
@@ -1483,15 +1513,15 @@ enrich_results &lt;- enrichr(
 <li><code>WikiPathways_2019_Mouse</code></li>
 </ul>
 <p>You visualize your results using a simple barplot, for example:</p>
-<pre class="r"><code>mypar(1,1,mar=c(3,20,2,1))
-barplot( height = -log10(en$P.value)[20:1],
+<pre class="r"><code>mypar(1, 1, mar = c(3, 20, 2, 1))
+barplot( height    = -log10(en$P.value)[20:1],
          names.arg = en$Term[20:1],
-         horiz = T,
-         las=2,
-         border=F,
+         horiz     = TRUE,
+         las       = 2,
+         border    = FALSE,
          cex.names = .6 )
-abline( v=c( -log10(0.05) ),lty=2 )
-abline( v=0,lty=1 )</code></pre>
+abline(v = c(-log10(0.05)), lty = 2)
+abline(v = 0, lty = 1)</code></pre>
 </p>
 </details>
 <p><br /></p>
@@ -1522,46 +1552,42 @@ abline( v=0,lty=1 )</code></pre>
 <p>We want to find continuities in our data, why then do so many TI methods use methods that split up the data in distinct groups using clustering?</p>
 <p>The answer is simple: clustering simplifies the problem by finding groups of cells that are at approximately the same location in the trajectory. These groups can then be connected to find the different paths that cells take, and where they branch off. Ideally, the clustering method for TI should therefore not group cells based on a density, such as DBSCAN A trajectory is by definition a group of cells that are all connected through high-density regions, but still differ in their expression.</p>
 <p>We’ll use standard Seurat clustering here (louvain clustering), but alternative methods may be appropriate as well. Sometimes, it may be useful to “overcluster” to make sure that all sub-branches are captured. We’ll increase the resolution a bit, so that we find more granular clusters. As an exercise, you might tweak this resolution a bit and see how it affects downstream analyses.</p>
-<pre class="r"><code>clustering &lt;- factor(SeuratObject@meta.data[,&quot;clustering_to_be_used&quot;])</code></pre>
+<pre class="r"><code>clustering &lt;- factor(SeuratObject@meta.data[, &quot;clustering_to_be_used&quot;])</code></pre>
 <p>Until up to this point, the steps above have been covered in the previous lectures. From now on, we will start using that clustering and data reduction techniques for trajectory inference. The whole process can be done using a single function named <code>slingshot</code>, which is simply a wrapper for the 2 main steps for trajectory inference. The first step of the process is to define the lineages and then fit a curve through the data that defines a trajectory. These steps are break down below for clarity.</p>
 <p><strong>Defining cell lineages with Slingshot</strong></p>
-<pre class="r"><code>library(slingshot)
-
-# Run default Slingshot lineage identification
+<pre class="r"><code># Run default Slingshot lineage identification
+library(slingshot)
 set.seed(1)
-lineages &lt;- getLineages(
-  data = dimred,
-  clusterLabels = clustering,
- #end.clus = c(&quot;11&quot;,&quot;7&quot;,&quot;10&quot;,&quot;9&quot;,&quot;5&quot;), #define how many branches/lineages to consider
- #start.clus = &quot;5&quot; #define where to start the trajectories
- )
+lineages &lt;- getLineages(data          = dimred,
+                        clusterLabels = clustering)
 lineages
 
 # Plot the lineages
-par(mfrow=c(1,2))
-plot(dimred[,1:2], col = pal[clustering],  cex=.5,pch = 16)
-for(i in levels(clustering)){
-  text( mean(dimred[clustering==i,1]),
-        mean(dimred[clustering==i,2]), labels = i,font = 2) }
-plot(dimred[,1:2], col = pal[clustering],cex=.5, pch = 16)
-lines(lineages, lwd = 3, col = &#39;black&#39;)</code></pre>
+par(mfrow = c(1,2))
+plot(dimred[, 1:2],
+     col = clustering,
+     cex = .5,
+     pch = 16)
+for(i in levels(clustering)) {
+  text(mean(dimred[clustering == i, 1]),
+       mean(dimred[clustering == i, 2]),
+       labels = i,
+       font   = 2)
+}
+plot(dimred[, 1:2],
+     col = clustering,
+     cex = .5,
+     pch = 16)
+lines(lineages,
+      lwd = 3,
+      col = &#39;black&#39;)</code></pre>
 <p>Here we see one central issue with trajectory analysis: where does the trajectory begin? Without any extra information, this is nearly an impossible task for a TI method. We need prior biological information to be able to define where the trajectory starts and where it should end.</p>
-<pre class="r"><code># Run default Slingshot
+<pre class="r"><code># Run Slingshot starting at cluster 5
 set.seed(1)
-lineages &lt;- getLineages(data = dimred,
+lineages &lt;- getLineages(data          = dimred,
                         clusterLabels = clustering,
-                        #end.clus = c(&quot;11&quot;,&quot;7&quot;,&quot;10&quot;,&quot;9&quot;,&quot;5&quot;), #define how many branches/lineages to consider
-                        start.clus = &quot;5&quot;) #define where to start the trajectories
-lineages
-
-# Plot the lineages
-par(mfrow=c(1,2))
-plot(dimred[,1:2], col = clustering, cex=.5, pch = 16)
-for(i in levels(clustering)){
-  text( mean(dimred[clustering==i, 1]),
-        mean(dimred[clustering==i, 2]), labels = i, font = 2) }
-plot(dimred, col = clustering, pch = 16)
-lines(lineages, lwd = 3, col = &#39;black&#39;)</code></pre>
+                        start.clus    = &quot;5&quot;)
+lineages</code></pre>
 <p><strong>Defining Principal Curves</strong></p>
 <p>Once the clusters are connected, Slingshot allows you to transform them to a smooth trajectory using principal curves. This is an algorithm that iteratively changes an initial curve to better match the data points. It was developed for linear data. To apply it to single-cell data, slingshot adds two enhancements:</p>
 <ul>
@@ -1569,11 +1595,21 @@ lines(lineages, lwd = 3, col = &#39;black&#39;)</code></pre>
 <li>Lineages with a same set of clusters will be constrained so that their principal curves remain bundled around the overlapping clusters</li>
 </ul>
 <p>Since the function <code>getCurves()</code> takes some time to run, we can speed up the convergence of the curve fitting process by reducing the amount of cells to use in each lineage. Ideally you could use all cells, but here we had set <code>approx_points</code> to 300 to speed up; feel free to adjust for your particular dataset.</p>
-<pre class="r"><code>curves &lt;- getCurves(lineages, approx_points = 300, thresh = 0.01, stretch = .8, allow.breaks = FALSE, shrink = .99)
+<pre class="r"><code>curves &lt;- getCurves(lineages,
+                    approx_points = 300,
+                    thresh        = 0.01,
+                    stretch       = .8,
+                    allow.breaks  = FALSE,
+                    shrink        = .99)
 curves
 
-plot(dimred, col = clustering, asp = 1, pch = 16)
-lines(curves, lwd = 3, col = &#39;black&#39;)</code></pre>
+plot(dimred,
+     col = clustering,
+     asp = 1,
+     pch = 16)
+lines(curves,
+      lwd = 3,
+      col = &#39;black&#39;)</code></pre>
 </p>
 </details>
 <details>
@@ -1581,52 +1617,51 @@ lines(curves, lwd = 3, col = &#39;black&#39;)</code></pre>
 <strong>Differential expression along trajectories</strong>
 </summary>
 <p>
-<p>The main way to interpret a trajectory is to find genes that change along the trajectory. There are many ways to define differential expression along a trajectory:</p>
+<p>The main way to interpret a trajectory is to find genes that change along the trajectory. There are many ways to define differential expression along a trajectory, for example:</p>
 <ul>
-<li>Expression changes along a particular path (i.e. change with pseudotime)</li>
+<li>Expression changes along a particular path (<em>i.e.</em> change with pseudotime)</li>
 <li>Expression differences between branches</li>
 <li>Expression changes at branch points</li>
 <li>Expression changes somewhere along the trajectory</li>
-<li>…</li>
 </ul>
 <p><code>tradeSeq</code> is a recently proposed algorithm to find trajectory differentially expressed genes. It works by smoothing the gene expression along the trajectory by fitting a smoother using generalized additive models (GAMs), and testing whether certain coefficients are statistically different between points in the trajectory.</p>
 <p>The fitting of GAMs can take quite a while, so for demonstration purposes we first do a very stringent filtering of the genes. In an ideal experiment, you would use all the genes, or at least those defined as being variable.</p>
-<pre class="r"><code>BiocParallel::register(BiocParallel::SerialParam())
-
+<pre class="r"><code># Load additional packages
+BiocParallel::register(BiocParallel::SerialParam())
 library(tradeSeq)
-counts &lt;- as.matrix( SeuratObject@assays$RNA@counts[ SeuratObject@assays$RNA@var.features , ] )
 
-# Removing some genes to speed up the computations for this tutorial
-filt_counts &lt;- counts [ rowSums(counts &gt; 5) &gt; ncol(counts)/100, ]
+# Remove some genes to speed up the computations for this tutorial
+counts &lt;- as.matrix(SeuratObject@assays$RNA@counts[SeuratObject@assays$RNA@var.features, ])
+filt_counts &lt;- counts[rowSums(counts &gt; 5) &gt; ncol(counts) / 100, ]
 dim(filt_counts)
 
 # Fitting a Gamma distribution
-sce &lt;- fitGAM( counts = as.matrix(filt_counts),
-               sds = curves )
-plotGeneCount(curve = curves,
-              counts = filt_counts,
+sce &lt;- fitGAM(counts = as.matrix(filt_counts),
+              sds    = curves )
+plotGeneCount(curve    = curves,
+              counts   = filt_counts,
               clusters = clustering,
-              models = sce)</code></pre>
+              models   = sce)</code></pre>
 <p><strong>Genes that change with pseudotime</strong></p>
 <pre class="r"><code>pseudotime_association &lt;- associationTest(sce)
 pseudotime_association$fdr &lt;- p.adjust(pseudotime_association$pvalue, method = &quot;fdr&quot;)
-pseudotime_association &lt;- pseudotime_association[ order(pseudotime_association$pvalue), ]
+pseudotime_association &lt;- pseudotime_association[order(pseudotime_association$pvalue), ]
 pseudotime_association$feature_id &lt;- rownames(pseudotime_association)</code></pre>
-<pre class="r"><code># Define function to plot
+<pre class="r"><code># Function to plot differential expression
 library(dplyr)
 plot_differential_expression &lt;- function(feature_id) {
 
     cowplot::plot_grid(
-      plotGeneCount(curve = curves,
-                    counts = filt_counts,
-                    gene=feature_id[1],
+      plotGeneCount(curve    = curves,
+                    counts   = filt_counts,
+                    gene     = feature_id[1],
                     clusters = clustering,
-                    models = sce) +
+                    models   = sce) +
         ggplot2::theme(legend.position = &quot;none&quot;),
 
       plotSmoothers(models = sce,
-                    counts=as.matrix(counts),
-                    gene = feature_id[1])
+                    counts = as.matrix(counts),
+                    gene   = feature_id[1])
 )}
 
 # Get genes and plot
@@ -1687,8 +1722,8 @@ plot_differential_expression(feature_id)</code></pre>
 </summary>
 <p>
 <ul>
-<li><a href="https://nbisweden.github.io/workshop-scRNAseq/exercises.html">Exercises for the NBIS scRNA-seq course</a></li>
-<li><a href="https://github.com/NBISweden/workshop-scRNAseq">The GitHub repository for the NBIS scRNA-seq course</a></li>
+<li><a href="https://nbisweden.github.io/workshop-scRNA-seq/exercises.html">Exercises for the NBIS scRNA-seq course</a></li>
+<li><a href="https://github.com/NBISweden/workshop-scRNA-seq">The GitHub repository for the NBIS scRNA-seq course</a></li>
 <li><a href="https://scrnaseq-course.cog.sanger.ac.uk/website/index.html">Single cell RNA-seq course at from Hemberg lab</a></li>
 <li><a href="https://chanzuckerberg.github.io/scRNA-python-workshop/intro/about">Single cell RNA-seq course in Python</a></li>
 <li><a href="https://broadinstitute.github.io/2019_scWorkshop/">Single cell RNA-seq course at Broad</a></li>
@@ -1701,14 +1736,14 @@ plot_differential_expression(feature_id)</code></pre>
 </summary>
 <p>
 <ul>
-<li><a href="https://nbisweden.github.io/workshop-scRNAseq/lectures/single_cell_methodologies_Karolina_Wallenborg_2020.pdf">Single-cell methodologies</a></li>
-<li><a href="https://nbisweden.github.io/workshop-scRNAseq/lectures/scRNAseq_QC_Asa_Bjorklund_2020.pdf">Quaility controls</a></li>
-<li><a href="https://nbisweden.github.io/workshop-scRNAseq/lectures/scRNAseq_normalization_Asa_Bjorklund_2020.pdf">Normalisation</a></li>
-<li><a href="https://nbisweden.github.io/workshop-scRNAseq/lectures/dimensionality_reduction_paulo_czarnewski.pdf">Dimensionality reduction</a></li>
-<li><a href="https://nbisweden.github.io/workshop-scRNAseq/lectures/data_integration_paulo_czarnewski_2020.pdf">Batch correction and data integration</a></li>
-<li><a href="https://nbisweden.github.io/workshop-scRNAseq/lectures/scRNAseq_clustering_Asa_Bjorklund_2020.pdf">Clustering techniques</a></li>
-<li><a href="https://nbisweden.github.io/workshop-scRNAseq/lectures/differenatial_expression_olga_dethlefsen_2020.pdf">Differential expression analysis</a></li>
-<li><a href="https://nbisweden.github.io/workshop-scRNAseq/lectures/trajectory_inference_analysis_paulo_czarnewski.pdf">Trajectory inference analyses</a></li>
+<li><a href="https://nbisweden.github.io/workshop-scRNA-seq/lectures/single_cell_methodologies_Karolina_Wallenborg_2020.pdf">Single-cell methodologies</a></li>
+<li><a href="https://nbisweden.github.io/workshop-scRNA-seq/lectures/scRNAseq_QC_Asa_Bjorklund_2020.pdf">Quaility controls</a></li>
+<li><a href="https://nbisweden.github.io/workshop-scRNA-seq/lectures/scRNAseq_normalization_Asa_Bjorklund_2020.pdf">Normalisation</a></li>
+<li><a href="https://nbisweden.github.io/workshop-scRNA-seq/lectures/dimensionality_reduction_paulo_czarnewski.pdf">Dimensionality reduction</a></li>
+<li><a href="https://nbisweden.github.io/workshop-scRNA-seq/lectures/data_integration_paulo_czarnewski_2020.pdf">Batch correction and data integration</a></li>
+<li><a href="https://nbisweden.github.io/workshop-scRNA-seq/lectures/scRNAseq_clustering_Asa_Bjorklund_2020.pdf">Clustering techniques</a></li>
+<li><a href="https://nbisweden.github.io/workshop-scRNA-seq/lectures/differenatial_expression_olga_dethlefsen_2020.pdf">Differential expression analysis</a></li>
+<li><a href="https://nbisweden.github.io/workshop-scRNA-seq/lectures/trajectory_inference_analysis_paulo_czarnewski.pdf">Trajectory inference analyses</a></li>
 <li><a href="https://www.youtube.com/playlist?list=PLjiXAZO27elC_xnk7gVNM85I2IQl5BEJN">All of the above in a YouTube playlist</a></li>
 </ul>
 </p>
