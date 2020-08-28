@@ -10,11 +10,13 @@ Since each of the 4 group themes have completely different softwares, please fol
 ***
 
 <details>
-<summary>Click to expand!</summary>
+<summary>
+<b>Project instructions<\b>
+</summary>
 
 <br/>
 
-[Overview of Single Cell RNA-seq Data Analysis](single_cell/single_cell.pdf)
+Main Presentation: [Single-cell RNA-seq Data Analysis Overview](single_cell/single_cell.pdf)
 
 <br/>
 
@@ -38,7 +40,8 @@ You are encouraged to use any other additional website / article in your report.
 
 In the end, each group is expected to have 1 report file with all analysis steps and the rationale for the following projects:
 
-<br/>
+</details>
+
 
 <details>
 <summary>
@@ -78,8 +81,6 @@ In the end, each group is expected to have 1 report file with all analysis steps
 1. [project_report_covid19](single_cell/group_reports/project_report_covid19.html) ([.Rmd](single_cell/group_reports/project_report_covid19.Rmd))
 2. [Presentation_covid19](single_cell/group_reports/project_presentation_covid19.pdf)
 
-
-</details>
 
 </details>
 
