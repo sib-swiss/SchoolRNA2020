@@ -42,7 +42,7 @@ In the end, each group is expected to have 1 report file with all analysis steps
 
 <details>
 <summary>
-**PROJECT 1: Blocking myeloid development during colitis**
+<b>PROJECT 1: Blocking myeloid development during colitis</b>
 </summary>
 
 <br/>
@@ -53,13 +53,15 @@ In the end, each group is expected to have 1 report file with all analysis steps
 
 **Importance:** Identifying such genes will allow us to: 1) perform experiment in Tamoxifen-transgenic mice where those cells can be depleted during the course of colitis. 2) find potential drugs that can inhibit those genes/pathways in order to block myeloid cell differentiation during colitis in mice (with priority to already approved drugs).
 
+**Analysis report from group 1:** [project_report_colitis](single_cell/group_reports/project_report_colitis.html) ([project_report_colitis](single_cell/group_reports/project_report_colitis.Rmd))
+
 </details>
 
 <br/>
 
 <details>
 <summary>
-**PROJECT 2: Identifying cell and gene candidates in severe COVID-19 patients**
+<b>PROJECT 2: Identifying cell and gene candidates in severe COVID-19 patients</b>
 </summary>
 
 <br/>
@@ -69,6 +71,8 @@ In the end, each group is expected to have 1 report file with all analysis steps
 **Main research question:** Which cell types and genes are altered when comparing blood immune cells from healthy versus COVID-19 patients.
 
 **Importance:** Identifying such genes will allow us to: 1) better understand why severe COVID-19 patients develop stronger immune responses; 2) find potential cells for blockage or immune enhancement therapy or; 3) identify pathways that could be targeted pharmacologically.
+
+**Analysis report from group 1:** [project_report_covid](single_cell/group_reports/project_report_covid19.html) ([project_report_covid19](single_cell/group_reports/project_report_covid19.Rmd))
 
 </details>
 
