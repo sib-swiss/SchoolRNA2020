@@ -42,6 +42,7 @@ In the end, each group is expected to have 1 report file with all analysis steps
 
 </details>
 
+<br/>
 
 <details>
 <summary>
