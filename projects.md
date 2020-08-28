@@ -11,7 +11,7 @@ Since each of the 4 group themes have completely different softwares, please fol
 
 <details>
 <summary>
-<b>Project instructions<\b>
+<b>Project instructions</b>
 </summary>
 
 <br/>
