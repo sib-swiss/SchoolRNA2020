@@ -53,7 +53,9 @@ In the end, each group is expected to have 1 report file with all analysis steps
 
 **Importance:** Identifying such genes will allow us to: 1) perform experiment in Tamoxifen-transgenic mice where those cells can be depleted during the course of colitis. 2) find potential drugs that can inhibit those genes/pathways in order to block myeloid cell differentiation during colitis in mice (with priority to already approved drugs).
 
-**Analysis report from group 1:** [project_report_colitis.html](single_cell/group_reports/project_report_colitis.html) ([.Rmd](single_cell/group_reports/project_report_colitis.Rmd))
+**Analysis report from group 1:**
+1. [project_report_colitis](single_cell/group_reports/project_report_colitis.html) ([.Rmd](single_cell/group_reports/project_report_colitis.Rmd))
+2. [Presentation](single_cell/group_reports/project_presentation_colitis.pdf)
 
 </details>
 
@@ -72,7 +74,10 @@ In the end, each group is expected to have 1 report file with all analysis steps
 
 **Importance:** Identifying such genes will allow us to: 1) better understand why severe COVID-19 patients develop stronger immune responses; 2) find potential cells for blockage or immune enhancement therapy or; 3) identify pathways that could be targeted pharmacologically.
 
-**Analysis report from group 1:** [project_report_covid.html](single_cell/group_reports/project_report_covid19.html) ([.Rmd](single_cell/group_reports/project_report_covid19.Rmd))
+**Analysis report from group 2:**
+1. [project_report_covid19](single_cell/group_reports/project_report_covid19.html) ([.Rmd](single_cell/group_reports/project_report_covid19.Rmd))
+2. [Presentation_covid19](single_cell/group_reports/project_presentation_covid19.pdf)
+
 
 </details>
 
