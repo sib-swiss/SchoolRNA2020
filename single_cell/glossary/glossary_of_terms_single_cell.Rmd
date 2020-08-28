@@ -1640,8 +1640,8 @@ useful to explore to get an even deeper understanding.
 <details>
 <summary>**Online courses**</summary>
 <p>
-* [Exercises for the NBIS scRNA-seq course](https://nbisweden.github.io/workshop-scRNA-seq/exercises.html)
-* [The GitHub repository for the NBIS scRNA-seq course](https://github.com/NBISweden/workshop-scRNA-seq)
+* [Exercises for the NBIS scRNA-seq course](https://nbisweden.github.io/workshop-scRNAseq/exercises.html)
+* [The GitHub repository for the NBIS scRNA-seq course](https://github.com/NBISweden/workshop-scRNAseq)
 * [Single cell RNA-seq course at from Hemberg lab](https://scrnaseq-course.cog.sanger.ac.uk/website/index.html)
 * [Single cell RNA-seq course in Python](https://chanzuckerberg.github.io/scRNA-python-workshop/intro/about)
 * [Single cell RNA-seq course at Broad](https://broadinstitute.github.io/2019_scWorkshop/)
@@ -1651,14 +1651,14 @@ useful to explore to get an even deeper understanding.
 <details>
 <summary>**Presentations and lectures**</summary>
 <p>
-* [Single-cell methodologies](https://nbisweden.github.io/workshop-scRNA-seq/lectures/single_cell_methodologies_Karolina_Wallenborg_2020.pdf)
-* [Quaility controls](https://nbisweden.github.io/workshop-scRNA-seq/lectures/scRNAseq_QC_Asa_Bjorklund_2020.pdf)
-* [Normalisation](https://nbisweden.github.io/workshop-scRNA-seq/lectures/scRNAseq_normalization_Asa_Bjorklund_2020.pdf)
-* [Dimensionality reduction](https://nbisweden.github.io/workshop-scRNA-seq/lectures/dimensionality_reduction_paulo_czarnewski.pdf)
-* [Batch correction and data integration](https://nbisweden.github.io/workshop-scRNA-seq/lectures/data_integration_paulo_czarnewski_2020.pdf)
-* [Clustering techniques](https://nbisweden.github.io/workshop-scRNA-seq/lectures/scRNAseq_clustering_Asa_Bjorklund_2020.pdf)
-* [Differential expression analysis](https://nbisweden.github.io/workshop-scRNA-seq/lectures/differenatial_expression_olga_dethlefsen_2020.pdf)
-* [Trajectory inference analyses](https://nbisweden.github.io/workshop-scRNA-seq/lectures/trajectory_inference_analysis_paulo_czarnewski.pdf)
+* [Single-cell methodologies](https://nbisweden.github.io/workshop-scRNAseq/lectures/single_cell_methodologies_Karolina_Wallenborg_2020.pdf)
+* [Quaility controls](https://nbisweden.github.io/workshop-scRNAseq/lectures/scRNAseq_QC_Asa_Bjorklund_2020.pdf)
+* [Normalisation](https://nbisweden.github.io/workshop-scRNAseq/lectures/scRNAseq_normalization_Asa_Bjorklund_2020.pdf)
+* [Dimensionality reduction](https://nbisweden.github.io/workshop-scRNAseq/lectures/dimensionality_reduction_paulo_czarnewski.pdf)
+* [Batch correction and data integration](https://nbisweden.github.io/workshop-scRNAseq/lectures/data_integration_paulo_czarnewski_2020.pdf)
+* [Clustering techniques](https://nbisweden.github.io/workshop-scRNAseq/lectures/scRNAseq_clustering_Asa_Bjorklund_2020.pdf)
+* [Differential expression analysis](https://nbisweden.github.io/workshop-scRNAseq/lectures/differenatial_expression_olga_dethlefsen_2020.pdf)
+* [Trajectory inference analyses](https://nbisweden.github.io/workshop-scRNAseq/lectures/trajectory_inference_analysis_paulo_czarnewski.pdf)
 * [All of the above in a YouTube playlist](https://www.youtube.com/playlist?list=PLjiXAZO27elC_xnk7gVNM85I2IQl5BEJN)
 </p>
 </details>
