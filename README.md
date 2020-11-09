@@ -94,7 +94,7 @@ At the end of this school, the participants should be able to:
 **Contributing institutions:**
 
 <img border="0" src="logos/nbis_logo.png" height="50">    
-<img border="0" src="logos/inra_logo.png" height="50">    
+<img border="0" src="logos/280px-Inserm.png" height="50">    
 <img border="0" src="logos/unibern_logo.png" height="50">    
 <img border="0" src="logos/bmls_logo.png" height="50">    
 <img border="0" src="logos/ethz_logo.png" height="50">
