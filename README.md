@@ -88,6 +88,7 @@ At the end of this school, the participants should be able to:
 - Paulo Czarnewski, National Bioinformatics Infrastructure (NBIS), 🇸🇪 Sweden
 - Erik Fasterius, National Bioinformatics Infrastructure (NBIS), 🇸🇪 Sweden
 - Sebastian Leidel, RNA Biochemistry group, UniBern, 🇨🇭 Switzerland
+- Puneet Sharma, RNA Biochemistry group, UniBern, 🇨🇭 Switzerland
 - Geert van Geest, Interfaculty Bioinformatics Unit, SIB/UniBern, 🇨🇭 Switzerland
 - Giancarlo Russo, Functional Genomics Center, ETHZ/UniZH, 🇨🇭 Switzerland
 
